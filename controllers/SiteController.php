@@ -12,6 +12,12 @@ use app\models\SignupForm;
 
 class SiteController extends Controller
 {
+    
+    public function __construct($id, $module, $config = array()) {
+        parent::__construct($id, $module, $config);
+        $this->layout='main';
+    }
+
     /**
      * @inheritdoc
      */

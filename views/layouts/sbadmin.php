@@ -42,6 +42,10 @@ AppAsset::register($this);
 
     <!-- Custom Fonts -->
     <link href="<?= Yii::getAlias('@web') ?>/sbadmin/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- DayPilot layout css -->
+    <link type="text/css" rel="stylesheet" href="<?= Yii::getAlias('@web') ?>/daypilot/layout.css" />
+    <link type="text/css" rel="stylesheet" href="<?= Yii::getAlias('@web') ?>/daypilot/icons/style.css" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -49,6 +53,8 @@ AppAsset::register($this);
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+     <script src="<?= Yii::getAlias('@web') ?>/js/jquery-1.9.1.min.js" type="text/javascript"></script>   
+     <script src="<?= Yii::getAlias('@web') ?>/js/daypilot-all.min.js"></script>
 
 </head>
 
@@ -396,7 +402,7 @@ AppAsset::register($this);
                                     <?= Html::a('Roles', Url::to(['/admin/role'])) ?>
                                 </li>
                                 <li>
-                                    <?= Html::a('Roles', Url::to(['/admin/assignment'])) ?>
+                                    <?= Html::a('Role Assignment', Url::to(['/admin/assignment'])) ?>
                                 </li>
                             </ul>
                          </li>   
@@ -434,7 +440,7 @@ AppAsset::register($this);
     <script src="<?= Yii::getAlias('@web') ?>/sbadmin/raphael/raphael.min.js"></script>
     <script src="<?= Yii::getAlias('@web') ?>/sbadmin/morrisjs/morris.min.js"></script>
     <script src="<?= Yii::getAlias('@web') ?>/sbadmin/data/morris-data.js"></script>
-
+   
     <script>
     $("#side-menu").metisMenu({
         toggle: false

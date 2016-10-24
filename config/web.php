@@ -60,6 +60,9 @@ $config = [
             'admin' => [
               'class' => 'mdm\admin\Module', 
             ],  
+            'grc' => [
+                'class' => 'app\modules\grc\GrcModule',
+            ],
          ],
     'as access'=>[
 	'class'=>'mdm\admin\components\AccessControl',

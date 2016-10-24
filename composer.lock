@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b31f1daa71f4beb8f654b6b4a8e50de6",
+    "hash": "5d3a3ab08da74c040feb837e311b08e4",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -255,6 +255,51 @@
             "time": "2016-09-14 20:40:20"
         },
         {
+            "name": "drsdre/yii2-wizardwidget",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drsdre/yii2-wizardwidget.git",
+                "reference": "d975e750c80cf9f2b3623cba4ac1d966f0c237f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drsdre/yii2-wizardwidget/zipball/d975e750c80cf9f2b3623cba4ac1d966f0c237f5",
+                "reference": "d975e750c80cf9f2b3623cba4ac1d966f0c237f5",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*",
+                "yiisoft/yii2-bootstrap": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "drsdre\\wizardwidget\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "A.F.Schuurman",
+                    "email": "andre.schuurman@gmail.com"
+                }
+            ],
+            "description": "Multi step wizard widget using tabs to guide a user through steps to complete a task. Based on the Form wizard (using tabs) from lukepzak (see http://bootsnipp.com/snippets/featured/form-wizard-using-tabs).",
+            "keywords": [
+                "extension",
+                "tabs",
+                "ui",
+                "widget",
+                "wizard",
+                "yii2"
+            ],
+            "time": "2015-12-03 13:48:54"
+        },
+        {
             "name": "ezyang/htmlpurifier",
             "version": "v4.8.0",
             "source": {
@@ -411,16 +456,16 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.9",
+            "version": "2.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "2b75151ea60e1fd820046416eee2e89c3dda1133"
+                "reference": "5bfcb7a6dfa9771e2248eb8c4448613330f343ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/2b75151ea60e1fd820046416eee2e89c3dda1133",
-                "reference": "2b75151ea60e1fd820046416eee2e89c3dda1133",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/5bfcb7a6dfa9771e2248eb8c4448613330f343ff",
+                "reference": "5bfcb7a6dfa9771e2248eb8c4448613330f343ff",
                 "shasum": ""
             },
             "require": {
@@ -501,7 +546,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2016-07-11 13:36:42"
+            "time": "2016-10-20 12:02:50"
         },
         {
             "name": "yiisoft/yii2-bootstrap",

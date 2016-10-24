@@ -8,8 +8,10 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 use yii\helpers\Json;
+use CJSON;
 
-class DashboardController extends \yii\web\Controller {
+
+class DashboardController extends ApiController {
 
     public function behaviors() {
         return [
@@ -18,9 +20,13 @@ class DashboardController extends \yii\web\Controller {
                 'only' => [],
                 'rules' => [
                     [
-                        'actions' => ['index', 'rooms', 'events', 'newrsv', 'editrsv', 'create-new-rsv', 'update-rsv', 'move-rsv', 'destroy-rsv'],
+                        'actions' => ['index', 'rooms', 'events', 'newrsv',
+                                      'editrsv', 'create-new-rsv', 'update-rsv',
+                                      'new-room', 'move-rsv', 'destroy-rsv', 'create-new-room',
+                                      'edit-room', 'update-room', 'resize-rsv'],
                         'allow' => true,
-                        'roles' => ['@'], //'roles' => ['permission_admin'],
+                        //'roles' => ['@'], 
+                        'roles' => ['user-role'],
                     ],
                 ],
             ],
@@ -33,7 +39,12 @@ class DashboardController extends \yii\web\Controller {
                     'create-new-rsv'=>['POST'],
                     'update-rsv'=>['POST'],
                     'move-rsv'=>['POST'],
-                    'destroy-rsv'=>['POST']
+                    'destroy-rsv'=>['POST'],
+                    'new-room'=>['GET', 'HEAD'], 
+                    'create-new-room'=>['POST'],
+                    'edit-room'=>['GET', 'HEAD'],
+                    'update-room'=>['POST'],
+                    'resize-rsv'=>['POST']
                 ],
             ],
         ];
@@ -72,7 +83,8 @@ class DashboardController extends \yii\web\Controller {
 
           }
           
-           $this->renderJSON($result);
+          
+          $this->renderJSON($result);
       }  
         
            
@@ -85,6 +97,7 @@ class DashboardController extends \yii\web\Controller {
                 ->from('reservations')
                 ->where('end <= '.date('Y-m-d', strtotime($_POST['start'])))
                 ->orWhere('start >='.date('Y-m-d', strtotime($_POST['end'])))
+                ->where('deleted=0')
                 ->limit(100);
         $rows = $query->all();
         //return Json::encode($rows);
@@ -170,7 +183,7 @@ class DashboardController extends \yii\web\Controller {
             'start'=>$request->post('start'),
             'end'=>$request->post('end'),
             'room_id'=>$request->post('room'),
-            'status'=>'New',
+            'status'=>$request->post('status'),
             'paid'=>$request->post('paid')
             );
         
@@ -227,6 +240,121 @@ class DashboardController extends \yii\web\Controller {
     
     public function actionDestroyRsv(){
         
+        $request = Yii::$app->request;
+        $response = array();
+        $data = array('deleted'=>1);
+        
+        $res = Yii::$app->db->createCommand()->update('reservations',$data,'id=:id', array(':id'=>$request->post('id')))->execute();
+        
+        if($res){
+            
+            $response = array(
+                'result'=>'OK',
+                'message'=>'Update successful',
+            );
+            
+        }
+        
+        $this->renderJSON($response);
     }
+    
+    public function actionNewRoom(){
+        
+        $this->layout = 'dp_modal';
+        $request = Yii::$app->request;
+         
+        return $this->render('_newroom_form');
+    }
+    
+    public function actionCreateNewRoom(){
+        
+        $request = Yii::$app->request;
+        $response = array();
+        
+        $data = array(
+                    'name'=>$request->post('name'),
+                    'capacity'=>$request->post('capacity'),
+                    'status'=>'Ready'
+                );
+        
+        $res = Yii::$app->db->createCommand()->insert('rooms',$data)->execute();
+        if($res){
+            
+           $response = array(
+               'result'=>'OK',
+               'message'=>'Created with id: '.Yii::$app->db->getLastInsertID(),
+               'id' => Yii::$app->db->getLastInsertID(),
+           );
+            
+        }
+        
+       $this->renderJSON($response);
+        
+        
+    }
+    
+    public function actionEditRoom(){
+        
+        $this->layout = 'dp_modal';
+        $request = Yii::$app->request;
+        
+        $query = new Query;
+        $query->select('*')
+                ->from('rooms')
+                ->where('id ='.$request->get('id'));
+        $data = $query->one();
+        
+        return $this->render('_editroom_form', ['data'=>$data]);
+    }
+    
+    public function actionUpdateRoom(){
+        
+       $request = Yii::$app->request;
+       $response = array();
+        
+        $data = array(
+                    'name'=>$request->post('name'),
+                    'capacity'=>$request->post('capacity'),
+                    'status'=>$request->post('status')
+                );
+        
+        $res = Yii::$app->db->createCommand()->update('rooms',$data,'id=:id', array(':id'=>$request->post('id')))->execute();
+        if($res){
+            
+            $response = array(
+                'result'=>'OK',
+                'message'=>'Update successful',
+            );
+            
+        }
+        
+        $this->renderJSON($response); 
+        
+    }
+    
+    public function actionResizeRsv(){
+        
+        $request = Yii::$app->request;
+        $response = array();
+        
+        $data = array(
+                    'start'=>$request->post('newStart'),
+                    'end'=>$request->post('newEnd'),
+                 );
+        
+        $res = Yii::$app->db->createCommand()->update('reservations',$data,'id=:id', array(':id'=>$request->post('id')))->execute();
+        if($res){
+            
+            $response = array(
+                'result'=>'OK',
+                'message'=>'Update successful',
+            );
+            
+        }
+        
+        $this->renderJSON($response);
+    }
+    
+   
 
 }

@@ -46,6 +46,7 @@ AppAsset::register($this);
     <!-- DayPilot layout css -->
     <link type="text/css" rel="stylesheet" href="<?= Yii::getAlias('@web') ?>/daypilot/layout.css" />
     <link type="text/css" rel="stylesheet" href="<?= Yii::getAlias('@web') ?>/daypilot/icons/style.css" />
+    <link type="text/css" rel="stylesheet" href="<?= Yii::getAlias('@web') ?>/daypilot/agenda_styles.css" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -305,7 +306,7 @@ AppAsset::register($this);
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="<?= Yii::getAlias('@web') ?>/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>

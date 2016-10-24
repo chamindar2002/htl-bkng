@@ -8,12 +8,12 @@ use yii\helpers\Url;
             <span class="label label-primary">Edit Reservation</span><br/>
                         
             <div class="form-group">
-                <label for="name">Start</label>
+                <label for="name">Checkin</label>
                 <input type="text" id="start" name="start" class='form-control input-sm' value="<?= $data['start'] ?>" />
             </div>
                         
             <div class="form-group">
-                <label for="name">End</label>
+                <label for="name">Checkout</label>
                 <input type="text" id="end" name="end" class='form-control input-sm' value="<?= $data['end'] ?>" />
             </div>
             

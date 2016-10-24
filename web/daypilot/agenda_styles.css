@@ -1,0 +1,51 @@
+.icon {
+    font-size: 14px;
+    text-align: center;
+    line-height: 14px;
+    vertical-align: middle;
+
+    cursor: pointer;
+}
+
+.modal_window{ z-index: 1000; margin-top: 2%;}
+
+.new_room_modal{
+    height: 270px !important;
+}
+.edit_room_modal{
+    height: 330px !important;
+}
+.new_rsv_modal{
+    height: 400px !important;
+}
+.edit_rsv_modal{
+    height: 540px !important;
+}
+
+
+
+.scheduler_default_rowheader_inner
+{
+    border-right: 1px solid #ccc;
+}
+.scheduler_default_rowheadercol2
+{
+    background: White;
+}
+.scheduler_default_rowheadercol2 .scheduler_default_rowheader_inner
+{
+    top: 2px;
+    bottom: 2px;
+    left: 2px;
+    background-color: transparent;
+    border-left: 5px solid #1a9d13; /* green */
+    border-right: 0px none;
+}
+.status_dirty.scheduler_default_rowheadercol2 .scheduler_default_rowheader_inner
+{
+    border-left: 5px solid #ea3624; /* red */
+}
+.status_cleanup.scheduler_default_rowheadercol2 .scheduler_default_rowheader_inner
+{
+    border-left: 5px solid #f9ba25; /* orange */
+}

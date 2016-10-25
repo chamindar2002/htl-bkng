@@ -13,6 +13,9 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '2cz_jF-GrMp3cxgnXmfGg6jOTTB3x8Ya',
         ],
+        'grcutilities' => [
+            'class' => 'app\components\GrcUtilities',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -72,6 +75,7 @@ $config = [
     ],
     'defaultRoute' => 'dashboard',
     'params' => $params,
+    
     
 ];
 

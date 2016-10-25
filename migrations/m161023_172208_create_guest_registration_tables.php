@@ -34,6 +34,7 @@ class m161023_172208_create_guest_registration_tables extends Migration
         $this->insert('grc_agents',array(
                                     'name'=>'No-Agent',
                                     'agent_type' =>'DIRECT_BOOKING',
+                                    'active'=>'0',
                                     'created_by'=>'1',
                                     'created_at'=>date('Y-m-d')
                                     )
@@ -101,6 +102,13 @@ class m161023_172208_create_guest_registration_tables extends Migration
 
     public function safeDown()
     {
+        $this->dropForeignKey('FK_package_room', 'grc_package');
+        $this->dropForeignKey('FK_package_meal_plan', 'grc_package');
+        
+        $this->dropForeignKey('FK_booking_reservation', 'grc_booking');
+        $this->dropForeignKey('FK_booking_package', 'grc_booking');
+        $this->dropForeignKey('FK_booking_agent', 'grc_booking');
+        
         $this->dropTable('grc_agents');
         $this->dropTable('grc_guests');
         $this->dropTable('grc_meal_plan');

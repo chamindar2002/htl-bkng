@@ -8,6 +8,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\helpers\Url;
+use yii\bootstrap\Alert;
 
 AppAsset::register($this);
 
@@ -381,10 +382,10 @@ AppAsset::register($this);
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Guest Management<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="blank.html">Blank Page</a>
+                                    <?= Html::a('Agents', Url::to(['/grc/agent'])) ?>
                                 </li>
                                 <li>
                                     <a href="login.html">Login Page</a>
@@ -418,6 +419,15 @@ AppAsset::register($this);
         </nav>
 
         <div id="page-wrapper">
+            <?php  foreach (Yii::$app->session->getAllFlashes() as $key => $message): ?>
+           
+                <div class="alert alert-<?= $key ?>" >
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <?= $message ?>
+                </div>
+           
+            <?php endforeach; ?>
+                     
             <div class="row">
                 <?= $content ?>
             </div>

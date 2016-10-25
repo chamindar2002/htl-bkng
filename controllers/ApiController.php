@@ -16,8 +16,10 @@ class ApiController extends \yii\web\Controller{
     }
     
     public function dd($var){
-        
+        echo '<pre>';
         \yii\helpers\VarDumper::dump($var);
+        echo '</pre>';
+        exit;
     }
 }
 

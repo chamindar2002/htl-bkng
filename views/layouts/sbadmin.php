@@ -388,7 +388,7 @@ AppAsset::register($this);
                                     <?= Html::a('Agents', Url::to(['/grc/agent'])) ?>
                                 </li>
                                 <li>
-                                    <a href="login.html">Login Page</a>
+                                     <?= Html::a('Meal Plans', Url::to(['/grc/meal-plan'])) ?>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

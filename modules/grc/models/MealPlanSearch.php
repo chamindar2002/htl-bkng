@@ -5,12 +5,12 @@ namespace app\modules\grc\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\grc\models\GrcAgents;
+use app\modules\grc\models\GrcMealPlan;
 
 /**
- * AgentSearch represents the model behind the search form about `app\modules\grc\models\GrcAgents`.
+ * MealPlanSearch represents the model behind the search form about `app\modules\grc\models\GrcMealPlan`.
  */
-class AgentSearch extends GrcAgents
+class MealPlanSearch extends GrcMealPlan
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class AgentSearch extends GrcAgents
     public function rules()
     {
         return [
-            [['id', 'active', 'deleted'], 'integer'],
-            [['name', 'agent_type', 'created_by', 'created_at', 'updated_at'], 'safe'],
+            [['id', 'deleted'], 'integer'],
+            [['name', 'created_by', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class AgentSearch extends GrcAgents
      */
     public function search($params)
     {
-        $query = GrcAgents::find();
+        $query = GrcMealPlan::find();
 
         // add conditions that should always apply here
 
@@ -60,16 +60,13 @@ class AgentSearch extends GrcAgents
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'active' => $this->active,
             'deleted' => $this->deleted,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'agent_type', $this->agent_type])
-            ->andFilterWhere(['like', 'created_by', $this->created_by])
-            ->AndFilterWhere(['=', 'active', 1]);
+            ->andFilterWhere(['like', 'created_by', $this->created_by]);
 
         return $dataProvider;
     }

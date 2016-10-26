@@ -390,6 +390,12 @@ AppAsset::register($this);
                                 <li>
                                      <?= Html::a('Meal Plans', Url::to(['/grc/meal-plan'])) ?>
                                 </li>
+                                <li>
+                                     <?= Html::a('Packages', Url::to(['/grc/package'])) ?>
+                                </li>
+                                <li>
+                                     <?= Html::a('Guests', Url::to(['/grc/guest'])) ?>
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>

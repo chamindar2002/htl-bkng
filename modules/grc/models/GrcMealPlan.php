@@ -32,11 +32,11 @@ class GrcMealPlan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['deleted'], 'integer'],
+            [['name', 'code'], 'required'],
+            [['deleted','created_by'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 64],
-            [['created_by'], 'string', 'max' => 20],
+            
         ];
     }
 

@@ -26,7 +26,7 @@ class m161023_172208_create_guest_registration_tables extends Migration
             'agent_type' => $this->string(20)->notNull(),
             'active'=>$this->smallInteger()->defaultValue('1'),
             'deleted' => $this->smallInteger()->defaultValue('0'),
-            'created_by' => $this->string(20)->notNull(),
+            'created_by' => $this->smallInteger()->notNull(),
             'created_at' => $this->datetime()->notNull(),
             'updated_at' => $this->datetime(),
         ]);
@@ -54,7 +54,7 @@ class m161023_172208_create_guest_registration_tables extends Migration
             'nationality' => $this->string(64),
             'identification' => $this->string(64)->notNull(),
             'deleted' => $this->integer()->notNull(),
-            'created_by' => $this->string(20)->notNull(),
+            'created_by' => $this->smallInteger()->notNull(),
             'created_at' => $this->datetime()->notNull(),
             'updated_at' => $this->datetime(),
         ]);
@@ -62,8 +62,9 @@ class m161023_172208_create_guest_registration_tables extends Migration
         $this->createTable('grc_meal_plan', [
             'id' => $this->primaryKey(),
             'name' => $this->string(64)->notNull(),
+            'code' => $this->string(10)->notNull(),
             'deleted' => $this->smallInteger()->defaultValue('0'),
-            'created_by' => $this->string(20)->notNull(),
+            'created_by' => $this->smallInteger(20)->notNull(),
             'created_at' => $this->datetime()->notNull(),
             'updated_at' => $this->datetime(),
         ]);
@@ -74,7 +75,7 @@ class m161023_172208_create_guest_registration_tables extends Migration
             'meal_plan_id' => $this->integer()->notNull(),
             'price'=> $this->double()->notNull(),
             'active'=>$this->smallInteger()->defaultValue('1'),
-            'created_by' => $this->string(20)->notNull(),
+            'created_by' => $this->smallInteger()->notNull(),
             'created_at' => $this->datetime()->notNull(),
             'updated_at' => $this->datetime(),
         ]);
@@ -86,7 +87,8 @@ class m161023_172208_create_guest_registration_tables extends Migration
             'agent_id' => $this->integer()->notNull(),
             'no_of_adults'=> $this->double()->notNull(),
             'no_of_children' => $this->integer()->notNull(),
-            'created_by' => $this->string(20)->notNull(),
+            'status' => $this->char(10)->defaultValue('OPEN'),
+            'created_by' => $this->smallInteger()->notNull(),
             'created_at' => $this->datetime()->notNull(),
             'updated_at' => $this->datetime(),
         ]);

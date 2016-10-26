@@ -4,14 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\grc\models\GrcAgents */
+/* @var $model app\modules\grc\models\GrcGuest */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Agents', 'url' => ['index']];
+$this->title = $model->title.'. '.$model->first_name. ' '. $model->last_name;
+$this->params['breadcrumbs'][] = ['label' => 'Grc Guests', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
 ?>
-<div class="grc-agents-view">
+<div class="grc-guest-view">
 
     <h3><?= Html::encode($this->title) ?></h3>
 
@@ -30,9 +29,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'name',
-            'agent_type',
-            'active',
+            'title',
+            'first_name',
+            'last_name',
+            'address',
+            'post_code',
+            'city',
+            'country',
+            'phone',
+            'email:email',
+            'nationality',
+            'identification',
             'deleted',
             'created_by',
             'created_at',

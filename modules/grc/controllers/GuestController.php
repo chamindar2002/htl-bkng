@@ -3,16 +3,16 @@
 namespace app\modules\grc\controllers;
 
 use Yii;
-use app\modules\grc\models\GrcMealPlan;
-use app\modules\grc\models\MealPlanSearch;
+use app\modules\grc\models\GrcGuest;
+use app\modules\grc\models\GuestSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * MealPlanController implements the CRUD actions for GrcMealPlan model.
+ * GuestController implements the CRUD actions for GrcGuest model.
  */
-class MealPlanController extends Controller
+class GuestController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class MealPlanController extends Controller
     }
 
     /**
-     * Lists all GrcMealPlan models.
+     * Lists all GrcGuest models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new MealPlanSearch();
+        $searchModel = new GuestSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class MealPlanController extends Controller
     }
 
     /**
-     * Displays a single GrcMealPlan model.
+     * Displays a single GrcGuest model.
      * @param integer $id
      * @return mixed
      */
@@ -57,15 +57,13 @@ class MealPlanController extends Controller
     }
 
     /**
-     * Creates a new GrcMealPlan model.
+     * Creates a new GrcGuest model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new GrcMealPlan();
-        
-        $model->created_by = Yii::$app->user->identity->id;
+        $model = new GrcGuest();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Success');
@@ -78,7 +76,7 @@ class MealPlanController extends Controller
     }
 
     /**
-     * Updates an existing GrcMealPlan model.
+     * Updates an existing GrcGuest model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -98,7 +96,7 @@ class MealPlanController extends Controller
     }
 
     /**
-     * Deletes an existing GrcMealPlan model.
+     * Deletes an existing GrcGuest model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -111,15 +109,15 @@ class MealPlanController extends Controller
     }
 
     /**
-     * Finds the GrcMealPlan model based on its primary key value.
+     * Finds the GrcGuest model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return GrcMealPlan the loaded model
+     * @return GrcGuest the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = GrcMealPlan::findOne($id)) !== null) {
+        if (($model = GrcGuest::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

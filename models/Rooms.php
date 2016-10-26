@@ -1,31 +1,30 @@
 <?php
 
-namespace app\modules\grc\models;
+namespace app\models;
 
 use Yii;
 
 /**
- * This is the model class for table "grc_agents".
+ * This is the model class for table "rooms".
  *
  * @property integer $id
  * @property string $name
- * @property string $agent_type
- * @property integer $active
+ * @property integer $capacity
+ * @property string $status
  * @property integer $deleted
- * @property string $created_by
  * @property string $created_at
  * @property string $updated_at
  *
- * @property GrcBooking[] $grcBookings
+ * @property GrcPackage[] $grcPackages
  */
-class GrcAgents extends \yii\db\ActiveRecord
+class Rooms extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'grc_agents';
+        return 'rooms';
     }
 
     /**
@@ -34,11 +33,11 @@ class GrcAgents extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'agent_type'], 'required'],
-            [['active', 'deleted', 'created_by'], 'integer'],
+            [['name', 'status', 'created_at'], 'required'],
+            [['capacity', 'deleted'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 64],
-            [['agent_type'], 'string', 'max' => 20],
+            [['status'], 'string', 'max' => 20],
         ];
     }
 
@@ -50,10 +49,9 @@ class GrcAgents extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'agent_type' => 'Agent Type',
-            'active' => 'Active',
+            'capacity' => 'Capacity',
+            'status' => 'Status',
             'deleted' => 'Deleted',
-            'created_by' => 'Created By',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -62,8 +60,8 @@ class GrcAgents extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getGrcBookings()
+    public function getGrcPackages()
     {
-        return $this->hasMany(GrcBooking::className(), ['agent_id' => 'id']);
+        return $this->hasMany(GrcPackage::className(), ['room_id' => 'id']);
     }
 }

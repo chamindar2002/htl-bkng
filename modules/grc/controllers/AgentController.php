@@ -67,11 +67,13 @@ class AgentController extends Controller
         
         $model->deleted = 0;
         $model->active = 1;
+        $model->created_by = Yii::$app->user->identity->id;
        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Success');
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            //var_dump($model->getErrors());exit;
             return $this->render('create', [
                 'model' => $model,
             ]);

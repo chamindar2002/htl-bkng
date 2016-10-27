@@ -12,15 +12,23 @@ use app\modules\grc\models\GrcPackage;
  */
 class PackageSearch extends GrcPackage
 {
+    public $mealPlan;
     /**
      * @inheritdoc
      */
+    
+    public function attributes()
+    {
+    // add related fields to searchable attributes
+        return array_merge(parent::attributes(), ['mealPlan.name']);
+    }
+
     public function rules()
     {
         return [
             [['id', 'room_id', 'meal_plan_id', 'active', 'created_by'], 'integer'],
             [['price'], 'number'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'mealPlan'], 'safe'],
         ];
     }
 
@@ -49,6 +57,14 @@ class PackageSearch extends GrcPackage
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        
+        $query->joinWith(['mealPlan']);
+        
+        $dataProvider->sort->attributes['mealPlan'] = [
+            'asc' => ['grc_meal_plan.name' => SORT_ASC],
+            'desc' => ['grc_meal_plan.name' => SORT_DESC],
+        ];
+
 
         $this->load($params);
 
@@ -69,7 +85,15 @@ class PackageSearch extends GrcPackage
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
+        
+        $query->joinWith(['mealPlan' => function ($q) {
+            $q->where('grc_meal_plan.name LIKE "%' . $_GET['PackageSearch']['mealPlan.name'] . '%"');
+        }]);
 
+        $query->andFilterWhere(['like', 'grc_meal_plan.name', $this->mealPlan]);
+
+        //var_dump($query->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);
+        
         return $dataProvider;
     }
 }

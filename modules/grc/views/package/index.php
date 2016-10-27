@@ -26,17 +26,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             //'room.name',
+            //'mealPlan.name',
+            [
+                'attribute' => 'mealPlan',
+                'value' => 'mealPlan.name'
+            ],
             [
                 'attribute' => 'room_id',
                 'value' => 'room.name'
             ],
-            [
-                'attribute' => 'meal_plan_id',
-                'value' => 'mealPlan.name'
-            ],
-            //'mealPlan.name',
             'price',
-            'active',
+            //'active',
             // 'created_by',
             // 'created_at',
             // 'updated_at',

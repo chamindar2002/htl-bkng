@@ -5,30 +5,22 @@ namespace app\modules\grc\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\grc\models\GrcPackage;
+use app\modules\grc\models\GrcBooking;
 
 /**
- * PackageSearch represents the model behind the search form about `app\modules\grc\models\GrcPackage`.
+ * BookingSearch represents the model behind the search form about `app\modules\grc\models\GrcBooking`.
  */
-class PackageSearch extends GrcPackage
+class BookingSearch extends GrcBooking
 {
-    public $mealPlan;
     /**
      * @inheritdoc
      */
-    
-    public function attributes()
-    {
-    // add related fields to searchable attributes
-        return array_merge(parent::attributes(), ['mealPlan.name']);
-    }
-
     public function rules()
     {
         return [
-            [['id', 'room_id', 'meal_plan_id', 'active', 'created_by'], 'integer'],
-            [['price'], 'number'],
-            [['created_at', 'updated_at', 'mealPlan'], 'safe'],
+            [['id', 'reservation_id', 'package_id', 'agent_id', 'no_of_children', 'created_by'], 'integer'],
+            [['no_of_adults'], 'number'],
+            [['status', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -50,21 +42,13 @@ class PackageSearch extends GrcPackage
      */
     public function search($params)
     {
-        $query = GrcPackage::find();
+        $query = GrcBooking::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-        
-        $query->joinWith(['mealPlan']);
-        
-        $dataProvider->sort->attributes['mealPlan'] = [
-            'asc' => ['grc_meal_plan.name' => SORT_ASC],
-            'desc' => ['grc_meal_plan.name' => SORT_DESC],
-        ];
-
 
         $this->load($params);
 
@@ -77,20 +61,18 @@ class PackageSearch extends GrcPackage
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'room_id' => $this->room_id,
-            'meal_plan_id' => $this->meal_plan_id,
-            'price' => $this->price,
-            'active' => $this->active,
+            'reservation_id' => $this->reservation_id,
+            'package_id' => $this->package_id,
+            'agent_id' => $this->agent_id,
+            'no_of_adults' => $this->no_of_adults,
+            'no_of_children' => $this->no_of_children,
             'created_by' => $this->created_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
-   
 
-        $query->andFilterWhere(['like', 'grc_meal_plan.name', $this->mealPlan]);
+        $query->andFilterWhere(['like', 'status', $this->status]);
 
-        //var_dump($query->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);
-        
         return $dataProvider;
     }
 }

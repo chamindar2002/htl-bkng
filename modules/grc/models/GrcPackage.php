@@ -74,8 +74,8 @@ class GrcPackage extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'room_id' => 'Room ID',
-            'meal_plan_id' => 'Meal Plan ID',
+            'room_id' => 'Room',
+            'meal_plan_id' => 'Meal Plan',
             'price' => 'Price',
             'active' => 'Active',
             'created_by' => 'Created By',

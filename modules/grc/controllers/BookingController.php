@@ -71,7 +71,7 @@ class BookingController extends \app\controllers\ApiController
         //\yii\helpers\VarDumper::dump(Yii::$app->request->isAjax);exit();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Success');
+            //Yii::$app->session->setFlash('success', 'Success');
             //return $this->redirect(['view', 'id' => $model->id]);
            
             $data = array(

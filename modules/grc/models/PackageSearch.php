@@ -13,6 +13,7 @@ use app\modules\grc\models\GrcPackage;
 class PackageSearch extends GrcPackage
 {
     public $mealPlan;
+    public $room;
     /**
      * @inheritdoc
      */
@@ -20,7 +21,7 @@ class PackageSearch extends GrcPackage
     public function attributes()
     {
     // add related fields to searchable attributes
-        return array_merge(parent::attributes(), ['mealPlan.name']);
+        return array_merge(parent::attributes(), ['mealPlan.name', 'room.name']);
     }
 
     public function rules()
@@ -28,7 +29,7 @@ class PackageSearch extends GrcPackage
         return [
             [['id', 'room_id', 'meal_plan_id', 'active', 'created_by'], 'integer'],
             [['price'], 'number'],
-            [['created_at', 'updated_at', 'mealPlan'], 'safe'],
+            [['created_at', 'updated_at', 'mealPlan', 'room'], 'safe'],
         ];
     }
 
@@ -59,10 +60,16 @@ class PackageSearch extends GrcPackage
         ]);
         
         $query->joinWith(['mealPlan']);
+        $query->joinWith(['room']);
         
         $dataProvider->sort->attributes['mealPlan'] = [
             'asc' => ['grc_meal_plan.name' => SORT_ASC],
             'desc' => ['grc_meal_plan.name' => SORT_DESC],
+        ];
+        
+        $dataProvider->sort->attributes['room'] = [
+            'asc' => ['rooms.name' => SORT_ASC],
+            'desc' => ['rooms.name' => SORT_DESC],
         ];
 
 
@@ -88,6 +95,7 @@ class PackageSearch extends GrcPackage
    
 
         $query->andFilterWhere(['like', 'grc_meal_plan.name', $this->mealPlan]);
+        $query->andFilterWhere(['like', 'rooms.name', $this->room]);
 
         //var_dump($query->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);
         

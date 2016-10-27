@@ -382,6 +382,16 @@ AppAsset::register($this);
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
+                            <a href="#"><i class="fa fa-files-o fa-fw"></i>Front Desk<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <?= Html::a('Booking Management', Url::to(['/grc/booking'])) ?>
+                                </li>
+                                
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
                             <a href="#"><i class="fa fa-files-o fa-fw"></i> Guest Management<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>

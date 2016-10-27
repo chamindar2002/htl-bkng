@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'mealPlan.name'
             ],
             [
-                'attribute' => 'room_id',
+                'attribute' => 'room',
                 'value' => 'room.name'
             ],
             'price',

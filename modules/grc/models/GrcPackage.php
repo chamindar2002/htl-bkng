@@ -107,4 +107,19 @@ class GrcPackage extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Rooms::className(), ['id' => 'room_id']);
     }
+    
+    public static function getAvailableRoomPackagesByRoom($room_id){
+        //$model->reservation->room->attributes['id']
+        $data = array();
+        $available_room_packages = \app\modules\grc\models\GrcPackage::find()->where(['active'=>1, 'room_id'=>$room_id])->all();
+        foreach($available_room_packages As $rp){
+            $data[] = array(
+                        'price'=>$rp->price,
+                        'meal_plan_name'=>$rp->mealPlan->name,
+                        'package_id'=>$rp->id
+                     );
+        }
+        
+        return json_encode($data);
+    }
 }

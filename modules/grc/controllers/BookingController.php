@@ -66,31 +66,44 @@ class BookingController extends \app\controllers\ApiController
     {
         $model = new GrcBooking();
         
-        $packages = ArrayHelper::map(\app\modules\grc\models\GrcPackage::find()->where(['active'=>1])->all(), 'id', 'mealPlan.name');
+        #temp
+        $model->reservation_id = 1;
+        $model->guest_id = 1;
+        $model->agent_id = 2;
+        $model->no_of_adults = 2;
+        
+        
+        $guests = ArrayHelper::map(\app\modules\grc\models\GrcGuest::find()->where(['deleted'=>0])->all(), 'id', 'first_name');
         $agents = ArrayHelper::map(\app\modules\grc\models\GrcAgents::find()->where(['active'=>1])->all(), 'id', 'name');
+        
         //\yii\helpers\VarDumper::dump(Yii::$app->request->isAjax);exit();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             //Yii::$app->session->setFlash('success', 'Success');
             //return $this->redirect(['view', 'id' => $model->id]);
-           
+            
+            
+            
             $data = array(
                 'reservation_data'=>$model->reservation->attributes,
                 'room_data'=>$model->reservation->room->attributes,
                 'booking_data'=>$model->attributes,
+                'guest_data'=>$model->guest->attributes,
                 'date_allocation' => GrcUtilities::computeDatesAllocation($model->reservation->attributes['start'], $model->reservation->attributes['end']),
+                'available_room_packages' => \app\modules\grc\models\GrcPackage::getAvailableRoomPackagesByRoom($model->reservation->room->attributes['id'])
             );
-            
+           
                        
             $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>$data]);
             
         } else {
+           
             //var_dump($model->getErrors());
             if(!empty($model->getErrors()) && Yii::$app->request->isAjax)
                 $this->renderJson(['result'=>'fail', 'message'=>'Fail', 'data'=>$model->getErrors()]);
             
             return $this->render('create', [
-                'model' => $model,'packages'=>$packages, 'agents'=>$agents
+                'model' => $model,'guests'=>$guests, 'agents'=>$agents
             ]);
         }
     }

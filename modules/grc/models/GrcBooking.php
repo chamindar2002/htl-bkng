@@ -59,13 +59,13 @@ class GrcBooking extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['reservation_id', 'package_id', 'agent_id', 'no_of_adults', 'no_of_children'], 'required'],
-            [['reservation_id', 'package_id', 'agent_id', 'no_of_children', 'created_by'], 'integer'],
+            [['reservation_id', 'guest_id', 'agent_id', 'no_of_adults', 'no_of_children'], 'required'],
+            [['reservation_id', 'guest_id', 'agent_id', 'no_of_children', 'created_by'], 'integer'],
             [['no_of_adults'], 'number'],
             [['created_at', 'updated_at'], 'safe'],
             [['status'], 'string', 'max' => 10],
             [['agent_id'], 'exist', 'skipOnError' => true, 'targetClass' => GrcAgents::className(), 'targetAttribute' => ['agent_id' => 'id']],
-            [['package_id'], 'exist', 'skipOnError' => true, 'targetClass' => GrcPackage::className(), 'targetAttribute' => ['package_id' => 'id']],
+            [['guest_id'], 'exist', 'skipOnError' => true, 'targetClass' => GrcGuest::className(), 'targetAttribute' => ['guest_id' => 'id']],
             [['reservation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Reservations::className(), 'targetAttribute' => ['reservation_id' => 'id']],
         ];
     }
@@ -78,7 +78,7 @@ class GrcBooking extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'reservation_id' => 'Reservation',
-            'package_id' => 'Package',
+            'guest_id' => 'Guest',
             'agent_id' => 'Agent',
             'no_of_adults' => 'No Of Adults',
             'no_of_children' => 'No Of Children',
@@ -100,9 +100,9 @@ class GrcBooking extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPackage()
+    public function getGuest()
     {
-        return $this->hasOne(GrcPackage::className(), ['id' => 'package_id']);
+        return $this->hasOne(GrcGuest::className(), ['id' => 'guest_id']);
     }
 
     /**

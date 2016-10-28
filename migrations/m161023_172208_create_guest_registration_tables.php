@@ -39,6 +39,14 @@ class m161023_172208_create_guest_registration_tables extends Migration
                                     'created_at'=>date('Y-m-d')
                                     )
                     );
+        $this->insert('grc_agents',array(
+                                    'name'=>'ABC Agent',
+                                    'agent_type' =>'DIRECT_BOOKING',
+                                    'active'=>'1',
+                                    'created_by'=>'1',
+                                    'created_at'=>date('Y-m-d')
+                                    )
+                    );
         
         $this->createTable('grc_guests', [
             'id' => $this->primaryKey(),
@@ -59,6 +67,16 @@ class m161023_172208_create_guest_registration_tables extends Migration
             'updated_at' => $this->datetime(),
         ]);
         
+        $this->insert('grc_guests',array(
+                                    'title'=>'Mr',
+                                    'first_name' =>'John',
+                                    'last_name'=>'Cena','address'=>'45, Northwood Road','post_code'=>'009ST7',
+                                    'city'=>'1','country'=>'1','phone'=>'+9423343333','email'=>'cenaj@gmail.com',
+                                    'nationality'=>'Sri Lankan', 'identification'=>'33334343333V',
+                                    'created_at'=>date('Y-m-d'), 'created_by'=>1
+                                    )
+                    );
+        
         $this->createTable('grc_meal_plan', [
             'id' => $this->primaryKey(),
             'name' => $this->string(64)->notNull(),
@@ -68,6 +86,21 @@ class m161023_172208_create_guest_registration_tables extends Migration
             'created_at' => $this->datetime()->notNull(),
             'updated_at' => $this->datetime(),
         ]);
+        
+        $this->insert('grc_meal_plan',array(
+                                    'name'=>'Full Board',
+                                    'code' =>'FB',
+                                    'created_by'=>'1',
+                                    'created_at'=>date('Y-m-d')
+                                    )
+                    );
+        $this->insert('grc_meal_plan',array(
+                                    'name'=>'Half Board',
+                                    'code' =>'HB',
+                                    'created_by'=>'1',
+                                    'created_at'=>date('Y-m-d')
+                                    )
+                    );
         
         $this->createTable('grc_package', [
             'id' => $this->primaryKey(),
@@ -80,10 +113,29 @@ class m161023_172208_create_guest_registration_tables extends Migration
             'updated_at' => $this->datetime(),
         ]);
         
+        $this->insert('grc_package',array(
+                                    'room_id'=>'1',
+                                    'meal_plan_id' =>'1',
+                                    'price'=>'18000',
+                                    'active'=>1,
+                                    'created_by'=>'1',
+                                    'created_at'=>date('Y-m-d')
+                                    )
+                    );
+        $this->insert('grc_package',array(
+                                    'room_id'=>'1',
+                                    'meal_plan_id' =>'2',
+                                    'price'=>'15000',
+                                    'active'=>1,
+                                    'created_by'=>'1',
+                                    'created_at'=>date('Y-m-d')
+                                    )
+                    );
+        
         $this->createTable('grc_booking', [
             'id' => $this->primaryKey(),
             'reservation_id' => $this->integer()->notNull(),
-            'package_id' => $this->integer()->notNull(),
+            'guest_id' => $this->integer()->notNull(),
             'agent_id' => $this->integer()->notNull(),
             'no_of_adults'=> $this->double()->notNull(),
             'no_of_children' => $this->integer()->notNull(),
@@ -97,7 +149,7 @@ class m161023_172208_create_guest_registration_tables extends Migration
         $this->addForeignKey('FK_package_meal_plan', 'grc_package', 'meal_plan_id', 'grc_meal_plan', 'id');
         
         $this->addForeignKey('FK_booking_reservation', 'grc_booking', 'reservation_id', 'reservations', 'id');
-        $this->addForeignKey('FK_booking_package', 'grc_booking', 'package_id', 'grc_package', 'id');
+        $this->addForeignKey('FK_booking_guest', 'grc_booking', 'guest_id', 'grc_guests', 'id');
         $this->addForeignKey('FK_booking_agent', 'grc_booking', 'agent_id', 'grc_agents', 'id');
         
     }
@@ -108,7 +160,7 @@ class m161023_172208_create_guest_registration_tables extends Migration
         $this->dropForeignKey('FK_package_meal_plan', 'grc_package');
         
         $this->dropForeignKey('FK_booking_reservation', 'grc_booking');
-        $this->dropForeignKey('FK_booking_package', 'grc_booking');
+        $this->dropForeignKey('FK_booking_guest', 'grc_booking');
         $this->dropForeignKey('FK_booking_agent', 'grc_booking');
         
         $this->dropTable('grc_agents');

@@ -37,7 +37,7 @@ class GrcUtilities extends Component{
          
          return array(
              'no_of_nights' => $no_of_nights,
-             'date_allocation' => $days_allocation  
+             'date_allocation' => json_encode($days_allocation) 
          );
     }
 }

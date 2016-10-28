@@ -14,8 +14,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'reservation_id')->textInput() ?>
 
-    <?= $form->field($model, 'package_id')
-        ->dropDownList($packages, ['prompt'=>'']); ?>
+    <?= $form->field($model, 'guest_id')
+        ->dropDownList($guests, ['prompt'=>'']); ?>
 
     <?= $form->field($model, 'agent_id')
         ->dropDownList($agents, ['prompt'=>'']); ?>
@@ -32,31 +32,4 @@ use yii\widgets\ActiveForm;
 
 </div>
 
-<?php
-$script = <<< JS
-$('form#{$model->formName()}').on('beforeSubmit', function(e)
-{
-	var \$form = $(this);
-	$.post(
-	    \$form.attr("action"), //serialize form
-	    \$form.serialize()		
-	)
-	.done(function(result){
-	    if(result.message == 'success')
-	    {
-		//$.pjax.reload({container: '#commodity-grid'});
-	    }else{
-		//$(\$form).trigger("reset");
-		$("#message").html(result.message);
-	    }			
-	}).fail(function(){
-		console.log("server error");
-	});
-	return false;
-})
-
-JS;
-$this->registerJs($script);
-
-?>
 

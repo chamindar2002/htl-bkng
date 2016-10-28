@@ -49,14 +49,16 @@ AppAsset::register($this);
     <link type="text/css" rel="stylesheet" href="<?= Yii::getAlias('@web') ?>/daypilot/icons/style.css" />
     <link type="text/css" rel="stylesheet" href="<?= Yii::getAlias('@web') ?>/daypilot/agenda_styles.css" />
 
+    <script src="<?= Yii::getAlias('@web') ?>/js/jquery-1.9.1.min.js" type="text/javascript"></script>   
+    <script src="<?= Yii::getAlias('@web') ?>/js/daypilot-all.min.js"></script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-     <script src="<?= Yii::getAlias('@web') ?>/js/jquery-1.9.1.min.js" type="text/javascript"></script>   
-     <script src="<?= Yii::getAlias('@web') ?>/js/daypilot-all.min.js"></script>
+     
 
 </head>
 
@@ -454,29 +456,32 @@ AppAsset::register($this);
     </div>
     <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="<?= Yii::getAlias('@web') ?>/sbadmin/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="<?= Yii::getAlias('@web') ?>/sbadmin/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="<?= Yii::getAlias('@web') ?>/sbadmin/metisMenu/metisMenu.min.js"></script>
-
-    <!-- Morris Charts JavaScript -->
-    <script src="<?= Yii::getAlias('@web') ?>/sbadmin/raphael/raphael.min.js"></script>
-    <script src="<?= Yii::getAlias('@web') ?>/sbadmin/morrisjs/morris.min.js"></script>
-    <script src="<?= Yii::getAlias('@web') ?>/sbadmin/data/morris-data.js"></script>
    
-    <script>
-    $("#side-menu").metisMenu({
-        toggle: false
-    });
-    </script>
-    <!-- Custom Theme JavaScript -->
-    <script src="<?= Yii::getAlias('@web') ?>/sbadmin/dist/js/sb-admin-2.js"></script>
 <?php $this->endBody() ?>
 </body>
 
 </html>
 <?php $this->endPage() ?>
+
+ <!-- jQuery -->
+<!--    <script src="<?= Yii::getAlias('@web') ?>/sbadmin/jquery/jquery.min.js"></script>-->
+    
+    
+<!-- Bootstrap Core JavaScript -->
+<script src="<?= Yii::getAlias('@web') ?>/sbadmin/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="<?= Yii::getAlias('@web') ?>/sbadmin/metisMenu/metisMenu.min.js"></script>
+
+<!-- Morris Charts JavaScript -->
+<script src="<?= Yii::getAlias('@web') ?>/sbadmin/raphael/raphael.min.js"></script>
+<script src="<?= Yii::getAlias('@web') ?>/sbadmin/morrisjs/morris.min.js"></script>
+<script src="<?= Yii::getAlias('@web') ?>/sbadmin/data/morris-data.js"></script>
+   
+<script>
+   $("#side-menu").metisMenu({
+        toggle: false
+    });
+</script>
+<!-- Custom Theme JavaScript -->
+<script src="<?= Yii::getAlias('@web') ?>/sbadmin/dist/js/sb-admin-2.js"></script>

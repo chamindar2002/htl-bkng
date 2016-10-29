@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'reservation_id',
-            'package_id',
+            'guest_id',
             'agent_id',
             'no_of_adults',
             // 'no_of_children',

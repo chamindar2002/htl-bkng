@@ -112,4 +112,37 @@ class GrcBooking extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Reservations::className(), ['id' => 'reservation_id']);
     }
+    
+    public function createInvoice($data)
+    {
+         $booking_id = $data['booking_id'];
+         $reservation_id = $data['reservation_id'];
+         
+         $data_batch = array();
+         $invoice = new \app\modules\inventory\models\InvnInvoice();
+         $invoice->invoice_date = date('Y-m-d');
+         $invoice->reservation_id = $reservation_id;
+         $invoice->booking_id = $booking_id;
+         
+         if($invoice->save()){
+             for($i=0; $i < $data['count']; $i++){
+               $package = \app\modules\grc\models\GrcPackage::find()->andWhere(['id' => $data["package_$i"]])->one();
+               $data_batch = array(
+                   //'package_id' => $data["package_$i"],
+                   'item_description'=> $data["day_$i"],
+                   'invoice_id'=>1,
+                   'item_master_id'=>1,
+                   'price' => $package->price,
+              
+               );
+               
+               $insertCount = Yii::$app->db->createCommand()
+                   ->insert('invn_invoice_items',$data_batch)->execute();
+            }
+            return true;
+         }
+         
+         return false;
+    
+    }
 }

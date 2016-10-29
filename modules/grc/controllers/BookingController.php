@@ -10,6 +10,10 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use app\components\GrcUtilities;
+use yii\filters\AccessControl;
+use yii\helpers\Url;
+use yii\db\Query;
+
 /**
  * BookingController implements the CRUD actions for GrcBooking model.
  */
@@ -18,13 +22,26 @@ class BookingController extends \app\controllers\ApiController
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+
+     public function behaviors() {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => [],
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update', 'delete','confirm', 'search-reservations', 'fetch-guests'],
+                        'allow' => true,
+                        //'roles' => ['@'], 
+                        'roles' => ['user-role'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'search-reservations' => ['POST'],
+                    
                 ],
             ],
         ];
@@ -65,25 +82,15 @@ class BookingController extends \app\controllers\ApiController
     public function actionCreate()
     {
         $model = new GrcBooking();
-        
-        #temp
-        $model->reservation_id = 1;
-        $model->guest_id = 1;
-        $model->agent_id = 2;
-        $model->no_of_adults = 2;
-        
-        
+       
         $guests = ArrayHelper::map(\app\modules\grc\models\GrcGuest::find()->where(['deleted'=>0])->all(), 'id', 'first_name');
         $agents = ArrayHelper::map(\app\modules\grc\models\GrcAgents::find()->where(['active'=>1])->all(), 'id', 'name');
+        $rooms = ArrayHelper::map(\app\models\Rooms::find()->where(['deleted'=>0])->all(), 'id', 'name');
         
-        //\yii\helpers\VarDumper::dump(Yii::$app->request->isAjax);exit();
+        //\yii\helpers\VarDumper::dump($rooms);exit();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //Yii::$app->session->setFlash('success', 'Success');
-            //return $this->redirect(['view', 'id' => $model->id]);
-            
-            
-            
+        
             $data = array(
                 'reservation_data'=>$model->reservation->attributes,
                 'room_data'=>$model->reservation->room->attributes,
@@ -92,8 +99,7 @@ class BookingController extends \app\controllers\ApiController
                 'date_allocation' => GrcUtilities::computeDatesAllocation($model->reservation->attributes['start'], $model->reservation->attributes['end']),
                 'available_room_packages' => \app\modules\grc\models\GrcPackage::getAvailableRoomPackagesByRoom($model->reservation->room->attributes['id'])
             );
-           
-                       
+            
             $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>$data]);
             
         } else {
@@ -103,7 +109,7 @@ class BookingController extends \app\controllers\ApiController
                 $this->renderJson(['result'=>'fail', 'message'=>'Fail', 'data'=>$model->getErrors()]);
             
             return $this->render('create', [
-                'model' => $model,'guests'=>$guests, 'agents'=>$agents
+                'model' => $model,'guests'=>$guests, 'agents'=>$agents, 'rooms'=>$rooms
             ]);
         }
     }
@@ -154,5 +160,71 @@ class BookingController extends \app\controllers\ApiController
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    public function actionConfirm()
+    {
+       
+       if(Yii::$app->request->post()){
+           
+          $model = new GrcBooking();
+                                    
+          if($model->createInvoice(Yii::$app->request->post())){
+      
+            Yii::$app->session->setFlash('success', 'Success');
+            return $this->redirect(Url::to(['booking/create']));
+           
+          }                 
+           
+       }         
+        
+    }
+    
+    public function actionSearchReservations()
+    {
+      $request = Yii::$app->request->post();
+      
+      if(Yii::$app->request){
+          $query = new Query;
+          $query->select('*')->from('reservations')
+                  ->where('room_id = '.$request['room_id'][0])
+                  ->where('status <> "CheckedOut"');
+          
+                
+          $result = array('resv_data'=>$query->all(), 'room_name'=>$request['room_label']);
+        
+          $this->renderJSON($result);
+      }  
+    }
+    
+    public function actionFetchGuests()
+    {
+        $request = Yii::$app->request->get();
+              
+        $res = array();
+	$q = strtolower($request['q']);
+        if ($q) {
+            $query = new Query;
+            $query->select('*')->from('grc_guests')
+                  ->andFilterWhere([ 
+                                    'or',
+                                    ['like', 'first_name', $q],
+                                    ['like', 'last_name', $q],
+                                  ])        
+                   ->andWhere('deleted = 0');
+            
+            $res = array(
+                'incomplete_results'=>false,
+                'items'=>$query->all(),
+                'total_count'=>100
+                );
+            
+            //var_dump($query->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);
+            //exit();
+
+            $this->renderJSON($res);
+      
+	}
+	
     }
 }

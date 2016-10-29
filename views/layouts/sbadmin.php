@@ -51,7 +51,7 @@ AppAsset::register($this);
 
     <script src="<?= Yii::getAlias('@web') ?>/js/jquery-1.9.1.min.js" type="text/javascript"></script>   
     <script src="<?= Yii::getAlias('@web') ?>/js/daypilot-all.min.js"></script>
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -485,3 +485,8 @@ AppAsset::register($this);
 </script>
 <!-- Custom Theme JavaScript -->
 <script src="<?= Yii::getAlias('@web') ?>/sbadmin/dist/js/sb-admin-2.js"></script>
+<script src="<?= Yii::getAlias('@web') ?>/js/select2.min.js"></script>
+<script>
+
+    
+</script>

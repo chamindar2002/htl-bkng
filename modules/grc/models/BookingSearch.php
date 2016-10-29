@@ -18,7 +18,7 @@ class BookingSearch extends GrcBooking
     public function rules()
     {
         return [
-            [['id', 'reservation_id', 'package_id', 'agent_id', 'no_of_children', 'created_by'], 'integer'],
+            [['id', 'reservation_id', 'guest_id', 'agent_id', 'no_of_children', 'created_by'], 'integer'],
             [['no_of_adults'], 'number'],
             [['status', 'created_at', 'updated_at'], 'safe'],
         ];
@@ -62,7 +62,7 @@ class BookingSearch extends GrcBooking
         $query->andFilterWhere([
             'id' => $this->id,
             'reservation_id' => $this->reservation_id,
-            'package_id' => $this->package_id,
+            'guest_id' => $this->guest_id,
             'agent_id' => $this->agent_id,
             'no_of_adults' => $this->no_of_adults,
             'no_of_children' => $this->no_of_children,

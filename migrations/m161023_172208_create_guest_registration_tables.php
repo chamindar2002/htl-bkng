@@ -81,6 +81,7 @@ class m161023_172208_create_guest_registration_tables extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string(64)->notNull(),
             'code' => $this->string(10)->notNull(),
+            'sort_order' => $this->integer()->defaultValue('0'),
             'deleted' => $this->smallInteger()->defaultValue('0'),
             'created_by' => $this->smallInteger(20)->notNull(),
             'created_at' => $this->datetime()->notNull(),

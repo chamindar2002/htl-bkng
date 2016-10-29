@@ -66,6 +66,9 @@ $config = [
             'grc' => [
                 'class' => 'app\modules\grc\GrcModule',
             ],
+            'inventory' => [
+                'class' => 'app\modules\inventory\InventoryModule',
+            ],
          ],
     'as access'=>[
 	'class'=>'mdm\admin\components\AccessControl',

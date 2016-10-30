@@ -82,6 +82,7 @@ class m161023_172208_create_guest_registration_tables extends Migration
             'name' => $this->string(64)->notNull(),
             'code' => $this->string(10)->notNull(),
             'sort_order' => $this->integer()->defaultValue('0'),
+            'active' => $this->smallInteger()->defaultValue('1'),
             'deleted' => $this->smallInteger()->defaultValue('0'),
             'created_by' => $this->smallInteger(20)->notNull(),
             'created_at' => $this->datetime()->notNull(),
@@ -89,8 +90,17 @@ class m161023_172208_create_guest_registration_tables extends Migration
         ]);
         
         $this->insert('grc_meal_plan',array(
-                                    'name'=>'Full Board',
-                                    'code' =>'FB',
+                                    'name'=>'No Meal Plan',
+                                    'code' =>'NP',
+                                    'active'=>'0',
+                                    'created_by'=>'1',
+                                    'created_at'=>date('Y-m-d')
+                                    )
+                    );
+        
+        $this->insert('grc_meal_plan',array(
+                                    'name'=>'Bread And Breakfast',
+                                    'code' =>'BB',
                                     'created_by'=>'1',
                                     'created_at'=>date('Y-m-d')
                                     )
@@ -116,8 +126,18 @@ class m161023_172208_create_guest_registration_tables extends Migration
         
         $this->insert('grc_package',array(
                                     'room_id'=>'1',
-                                    'meal_plan_id' =>'1',
-                                    'price'=>'18000',
+                                    'meal_plan_id' =>'2',
+                                    'price'=>'0',
+                                    'active'=>'0',
+                                    'created_by'=>'1',
+                                    'created_at'=>date('Y-m-d')
+                                    )
+                    );
+        
+        $this->insert('grc_package',array(
+                                    'room_id'=>'1',
+                                    'meal_plan_id' =>'2',
+                                    'price'=>'14000',
                                     'active'=>1,
                                     'created_by'=>'1',
                                     'created_at'=>date('Y-m-d')
@@ -125,8 +145,8 @@ class m161023_172208_create_guest_registration_tables extends Migration
                     );
         $this->insert('grc_package',array(
                                     'room_id'=>'1',
-                                    'meal_plan_id' =>'2',
-                                    'price'=>'15000',
+                                    'meal_plan_id' =>'3',
+                                    'price'=>'16000',
                                     'active'=>1,
                                     'created_by'=>'1',
                                     'created_at'=>date('Y-m-d')

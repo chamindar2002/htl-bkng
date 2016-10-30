@@ -30,7 +30,7 @@ class BookingController extends \app\controllers\ApiController
                 'only' => [],
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete','confirm', 'search-reservations', 'fetch-guests'],
+                        'actions' => ['index', 'view', 'create', 'update', 'delete','confirm', 'search-reservations', 'fetch-guests', 'update-package-inv-item'],
                         'allow' => true,
                         //'roles' => ['@'], 
                         'roles' => ['user-role'],
@@ -83,7 +83,7 @@ class BookingController extends \app\controllers\ApiController
     {
         $model = new GrcBooking();
        
-        $guests = ArrayHelper::map(\app\modules\grc\models\GrcGuest::find()->where(['deleted'=>0])->all(), 'id', 'first_name');
+        //$guests = ArrayHelper::map(\app\modules\grc\models\GrcGuest::find()->where(['deleted'=>0])->all(), 'id', 'last_name');
         $agents = ArrayHelper::map(\app\modules\grc\models\GrcAgents::find()->where(['active'=>1])->all(), 'id', 'name');
         $rooms = ArrayHelper::map(\app\models\Rooms::find()->where(['deleted'=>0])->all(), 'id', 'name');
         
@@ -109,7 +109,7 @@ class BookingController extends \app\controllers\ApiController
                 $this->renderJson(['result'=>'fail', 'message'=>'Fail', 'data'=>$model->getErrors()]);
             
             return $this->render('create', [
-                'model' => $model,'guests'=>$guests, 'agents'=>$agents, 'rooms'=>$rooms
+                'model' => $model, 'agents'=>$agents, 'rooms'=>$rooms
             ]);
         }
     }
@@ -123,12 +123,30 @@ class BookingController extends \app\controllers\ApiController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+             
+        $agents = ArrayHelper::map(\app\modules\grc\models\GrcAgents::find()->where(['active'=>1])->all(), 'id', 'name');
+        $rooms = ArrayHelper::map(\app\models\Rooms::find()->where(['deleted'=>0])->all(), 'id', 'name');
 
+        $invoice = \app\modules\inventory\models\InvnInvoice::find()->where(['booking_id'=>$id, 'deleted'=>0])->one();
+        $available_packages = \app\modules\grc\models\GrcPackage::getAvailableRoomPackagesByRoom($model->reservation->room->attributes['id']);
+                
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            //var_dump($model->getErrors());
+            //return $this->redirect(['view', 'id' => $model->id]);
+            $data = array(
+                'reservation_data'=>$model->reservation->attributes,
+                'room_data'=>$model->reservation->room->attributes,
+                'booking_data'=>$model->attributes,
+                'guest_data'=>$model->guest->attributes,
+                'date_allocation' => GrcUtilities::computeDatesAllocation($model->reservation->attributes['start'], $model->reservation->attributes['end']),
+                'available_room_packages' => \app\modules\grc\models\GrcPackage::getAvailableRoomPackagesByRoom($model->reservation->room->attributes['id'])
+            );
+            
+            $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>$data]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'model' => $model,'agents'=>$agents, 'rooms'=>$rooms, 'invoice'=>$invoice, 'available_packages'=>  json_decode($available_packages)
             ]);
         }
     }
@@ -185,15 +203,46 @@ class BookingController extends \app\controllers\ApiController
       $request = Yii::$app->request->post();
       
       if(Yii::$app->request){
-          $query = new Query;
+          /*$query = new Query;
           $query->select('*')->from('reservations')
                   ->where('room_id = '.$request['room_id'][0])
-                  ->where('status <> "CheckedOut"');
+                  ->andWhere('status <> "CheckedOut"');
           
+          $reservations = $query->all();
+          
+          
+          $rsv_ids = array();
+          foreach ($reservations As $reservation){
+              $rsv_ids[] = $reservation['id'];
+          }
+          
+          $booking_data = array();
+          
+          $booking = GrcBooking::find()->where('status = "OPEN"')
+                            ->andWhere(['reservation_id' => $rsv_ids])->one();
+          
+          if(count($booking) == 1){
+              $booking_data['current_booking'] = $booking->attributes;
+              $booking_data['current_booking_guest'] = $booking->guest;
+          }*/
+          
+          //---------------------------------------------------------------
+          $room = $request['room_id'][0];
+          $connection = Yii::$app->getDb();
+          $sql = 'SELECT reservations.*
+                  FROM reservations
+                  LEFT JOIN grc_booking
+                  ON grc_booking.reservation_id=reservations.id
+                  WHERE grc_booking.reservation_id is null AND room_id="'.$room.'"';
+                  
+          $command = $connection->createCommand($sql);
+
+          $result = $command->queryAll();
+         //---------------------------------------------------------------
                 
-          $result = array('resv_data'=>$query->all(), 'room_name'=>$request['room_label']);
+          //$result = array('resv_data'=>$result, 'room_name'=>$request['room_label']);
         
-          $this->renderJSON($result);
+          $this->renderJSON(array('resv_data'=>$result, 'room_name'=>$request['room_label']));
       }  
     }
     
@@ -218,13 +267,33 @@ class BookingController extends \app\controllers\ApiController
                 'items'=>$query->all(),
                 'total_count'=>100
                 );
-            
-            //var_dump($query->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);
-            //exit();
-
+   
             $this->renderJSON($res);
       
 	}
 	
+    }
+    
+    public function actionUpdatePackageInvItem()
+    {
+        if(Yii::$app->request->isAjax){
+            $package_id = Yii::$app->request->post('package_id');
+            $invitem_id = Yii::$app->request->post('invitem_id');
+            
+            $package = \app\modules\grc\models\GrcPackage::find()->andWhere(['id' => $package_id])->one();
+            
+            $invitem_model = \app\modules\inventory\models\InvnInvoiceItems::findOne($invitem_id);
+            if($invitem_model->invoice->attributes['status'] == 'OPEN'){
+                $invitem_model->package_id = $package_id;
+                $invitem_model->price = $package->price;
+                if($invitem_model->update()){
+                    $this->renderJson(['result'=>'success', 'message'=>'success', 'data'=>array('invitem_id'=>$invitem_id)]);
+                    
+                }
+            }else{
+                $this->renderJson(['result'=>'fail', 'message'=>'Invoice is closed', 'data'=>[]]);
+            }
+           
+        }
     }
 }

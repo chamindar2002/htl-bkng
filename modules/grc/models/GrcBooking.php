@@ -26,6 +26,7 @@ use yii\behaviors\BlameableBehavior;
  */
 class GrcBooking extends \yii\db\ActiveRecord
 {
+    public $guest_name = null;
     /**
      * @inheritdoc
      */
@@ -59,11 +60,12 @@ class GrcBooking extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['reservation_id', 'guest_id', 'agent_id', 'no_of_adults', 'no_of_children'], 'required'],
+            [['reservation_id', 'guest_id', 'agent_id', 'no_of_adults', 'no_of_children', 'guest_name'], 'required'],
             [['reservation_id', 'guest_id', 'agent_id', 'no_of_children', 'created_by'], 'integer'],
             [['no_of_adults'], 'number'],
             [['created_at', 'updated_at'], 'safe'],
             [['status'], 'string', 'max' => 10],
+            [['guest_name'], 'string', 'max'=>100],
             [['agent_id'], 'exist', 'skipOnError' => true, 'targetClass' => GrcAgents::className(), 'targetAttribute' => ['agent_id' => 'id']],
             [['guest_id'], 'exist', 'skipOnError' => true, 'targetClass' => GrcGuest::className(), 'targetAttribute' => ['guest_id' => 'id']],
             [['reservation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Reservations::className(), 'targetAttribute' => ['reservation_id' => 'id']],
@@ -78,7 +80,8 @@ class GrcBooking extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'reservation_id' => 'Reservation',
-            'guest_id' => 'Guest',
+            'guest_id' => 'Guest Id',
+            'guest_name'=>'Guest Name',
             'agent_id' => 'Agent',
             'no_of_adults' => 'No Of Adults',
             'no_of_children' => 'No Of Children',
@@ -86,6 +89,7 @@ class GrcBooking extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            
         ];
     }
 
@@ -112,6 +116,7 @@ class GrcBooking extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Reservations::className(), ['id' => 'reservation_id']);
     }
+      
     
     public function createInvoice($data)
     {
@@ -130,7 +135,8 @@ class GrcBooking extends \yii\db\ActiveRecord
                $data_batch = array(
                    //'package_id' => $data["package_$i"],
                    'item_description'=> $data["day_$i"],
-                   'invoice_id'=>1,
+                   'package_id'=>$package->id,
+                   'invoice_id'=>$invoice->id,
                    'item_master_id'=>1,
                    'price' => $package->price,
               
@@ -145,4 +151,5 @@ class GrcBooking extends \yii\db\ActiveRecord
          return false;
     
     }
+    
 }

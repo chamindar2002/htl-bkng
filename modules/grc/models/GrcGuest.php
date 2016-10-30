@@ -92,6 +92,13 @@ class GrcGuest extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            
         ];
     }
+    
+    function getFullName()
+    {
+        return $this->title.' '.$this->first_name.' '.$this->last_name;
+    }
+    
 }

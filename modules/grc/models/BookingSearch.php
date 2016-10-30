@@ -12,6 +12,8 @@ use app\modules\grc\models\GrcBooking;
  */
 class BookingSearch extends GrcBooking
 {
+    public $guest;
+    
     /**
      * @inheritdoc
      */
@@ -20,7 +22,7 @@ class BookingSearch extends GrcBooking
         return [
             [['id', 'reservation_id', 'guest_id', 'agent_id', 'no_of_children', 'created_by'], 'integer'],
             [['no_of_adults'], 'number'],
-            [['status', 'created_at', 'updated_at'], 'safe'],
+            [['status', 'created_at', 'updated_at', 'guest'], 'safe'],
         ];
     }
 
@@ -49,6 +51,14 @@ class BookingSearch extends GrcBooking
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        
+        $query->joinWith(['guest']);
+        
+        $dataProvider->sort->attributes['guest'] = [
+            'asc' => ['grc_guests.first_name' => SORT_ASC],
+            'desc' => ['grc_guests.first_name' => SORT_DESC],
+        ];
+        
 
         $this->load($params);
 
@@ -72,7 +82,8 @@ class BookingSearch extends GrcBooking
         ]);
 
         $query->andFilterWhere(['like', 'status', $this->status]);
-
+        $query->andFilterWhere(['like', 'grc_guests.first_name', $this->guest]);
+        
         return $dataProvider;
     }
 }

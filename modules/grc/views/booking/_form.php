@@ -15,18 +15,10 @@ use yii\widgets\ActiveForm;
     <div id="reservation_summary"></div>
     <?= $form->field($model, 'reservation_id')->textInput() ?>
     
-
-    <?php 
-       // $form->field($model, 'guest_id')
-//        ->dropDownList($guests, ['prompt'=>'']);
-     ?>
-    <div class="form-group">
-        <select class="js-data-example-ajax">
-        <option value="">Type in guest name</option>
-        </select>
-    </div>
+    <?= $form->field($model, 'guest_name')->dropDownList([], ['prompt'=>'', 'class'=>'js-data-example-ajax']); ?> 
     
-
+    <?= $form->field($model, 'guest_id')->textInput(['readonly'=>'readonly']); ?>        
+   
     <?= $form->field($model, 'agent_id')
         ->dropDownList($agents, ['prompt'=>'']); ?>
 

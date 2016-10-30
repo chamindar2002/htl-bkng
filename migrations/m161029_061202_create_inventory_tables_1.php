@@ -83,6 +83,7 @@ class m161029_061202_create_inventory_tables_1 extends Migration
         $this->createTable('invn_invoice_items', [
             'id' => $this->primaryKey(),
             'invoice_id' => $this->integer()->notNull(),
+            'package_id'=>$this->integer()->notNull()->defaultValue('1'),
             'item_master_id' => $this->integer()->notNull(),
             'item_description' => $this->string(64)->notNull(),
             'price'=>$this->double()->defaultValue('0'),

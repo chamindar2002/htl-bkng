@@ -9,9 +9,10 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\helpers\Url;
 use yii\bootstrap\Alert;
+use app\assets\DpAsset;
 
 AppAsset::register($this);
-
+DpAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 
@@ -49,9 +50,12 @@ AppAsset::register($this);
     <link type="text/css" rel="stylesheet" href="<?= Yii::getAlias('@web') ?>/daypilot/icons/style.css" />
     <link type="text/css" rel="stylesheet" href="<?= Yii::getAlias('@web') ?>/daypilot/agenda_styles.css" />
 
-    <script src="<?= Yii::getAlias('@web') ?>/js/jquery-1.9.1.min.js" type="text/javascript"></script>   
-    <script src="<?= Yii::getAlias('@web') ?>/js/daypilot-all.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <!-- shifted daypilot scripts to DpAsset -->
+<!--    <script src="<?= Yii::getAlias('@web') ?>/js/jquery-1.9.1.min.js" type="text/javascript"></script>   
+    <script src="<?= Yii::getAlias('@web') ?>/js/daypilot-all.min.js"></script>-->
+    
+    
+    <link href="<?= Yii::getAlias('@web') ?>/css/select2.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -311,7 +315,7 @@ AppAsset::register($this);
                         <li>
                             <a href="<?= Yii::getAlias('@web') ?>/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
-                        <li>
+                        <!--<li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -321,9 +325,10 @@ AppAsset::register($this);
                                     <a href="morris.html">Morris.js Charts</a>
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
+                            
+                        </li>-->
+                        
+                        <!--<li>
                             <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
                         </li>
                         <li>
@@ -351,9 +356,9 @@ AppAsset::register($this);
                                     <a href="grid.html">Grid</a>
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
+                            
+                        </li> -->
+                        <!--<li>
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -378,11 +383,11 @@ AppAsset::register($this);
                                             <a href="#">Third Level Item</a>
                                         </li>
                                     </ul>
-                                    <!-- /.nav-third-level -->
+                                    
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
+                           
+                        </li>-->
                         <li>
                             <a href="#"><i class="fa fa-files-o fa-fw"></i>Front Desk<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">

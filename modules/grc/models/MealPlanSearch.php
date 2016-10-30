@@ -67,6 +67,7 @@ class MealPlanSearch extends GrcMealPlan
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'created_by', $this->created_by]);
+        $query->where('deleted=0 AND id <> 1');
 
         return $dataProvider;
     }

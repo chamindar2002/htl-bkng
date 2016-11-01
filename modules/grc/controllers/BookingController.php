@@ -192,6 +192,9 @@ class BookingController extends \app\controllers\ApiController
             Yii::$app->session->setFlash('success', 'Success');
             return $this->redirect(Url::to(['booking/create']));
            
+          }else{
+              Yii::$app->session->setFlash('error', 'Failed');
+              return $this->redirect(Url::to(['booking/create']));
           }                 
            
        }         
@@ -203,45 +206,25 @@ class BookingController extends \app\controllers\ApiController
       $request = Yii::$app->request->post();
       
       if(Yii::$app->request){
-          /*$query = new Query;
-          $query->select('*')->from('reservations')
-                  ->where('room_id = '.$request['room_id'][0])
-                  ->andWhere('status <> "CheckedOut"');
-          
-          $reservations = $query->all();
-          
-          
-          $rsv_ids = array();
-          foreach ($reservations As $reservation){
-              $rsv_ids[] = $reservation['id'];
-          }
-          
-          $booking_data = array();
-          
-          $booking = GrcBooking::find()->where('status = "OPEN"')
-                            ->andWhere(['reservation_id' => $rsv_ids])->one();
-          
-          if(count($booking) == 1){
-              $booking_data['current_booking'] = $booking->attributes;
-              $booking_data['current_booking_guest'] = $booking->guest;
-          }*/
-          
-          //---------------------------------------------------------------
+         
           $room = $request['room_id'][0];
           $connection = Yii::$app->getDb();
-          $sql = 'SELECT reservations.*
+          
+          #reservation with no booking
+          #room_id 
+          #PENDING or CLOSED or deleted
+          $sql = 'SELECT reservations.*, grc_booking.status
                   FROM reservations
                   LEFT JOIN grc_booking
                   ON grc_booking.reservation_id=reservations.id
-                  WHERE grc_booking.reservation_id is null AND room_id="'.$room.'"';
+                    WHERE grc_booking.reservation_id is null 
+                  AND room_id="'.$room.'"  
+                    OR grc_booking.status <> "OPEN" OR grc_booking.deleted <> 0';
                   
           $command = $connection->createCommand($sql);
 
           $result = $command->queryAll();
-         //---------------------------------------------------------------
-                
-          //$result = array('resv_data'=>$result, 'room_name'=>$request['room_label']);
-        
+               
           $this->renderJSON(array('resv_data'=>$result, 'room_name'=>$request['room_label']));
       }  
     }

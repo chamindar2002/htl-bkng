@@ -432,3 +432,14 @@ table.dataTable thead .sorting:after {
     border-left-width: 0;
   }
 }
+
+ #preloader {
+   background: #ffffff url('/sbadmin/images/preloader.gif') no-repeat scroll center center;
+   height: 100%;
+   left: 0;
+   overflow: visible;
+   position: fixed;
+   top: 0;
+   width: 100%;
+   z-index: 9999999;
+ }

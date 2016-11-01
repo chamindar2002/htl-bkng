@@ -15,7 +15,11 @@ use yii\widgets\ActiveForm;
     <div id="reservation_summary"></div>
     <?= $form->field($model, 'reservation_id')->textInput() ?>
     
+    <?php if($model->isNewRecord){ ?>
     <?= $form->field($model, 'guest_name')->dropDownList([], ['prompt'=>'', 'class'=>'js-data-example-ajax']); ?> 
+    <?php }else{ ?>
+    <?= $form->field($model, 'guest_name')->dropDownList([$model->guest->getFullName()], ['class'=>'js-data-example-ajax']); ?> 
+    <?php } ?>
     
     <?= $form->field($model, 'guest_id')->textInput(['readonly'=>'readonly']); ?>        
    
@@ -28,6 +32,9 @@ use yii\widgets\ActiveForm;
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?php if(!$model->isNewRecord){ ?>
+            <button type="button" class="btn btn-link" id="open_update_items_modal">Update Package</button>
+        <?php } ?>
     </div>
 
     <?php ActiveForm::end(); ?>

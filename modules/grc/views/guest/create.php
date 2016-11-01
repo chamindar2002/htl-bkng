@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\modules\grc\models\GrcGuest */
 
-$this->title = 'Create Grc Guest';
+$this->title = 'Create Guest';
 $this->params['breadcrumbs'][] = ['label' => 'Grc Guests', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

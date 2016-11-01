@@ -60,7 +60,7 @@ class GrcBooking extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['reservation_id', 'guest_id', 'agent_id', 'no_of_adults', 'no_of_children', 'guest_name'], 'required'],
+            [['reservation_id', 'guest_id', 'agent_id', 'no_of_adults', 'guest_name'], 'required'],
             [['reservation_id', 'guest_id', 'agent_id', 'no_of_children', 'created_by'], 'integer'],
             [['no_of_adults'], 'number'],
             [['created_at', 'updated_at'], 'safe'],
@@ -129,7 +129,11 @@ class GrcBooking extends \yii\db\ActiveRecord
          $invoice->reservation_id = $reservation_id;
          $invoice->booking_id = $booking_id;
          
-         if($invoice->save()){
+         $booking = GrcBooking::find()->where(['id'=>$booking_id])->one();
+         $booking->status = 'OPEN';
+         $booking->guest_name='-';
+         
+         if($invoice->save() && $booking->update()){
              for($i=0; $i < $data['count']; $i++){
                $package = \app\modules\grc\models\GrcPackage::find()->andWhere(['id' => $data["package_$i"]])->one();
                $data_batch = array(
@@ -147,6 +151,7 @@ class GrcBooking extends \yii\db\ActiveRecord
             }
             return true;
          }
+         
          
          return false;
     

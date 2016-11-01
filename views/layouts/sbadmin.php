@@ -67,6 +67,7 @@ DpAsset::register($this);
 </head>
 
 <body>
+ <div id="preloader" style=""></div>    
 <?php $this->beginBody() ?>
     <div id="wrapper">
 
@@ -459,6 +460,7 @@ DpAsset::register($this);
         <!-- /#page-wrapper -->
 
     </div>
+   
     <!-- /#wrapper -->
 
    
@@ -487,6 +489,18 @@ DpAsset::register($this);
    $("#side-menu").metisMenu({
         toggle: false
     });
+    
+    $(window).on('load', function () {
+
+        // Page Preloader
+
+        $('#preloader').delay(1500).fadeOut('slow', function () {
+
+            $(this).remove();
+
+        });
+    });
+
 </script>
 <!-- Custom Theme JavaScript -->
 <script src="<?= Yii::getAlias('@web') ?>/sbadmin/dist/js/sb-admin-2.js"></script>

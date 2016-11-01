@@ -21,7 +21,6 @@ $this->params['breadcrumbs'][] = 'Update';
     ]) ?>
 
 </div>
-<button type="button" class="btn btn-link" id="open_update_items_modal">Update Package</button>
 
 <div id="update_invitem_modal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -97,13 +96,15 @@ $('form#{$model->formName()}').on('beforeSubmit', function(e)
 	.done(function(result){
             if(result.result == 'success')
 	    {
+                /*
                 $('#bkng_package_days_modal').modal('show');
-                //$('#modal_content').html(result.result);
-
+                
                 var bookingObj = new Booking(result);
+                
                 $('#modal_content').append(bookingObj.view);
+                */
+                $('#update_invitem_modal').modal('show');
 
-                //console.log(result);
 		//$.pjax.reload({container: '#commodity-grid'});
 	    }else{
 		//$(\$form).trigger("reset");
@@ -253,6 +254,8 @@ function Booking(response) {
         'id': 'booking-content',
         'html': _html
         });
+        
+       
         
     //console.log(e);
     return e;

@@ -60,7 +60,7 @@ class GrcBooking extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['reservation_id', 'guest_id', 'agent_id', 'no_of_adults', 'guest_name'], 'required'],
+            [['reservation_id', 'guest_id', 'no_of_adults', 'guest_name'], 'required'],
             [['reservation_id', 'guest_id', 'agent_id', 'no_of_children', 'created_by'], 'integer'],
             [['no_of_adults'], 'number'],
             [['created_at', 'updated_at'], 'safe'],

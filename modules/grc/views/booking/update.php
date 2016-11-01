@@ -4,6 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use kartik\select2\Select2;
+use app\assets\DpAsset;
+ 
+DpAsset::register($this);
 /* @var $this yii\web\View */
 /* @var $model app\modules\grc\models\GrcBooking */
 
@@ -30,7 +33,7 @@ $this->params['breadcrumbs'][] = 'Update';
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Reservations<div id="booking_summary"></div></h4>
       </div>
-      <div class="modal-body" id="modal_content">
+      <div class="modal-body" id="modal_content_update">
       
         <div class="row">
               
@@ -42,6 +45,7 @@ $this->params['breadcrumbs'][] = 'Update';
                   </tr>
                 </thead>
                 <tbody>
+                <?php if($invoice){ ?>
                 <?php foreach($invoice->invnInvoiceItems As $invitems): ?>
                         <tr>
             <!--                <td><?= $invitems->id; ?></td> 
@@ -62,6 +66,7 @@ $this->params['breadcrumbs'][] = 'Update';
                             </td>
                         </tr>   
                     <?php endforeach; ?>
+                <?php } ?>    
                 </tbody>
             </table>
 
@@ -96,14 +101,17 @@ $('form#{$model->formName()}').on('beforeSubmit', function(e)
 	.done(function(result){
             if(result.result == 'success')
 	    {
-                /*
-                $('#bkng_package_days_modal').modal('show');
                 
-                var bookingObj = new Booking(result);
+                if(bkng_package_days_modal != 'OPEN'){ //if OPEN invoice items to be fetched from db
+
+                    $('#bkng_package_days_modal').modal('show');
                 
-                $('#modal_content').append(bookingObj.view);
-                */
-                $('#update_invitem_modal').modal('show');
+                    var bookingObj = new Booking(result);
+
+                    $('#modal_content').append(bookingObj.view);
+                }
+
+                //$('#update_invitem_modal').modal('show');
 
 		//$.pjax.reload({container: '#commodity-grid'});
 	    }else{
@@ -184,9 +192,6 @@ function formatRepo (repo) {
     }
   }
 
-
- 
-
 JS;
 $this->registerJs($script);
 
@@ -194,6 +199,7 @@ $this->registerJs($script);
 
 
 <script>
+    
 $('#grcbooking-reservation_id').click(function(){
     BookingUtilities.openResvSearchModal();
 });
@@ -334,6 +340,8 @@ var BookingUtilities = {
   
   
 };
+
+
 </script>
 
 

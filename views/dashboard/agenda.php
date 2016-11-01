@@ -1,6 +1,8 @@
 <?php
- use yii\helpers\Url;
+use yii\helpers\Url;
+use app\assets\DpAsset;
  
+DpAsset::register($this);
 ?>
 <body>
     <br>

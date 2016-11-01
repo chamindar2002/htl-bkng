@@ -9,10 +9,9 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\helpers\Url;
 use yii\bootstrap\Alert;
-use app\assets\DpAsset;
 
 AppAsset::register($this);
-DpAsset::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 
@@ -392,6 +391,9 @@ DpAsset::register($this);
                         <li>
                             <a href="#"><i class="fa fa-files-o fa-fw"></i>Front Desk<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                                <li>
+                                    <?= Html::a('Dashboard', Url::to(['/grc/booking/dashboard'])) ?>
+                                </li>
                                 <li>
                                     <?= Html::a('Booking Management', Url::to(['/grc/booking'])) ?>
                                 </li>

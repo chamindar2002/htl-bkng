@@ -30,7 +30,9 @@ class BookingController extends \app\controllers\ApiController
                 'only' => [],
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete','confirm', 'search-reservations', 'fetch-guests', 'update-package-inv-item'],
+                        'actions' => ['index', 'view', 'create', 'update', 
+                                      'delete','confirm', 'search-reservations',
+                                      'fetch-guests', 'update-package-inv-item', 'dashboard'],
                         'allow' => true,
                         //'roles' => ['@'], 
                         'roles' => ['user-role'],
@@ -84,7 +86,7 @@ class BookingController extends \app\controllers\ApiController
         $model = new GrcBooking();
        
         //$guests = ArrayHelper::map(\app\modules\grc\models\GrcGuest::find()->where(['deleted'=>0])->all(), 'id', 'last_name');
-        $agents = ArrayHelper::map(\app\modules\grc\models\GrcAgents::find()->where(['active'=>1])->all(), 'id', 'name');
+        $agents = ArrayHelper::map(\app\modules\grc\models\GrcAgents::find()->where(['active'=>1])->orWhere('id=1')->all(), 'id', 'name');
         $rooms = ArrayHelper::map(\app\models\Rooms::find()->where(['deleted'=>0])->all(), 'id', 'name');
         
         //\yii\helpers\VarDumper::dump($rooms);exit();
@@ -124,7 +126,7 @@ class BookingController extends \app\controllers\ApiController
     {
         $model = $this->findModel($id);
              
-        $agents = ArrayHelper::map(\app\modules\grc\models\GrcAgents::find()->where(['active'=>1])->all(), 'id', 'name');
+        $agents = ArrayHelper::map(\app\modules\grc\models\GrcAgents::find()->where(['active'=>1])->orWhere('id=1')->all(), 'id', 'name');
         $rooms = ArrayHelper::map(\app\models\Rooms::find()->where(['deleted'=>0])->all(), 'id', 'name');
 
         $invoice = \app\modules\inventory\models\InvnInvoice::find()->where(['booking_id'=>$id, 'deleted'=>0])->one();
@@ -278,5 +280,17 @@ class BookingController extends \app\controllers\ApiController
             }
            
         }
+    }
+    
+    public function actionDashboard(){
+        
+        $searchModel = new \app\modules\grc\models\ViewBkRsvGstRmInvSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('dashboard', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+       
     }
 }

@@ -4,7 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use kartik\select2\Select2;
-
+use app\assets\DpAsset;
+ 
+DpAsset::register($this);
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\grc\models\GrcBooking */

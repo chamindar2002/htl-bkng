@@ -5,8 +5,10 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use kartik\select2\Select2;
 use app\assets\DpAsset;
+use app\assets\Select2Asset;
  
 DpAsset::register($this);
+Select2Asset::register($this);
 /* @var $this yii\web\View */
 /* @var $model app\modules\grc\models\GrcBooking */
 
@@ -47,8 +49,11 @@ $this->params['breadcrumbs'][] = 'Update';
                 <tbody>
                 <?php if($invoice){ ?>
                 <?php foreach($invoice->invnInvoiceItems As $invitems): ?>
+                    
+                       <?php if($invitems->deleted == 0){ ?> 
+                            
                         <tr>
-            <!--                <td><?= $invitems->id; ?></td> 
+            <!--            <td><?= $invitems->id; ?></td> 
                             <td><?= $invitems->price; ?></td>-->
                             <td><?= $invitems->item_description; ?></td>
                             <td>
@@ -65,6 +70,9 @@ $this->params['breadcrumbs'][] = 'Update';
                                 <?php //print_r($available_packages) ?>
                             </td>
                         </tr>   
+                        
+                       <?php } ?>
+                       
                     <?php endforeach; ?>
                 <?php } ?>    
                 </tbody>
@@ -81,7 +89,13 @@ $this->params['breadcrumbs'][] = 'Update';
   </div>
 </div>
 
+<hr/>
+start<input type="text" name="start"  id="start" value="<?= $model->reservation->attributes['start'] ?>"><br/>
+end <input type="text" name="end"  id="end" value="<?= $model->reservation->attributes['end'] ?>"><br/>
+<input type="button" value="check availability" id="btn_check_availability">
+<input type="button" value="update" id="btn_update_resv" disabled="disabled">
 
+<?php \yii\helpers\VarDumper::dump($model->reservation->attributes); ?>
 
 
  <?= $this->render('_script', [
@@ -101,8 +115,7 @@ $('form#{$model->formName()}').on('beforeSubmit', function(e)
 	.done(function(result){
             if(result.result == 'success')
 	    {
-                
-                if(bkng_package_days_modal != 'OPEN'){ //if OPEN invoice items to be fetched from db
+                if(result.data.booking_data.status != 'OPEN'){ //if OPEN invoice items to be fetched from db
 
                     $('#bkng_package_days_modal').modal('show');
                 
@@ -199,6 +212,13 @@ $this->registerJs($script);
 
 
 <script>
+$('#btn_check_availability').click(function(){
+   BookingUtilities.checkAvailability();   
+})
+
+$('#btn_update_resv').click(function(){
+   BookingUtilities.updateReservations();   
+})    
     
 $('#grcbooking-reservation_id').click(function(){
     BookingUtilities.openResvSearchModal();
@@ -336,7 +356,65 @@ var BookingUtilities = {
            
         }
      });
+  },
+  
+  checkAvailability: function()
+  {
+      $.ajax({
+        url: "<?= Url::to('check-resv-availability') ?>",
+        type: "POST",
+        data: {checkin : $('#start').val(), 
+               checkout: $('#end').val(),
+               room_id: <?= $model->reservation->attributes['room_id'] ?>,
+               reservation_id: <?= $model->reservation->attributes['id'] ?>
+            }, //JSON
+        dataType: "json",
+        cache: false,
+
+        success:function(data, textStatus, jqXHR) {
+           if(data.result == 'success'){
+               
+               $('#btn_update_resv').prop('disabled',false);
+           }else{
+               $('#btn_update_resv').prop('disabled',true);
+           }
+           
+        },
+        error:function(jqXHR, textStatus, errorThrown) {
+           
+        }
+     });
+  },
+  
+  updateReservations: function(){
+  
+       $.ajax({
+        url: "<?= Url::to('update-reservation-dates') ?>",
+        type: "POST",
+        data: {checkin : $('#start').val(), 
+               checkout: $('#end').val(),
+               room_id: <?= $model->reservation->attributes['room_id'] ?>,
+               reservation_id: <?= $model->reservation->attributes['id'] ?>
+            }, //JSON
+        dataType: "json",
+        cache: false,
+
+        success:function(data, textStatus, jqXHR) {
+           if(data.result == 'success'){
+               
+               $('#btn_update_resv').prop('disabled',false);
+           }else{
+               $('#btn_update_resv').prop('disabled',true);
+           }
+           
+        },
+        error:function(jqXHR, textStatus, errorThrown) {
+           
+        }
+     });
+     
   }
+  
   
   
 };

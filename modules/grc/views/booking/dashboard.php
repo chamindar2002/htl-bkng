@@ -57,19 +57,17 @@ use yii\bootstrap\Html;
          'value' => 'booking_status'
         ],
         [
-        'class' => 'yii\grid\ActionColumn',
-        'template' => '{new_action1}{new_action2}',
-        'buttons' => [
-          'new_action1' => function ($url, $model) {
-              return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', 'controller/action?id='.$model->booking_id, [
-                          'title' => Yii::t('app', 'New Action1'),
-              ]);
-          }
-        ],
+            'class' => 'yii\grid\ActionColumn',
+            'template' => '{new_action1}{new_action2}',
+            'buttons' => [
+              'new_action1' => function ($url, $model) {
+                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', 'view?id='.$model->booking_id, [
+                              'title' => Yii::t('app', 'New Action1'),
+                  ]);
+              }
+            ],
       ],
-        
- 
-        ['class' => 'yii\grid\ActionColumn'],
+      //['class' => 'yii\grid\ActionColumn'],
     ],
 ]);?>
 

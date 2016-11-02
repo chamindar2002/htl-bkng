@@ -3,6 +3,7 @@
 namespace app\modules\grc\models;
 
 use Yii;
+use app\modules\grc\models\Reservations;
 
 /**
  * This is the model class for table "reservations".
@@ -74,5 +75,24 @@ class Reservations extends \yii\db\ActiveRecord
     public function getRoom()
     {
         return $this->hasOne(\app\models\Rooms::className(), ['id' => 'room_id']);
+    }
+    
+    public function datesConflict($request)
+    {
+        $response = array('result'=>'success', 'message'=>'', 'data'=>[]);
+        
+        $result = Yii::$app->db->createCommand('SELECT * FROM reservations WHERE NOT ((end <= :start) OR (start >= :end )) AND room_id = :room')
+                                    ->bindValue(':start', $request->post('checkin'))
+                                    ->bindValue(':end', $request->post('checkout'))
+//                                    ->bindValue(':id', $request->post('reservation_id'))
+                                    ->bindValue(':room', $request->post('room_id')) 
+                                    ->queryAll();
+        
+        
+        if(count($result) > 0){
+            $response = array('result'=>'error', 'message'=>'Dates overlap with an existing reservation', 'data'=>$result);
+        }
+        
+        return $response;
     }
 }

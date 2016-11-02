@@ -50,7 +50,7 @@ AppAsset::register($this);
     <link type="text/css" rel="stylesheet" href="<?= Yii::getAlias('@web') ?>/daypilot/agenda_styles.css" />
 
     <!-- shifted daypilot scripts to DpAsset -->
-<!--    <script src="<?= Yii::getAlias('@web') ?>/js/jquery-1.9.1.min.js" type="text/javascript"></script>   
+<!-- <script src="<?= Yii::getAlias('@web') ?>/js/jquery-1.9.1.min.js" type="text/javascript"></script>   
     <script src="<?= Yii::getAlias('@web') ?>/js/daypilot-all.min.js"></script>-->
     
     
@@ -506,7 +506,7 @@ AppAsset::register($this);
 </script>
 <!-- Custom Theme JavaScript -->
 <script src="<?= Yii::getAlias('@web') ?>/sbadmin/dist/js/sb-admin-2.js"></script>
-<script src="<?= Yii::getAlias('@web') ?>/js/select2.min.js"></script>
+
 <script>
 
     

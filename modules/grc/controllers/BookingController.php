@@ -32,7 +32,8 @@ class BookingController extends \app\controllers\ApiController
                     [
                         'actions' => ['index', 'view', 'create', 'update', 
                                       'delete','confirm', 'search-reservations',
-                                      'fetch-guests', 'update-package-inv-item', 'dashboard'],
+                                      'fetch-guests', 'update-package-inv-item',
+                                      'dashboard', 'check-resv-availability', 'update-reservation-dates'],
                         'allow' => true,
                         //'roles' => ['@'], 
                         'roles' => ['user-role'],
@@ -282,7 +283,8 @@ class BookingController extends \app\controllers\ApiController
         }
     }
     
-    public function actionDashboard(){
+    public function actionDashboard()
+    {
         
         $searchModel = new \app\modules\grc\models\ViewBkRsvGstRmInvSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -292,5 +294,45 @@ class BookingController extends \app\controllers\ApiController
             'dataProvider' => $dataProvider,
         ]);
        
+    }
+    
+    public function actionCheckResvAvailability()
+    {
+        $request = Yii::$app->request;
+                
+        $response = new \app\modules\grc\models\Reservations();
+        
+        $this->renderJson($response->datesConflict($request));                     
+        
+    }
+    
+    public function actionUpdateReservationDates()
+    {
+        $request = Yii::$app->request;
+        //$newStart = $request->post('checkin');
+        //$newEnd = $request->post('checkout');
+        //$room = $request->post('room_id');
+        //$reservation_id = $request->post('reservation_id');
+        
+        $invoice_model = \app\modules\inventory\models\InvnInvoice::find()->where(['reservation_id'=>$request->post('reservation_id')])->one();
+        $date_allocation = GrcUtilities::computeDatesAllocation($request->post('checkin'), $request->post('checkout'));
+        #booking set to pending
+        #delete previous invoice items
+        #create new invoice items
+        #update reservation table
+       
+        
+        $booking_model = Yii::$app->db->createCommand()
+                            ->update('grc_booking', ['status'=>'PENDING'],'id=:id',
+                            array(':id'=>$invoice_model->booking->attributes['id']))->execute();
+        
+        
+        
+        
+        \yii\helpers\VarDumper::dump($invoice_model->booking->attributes);
+        \yii\helpers\VarDumper::dump($date_allocation);
+        \yii\helpers\VarDumper::dump($invoice_model->attributes);
+        \yii\helpers\VarDumper::dump($invoice_model->invnInvoiceItems);
+        
     }
 }

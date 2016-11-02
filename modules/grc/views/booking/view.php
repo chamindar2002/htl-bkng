@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'reservation_id',
-            'package_id',
+            //'package_id',
             'agent_id',
             'no_of_adults',
             'no_of_children',

@@ -91,7 +91,8 @@ class DashboardController extends ApiController {
        
     }
     
-    public function actionEvents(){
+    public function actionEvents()
+    {
         $query = new Query;
         $query->select('id, name AS text, start, end, room_id AS resource, name AS bubbleHtml, status, paid')
                 ->from('reservations')
@@ -106,7 +107,8 @@ class DashboardController extends ApiController {
         
     }
     
-    public function actionNewrsv(){
+    public function actionNewrsv()
+    {
         $this->layout = 'dp_modal';
         $request = Yii::$app->request;
                 
@@ -123,7 +125,8 @@ class DashboardController extends ApiController {
         return $this->render('_newresv_form', ['param'=>$param, 'rooms'=>$rooms]);
     }
     
-    public function actionCreateNewRsv(){
+    public function actionCreateNewRsv()
+    {
         
         $request = Yii::$app->request;
         $response = array();
@@ -152,7 +155,8 @@ class DashboardController extends ApiController {
         
     }
     
-    public function actionEditrsv(){
+    public function actionEditrsv()
+    {
         
         $this->layout = 'dp_modal';
         $request = Yii::$app->request;
@@ -173,7 +177,8 @@ class DashboardController extends ApiController {
         return $this->render('_editresv_form', ['data'=>$data, 'rooms'=>$rooms]);
     }
     
-    public function actionUpdateRsv(){
+    public function actionUpdateRsv()
+    {
                
         $request = Yii::$app->request;
         $response = array();
@@ -238,7 +243,8 @@ class DashboardController extends ApiController {
        $this->renderJSON($response);
     }
     
-    public function actionDestroyRsv(){
+    public function actionDestroyRsv()
+    {
         
         $request = Yii::$app->request;
         $response = array();
@@ -258,7 +264,8 @@ class DashboardController extends ApiController {
         $this->renderJSON($response);
     }
     
-    public function actionNewRoom(){
+    public function actionNewRoom()
+    {
         
         $this->layout = 'dp_modal';
         $request = Yii::$app->request;
@@ -266,7 +273,8 @@ class DashboardController extends ApiController {
         return $this->render('_newroom_form');
     }
     
-    public function actionCreateNewRoom(){
+    public function actionCreateNewRoom()
+    {
         
         $request = Yii::$app->request;
         $response = array();
@@ -293,7 +301,8 @@ class DashboardController extends ApiController {
         
     }
     
-    public function actionEditRoom(){
+    public function actionEditRoom()
+    {
         
         $this->layout = 'dp_modal';
         $request = Yii::$app->request;
@@ -307,7 +316,8 @@ class DashboardController extends ApiController {
         return $this->render('_editroom_form', ['data'=>$data]);
     }
     
-    public function actionUpdateRoom(){
+    public function actionUpdateRoom()
+    {
         
        $request = Yii::$app->request;
        $response = array();
@@ -332,7 +342,8 @@ class DashboardController extends ApiController {
         
     }
     
-    public function actionResizeRsv(){
+    public function actionResizeRsv()
+    {
         
         $request = Yii::$app->request;
         $response = array();

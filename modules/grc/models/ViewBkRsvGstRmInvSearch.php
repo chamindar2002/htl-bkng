@@ -129,7 +129,7 @@ class ViewBkRsvGstRmInvSearch extends \yii\db\ActiveRecord
             'invoice_status' => $this->invoice_status,
         ]);
 
-        
+        $query->andFilterWhere(['like', 'status', $this->status]);
         return $dataProvider;
     }
 }

@@ -19,6 +19,7 @@ use yii\db\Query;
  */
 class BookingController extends \app\controllers\ApiController
 {
+    
     /**
      * @inheritdoc
      */
@@ -103,7 +104,12 @@ class BookingController extends \app\controllers\ApiController
                 'available_room_packages' => \app\modules\grc\models\GrcPackage::getAvailableRoomPackagesByRoom($model->reservation->room->attributes['id'])
             );
             
-            $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>$data]);
+            if(Yii::$app->request->isAjax){
+                $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>$data]);
+                Yii::$app->end();
+            }
+            
+             return $this->redirect(['update', 'id' => $model->id]);
             
         } else {
            
@@ -134,10 +140,7 @@ class BookingController extends \app\controllers\ApiController
         $available_packages = \app\modules\grc\models\GrcPackage::getAvailableRoomPackagesByRoom($model->reservation->room->attributes['id']);
                 
         
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //var_dump($model->getErrors());
-            //return $this->redirect(['view', 'id' => $model->id]);
-            $data = array(
+        $data = array(
                 'reservation_data'=>$model->reservation->attributes,
                 'room_data'=>$model->reservation->room->attributes,
                 'booking_data'=>$model->attributes,
@@ -145,11 +148,19 @@ class BookingController extends \app\controllers\ApiController
                 'date_allocation' => GrcUtilities::computeDatesAllocation($model->reservation->attributes['start'], $model->reservation->attributes['end']),
                 'available_room_packages' => \app\modules\grc\models\GrcPackage::getAvailableRoomPackagesByRoom($model->reservation->room->attributes['id'])
             );
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            //var_dump($model->getErrors());
+            //return $this->redirect(['view', 'id' => $model->id]);
+            
             
             $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>$data]);
         } else {
             return $this->render('update', [
-                'model' => $model,'agents'=>$agents, 'rooms'=>$rooms, 'invoice'=>$invoice, 'available_packages'=>  json_decode($available_packages)
+                'model' => $model,'agents'=>$agents,
+                'rooms'=>$rooms, 'invoice'=>$invoice,
+                'available_packages'=>  json_decode($available_packages),
+                'data'=>$data,
             ]);
         }
     }
@@ -322,15 +333,47 @@ class BookingController extends \app\controllers\ApiController
         #update reservation table
        
         
-        $booking_model = Yii::$app->db->createCommand()
+        /*$booking_model = Yii::$app->db->createCommand()
                             ->update('grc_booking', ['status'=>'PENDING'],'id=:id',
-                            array(':id'=>$invoice_model->booking->attributes['id']))->execute();
+                            array(':id'=>$invoice_model->booking->attributes['id']))->execute();*/
         
+       $invnitems_model = \app\modules\inventory\models\InvnInvoiceItems::updateAll(
+                ['deleted'=>1], 'invoice_id='.$invoice_model->attributes['id']);
+       
+      
+       
+       #insert new invoice item records 
+       $data_batch = array();
+      
+       foreach (json_decode($date_allocation['date_allocation']) AS $key=>$value){
+           $data_batch = array(
+                   //'package_id' => $data["package_$i"],
+                   'item_description'=> $value,
+                   'package_id'=>1,
+                   'invoice_id'=>$invoice_model->attributes['id'],
+                   'item_master_id'=>1,
+                   'price' => 0,
+              
+               );
+           $insertCount = Yii::$app->db->createCommand()
+                   ->insert('invn_invoice_items',$data_batch)->execute(); 
+       }
+       
+       
+       #updat reservation 
+       $data = array(
+            'start'=>$request->post('checkin'),
+            'end'=>$request->post('checkout'),
+            'room_id'=>$request->post('room_id'),
+           );
         
+        $move = Yii::$app->db->createCommand()->update('reservations',$data,'id=:id', array(':id'=>$request->post('reservation_id')))->execute();
+                             
+       
         
         
         \yii\helpers\VarDumper::dump($invoice_model->booking->attributes);
-        \yii\helpers\VarDumper::dump($date_allocation);
+        \yii\helpers\VarDumper::dump($date_allocation['date_allocation']);
         \yii\helpers\VarDumper::dump($invoice_model->attributes);
         \yii\helpers\VarDumper::dump($invoice_model->invnInvoiceItems);
         

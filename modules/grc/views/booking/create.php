@@ -24,40 +24,13 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
   
 </div>
-
  <?= $this->render('_script', [
         'model' => $model, 'agents'=>$agents, 'rooms'=>$rooms
     ]) ?>
 
 <?php
 $script = <<< JS
-$('form#{$model->formName()}').on('beforeSubmit', function(e)
-{
-	var \$form = $(this);
-	$.post(
-	    \$form.attr("action"), //serialize form
-	    \$form.serialize()		
-	)
-	.done(function(result){
-            if(result.result == 'success')
-	    {
-                $('#bkng_package_days_modal').modal('show');
-                //$('#modal_content').html(result.result);
 
-                var bookingObj = new Booking(result);
-                $('#modal_content').append(bookingObj.view);
-
-                //console.log(result);
-		//$.pjax.reload({container: '#commodity-grid'});
-	    }else{
-		//$(\$form).trigger("reset");
-		$("#message").html(result.message);
-	    }			
-	}).fail(function(){
-		console.log("server error");
-	});
-	return false;
-});
 
 $(".rsv_search").select2({
      maximumSelectionLength: 1
@@ -147,56 +120,6 @@ $('#btn_search_room_rsvs').click(function(){
    BookingUtilities.searchReservations();
 });
 
-function Booking(response) {
-// other properties and functions...
-
-    this.view = function () {
-        
-        //console.log(response.data.date_allocation.no_of_nights);
-        //console.log(response.data.date_allocation.date_allocation);
-        
-        var date_allocation_data = $.parseJSON(response.data.date_allocation.date_allocation);
-        var avl_room_packages = $.parseJSON(response.data.available_room_packages);
-        
-       
-        $("#modal_content").empty();
-        var _html = '<table class="table table-hover">';
-        _html += '<thead><tr><th>Date</th><th>Package</th></tr></thead>';
-        
-        $.each(date_allocation_data, function(i, day) {
-            _html += '<tr><td>'+day+'<input type="hidden" name="day_'+i+'" value="'+day+'">'+'</td>';
-            _html += '<td>';
-            _html += '<select id="package_'+i+'"  name="package_'+i+'" class="package_selector form-control" required>';
-                 $.each(avl_room_packages, function(i, package){
-            _html += '<option value="'+package.package_id+'">'+package.meal_plan_name+'</option>';
-                });
-            _html += '</select>';
-            _html += '</td>';
-            _html += '</tr>';
-            
-        });
-        
-        _html += '</table>';
-        _html += '<input type="hidden" name="count" value="'+date_allocation_data.length+'">';
-        _html += '<input type="hidden" name="booking_id" value="'+response.data.booking_data.id+'">';
-        _html += '<input type="hidden" name="reservation_id" value="'+response.data.reservation_data.id+'">';
-        
-        $('#booking_summary').html(response.data.guest_data.title+
-                    '. '+response.data.guest_data.first_name+
-                    ' '+response.data.guest_data.last_name+
-                    ' ('+response.data.room_data.name+')');
-      
-        var e = $('<div />', {
-        'class': 'booking-content',
-        'id': 'booking-content',
-        'html': _html
-        });
-        
-    //console.log(e);
-    return e;
-    }();
-}
-
 var BookingUtilities = {
   openResvSearchModal: function () {
     $('#reservation_search_modal').modal('show');
@@ -246,8 +169,6 @@ var BookingUtilities = {
      $('#reservation_summary').html('<span class="label label-success">'+text+'</span>');
      $('#reservation_search_modal').modal('hide');
   }        
-  
-  
   
   
 };

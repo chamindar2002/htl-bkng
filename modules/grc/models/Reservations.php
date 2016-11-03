@@ -81,10 +81,10 @@ class Reservations extends \yii\db\ActiveRecord
     {
         $response = array('result'=>'success', 'message'=>'', 'data'=>[]);
         
-        $result = Yii::$app->db->createCommand('SELECT * FROM reservations WHERE NOT ((end <= :start) OR (start >= :end )) AND room_id = :room')
+        $result = Yii::$app->db->createCommand('SELECT * FROM reservations WHERE NOT ((end <= :start) OR (start >= :end )) AND id <> :id AND room_id = :room')
                                     ->bindValue(':start', $request->post('checkin'))
                                     ->bindValue(':end', $request->post('checkout'))
-//                                    ->bindValue(':id', $request->post('reservation_id'))
+                                    ->bindValue(':id', $request->post('reservation_id'))
                                     ->bindValue(':room', $request->post('room_id')) 
                                     ->queryAll();
         

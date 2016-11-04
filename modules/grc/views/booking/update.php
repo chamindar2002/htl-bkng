@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model, 'agents'=>$agents, 'rooms'=>$rooms,
-        'invoice'=>$invoice, 'available_packages'=>$available_packages
+        'invoice'=>$invoice, 'available_packages'=>$available_packages, 'data'=>$data,
     ]) ?>
 
 </div>
@@ -36,7 +36,13 @@ $this->params['breadcrumbs'][] = 'Update';
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Reservations d<div id="booking_summary"></div></h4>
+        <h4 class="modal-title">Reservations
+            <div id="booking_summary">
+             <?= $data['guest_data']['title'] ?>.<?= $data['guest_data']['first_name'] ?>&nbsp;<?= $data['guest_data']['last_name'] ?>      
+             &nbsp;[<?= $data['room_data']['name'] ?>]
+               
+            </div>
+        </h4>
       </div>
       <div class="modal-body" id="modal_content_update">
       
@@ -82,7 +88,6 @@ $this->params['breadcrumbs'][] = 'Update';
                 </tbody>
             </table>
             <?php }else{ ?>
-            <h3>New</h3>
             <form method="post" action="<?= Url::to(['booking/confirm']) ?>" id="booking-package-confirmation-form">
             <table class="table table-hover">
                 <thead>

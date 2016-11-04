@@ -11,9 +11,29 @@ use yii\widgets\ActiveForm;
 <div class="grc-booking-form">
 
     <?php $form = ActiveForm::begin(['id'=>$model->formName()]); ?>
+     <?php if(!$model->isNewRecord){ ?>
+        <ul class="list-group">
+           <li class="list-group-item">
+                <span class="badge"> <span class="badge"><?= $data['reservation_data']['start'] ?></span></span>
+                Check in date
+           </li>
+           <li class="list-group-item">
+                <span class="badge"> <span class="badge"><?= $data['reservation_data']['end'] ?></span></span>
+                Check out date
+           </li>
+           <li class="list-group-item">
+                <span class="badge"> <span class="badge"><?= $data['room_data']['name'] ?></span></span>
+                Room
+           </li>
+           
+         </ul>
+         
+     <?php } ?>
 
-    <div id="reservation_summary"></div>
-    <?= $form->field($model, 'reservation_id')->textInput() ?>
+    <?php if($model->isNewRecord){ ?>
+        <div id="reservation_summary"></div>
+        <?= $form->field($model, 'reservation_id')->textInput() ?>
+    <?php } ?>    
     
     <?php if($model->isNewRecord){ ?>
     <?= $form->field($model, 'guest_name')->dropDownList([], ['prompt'=>'', 'class'=>'js-data-example-ajax']); ?> 

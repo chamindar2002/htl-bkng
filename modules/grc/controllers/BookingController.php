@@ -73,8 +73,25 @@ class BookingController extends \app\controllers\ApiController
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $agents = ArrayHelper::map(\app\modules\grc\models\GrcAgents::find()->where(['active'=>1])->orWhere('id=1')->all(), 'id', 'name');
+        $rooms = ArrayHelper::map(\app\models\Rooms::find()->where(['deleted'=>0])->all(), 'id', 'name');
+
+        $invoice = \app\modules\inventory\models\InvnInvoice::find()->where(['booking_id'=>$id, 'deleted'=>0])->one();
+        $available_packages = \app\modules\grc\models\GrcPackage::getAvailableRoomPackagesByRoom($model->reservation->room->attributes['id']);
+                
+        
+        $data = array(
+                'reservation_data'=>$model->reservation->attributes,
+                'room_data'=>$model->reservation->room->attributes,
+                'booking_data'=>$model->attributes,
+                'guest_data'=>$model->guest->attributes,
+                'date_allocation' => GrcUtilities::computeDatesAllocation($model->reservation->attributes['start'], $model->reservation->attributes['end']),
+                'available_room_packages' => \app\modules\grc\models\GrcPackage::getAvailableRoomPackagesByRoom($model->reservation->room->attributes['id'])
+            );
+        
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,'data'=>$data, 'invoice'=>$invoice
         ]);
     }
 
@@ -153,8 +170,15 @@ class BookingController extends \app\controllers\ApiController
             //var_dump($model->getErrors());
             //return $this->redirect(['view', 'id' => $model->id]);
             
-            
-            $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>$data]);
+            if(Yii::$app->request->isAjax){
+                $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>$data]);
+                Yii::$app->end();
+            }
+                
+                
+            Yii::$app->session->setFlash('success', 'Success');    
+            return $this->redirect(['view', 'id' => $model->id]);    
+                 
         } else {
             return $this->render('update', [
                 'model' => $model,'agents'=>$agents,
@@ -320,22 +344,14 @@ class BookingController extends \app\controllers\ApiController
     public function actionUpdateReservationDates()
     {
         $request = Yii::$app->request;
-        //$newStart = $request->post('checkin');
-        //$newEnd = $request->post('checkout');
-        //$room = $request->post('room_id');
-        //$reservation_id = $request->post('reservation_id');
         
         $invoice_model = \app\modules\inventory\models\InvnInvoice::find()->where(['reservation_id'=>$request->post('reservation_id')])->one();
         $date_allocation = GrcUtilities::computeDatesAllocation($request->post('checkin'), $request->post('checkout'));
-        #booking set to pending
+        
         #delete previous invoice items
         #create new invoice items
         #update reservation table
        
-        
-        /*$booking_model = Yii::$app->db->createCommand()
-                            ->update('grc_booking', ['status'=>'PENDING'],'id=:id',
-                            array(':id'=>$invoice_model->booking->attributes['id']))->execute();*/
         
        $invnitems_model = \app\modules\inventory\models\InvnInvoiceItems::updateAll(
                 ['deleted'=>1], 'invoice_id='.$invoice_model->attributes['id']);
@@ -360,7 +376,7 @@ class BookingController extends \app\controllers\ApiController
        }
        
        
-       #updat reservation 
+       #update reservation 
        $data = array(
             'start'=>$request->post('checkin'),
             'end'=>$request->post('checkout'),
@@ -370,12 +386,21 @@ class BookingController extends \app\controllers\ApiController
         $move = Yii::$app->db->createCommand()->update('reservations',$data,'id=:id', array(':id'=>$request->post('reservation_id')))->execute();
                              
        
+        /*$transaction = $connection->beginTransaction();
+        try {
+            $connection->createCommand($sql1)->execute();
+            $connection->createCommand($sql2)->execute();
+            //.... other SQL executions
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        }*/
         
-        
-        \yii\helpers\VarDumper::dump($invoice_model->booking->attributes);
-        \yii\helpers\VarDumper::dump($date_allocation['date_allocation']);
-        \yii\helpers\VarDumper::dump($invoice_model->attributes);
-        \yii\helpers\VarDumper::dump($invoice_model->invnInvoiceItems);
+        //\yii\helpers\VarDumper::dump($invoice_model->booking->attributes);
+        //\yii\helpers\VarDumper::dump($date_allocation['date_allocation']);
+        //\yii\helpers\VarDumper::dump($invoice_model->attributes);
+        //\yii\helpers\VarDumper::dump($invoice_model->invnInvoiceItems);
         
     }
 }

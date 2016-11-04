@@ -69,4 +69,6 @@ class InvnInvoiceItems extends \yii\db\ActiveRecord
     {
         return $this->hasOne(InvnInvoice::className(), ['id' => 'invoice_id']);
     }
+    
+    
 }

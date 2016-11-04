@@ -6,8 +6,7 @@ use yii\helpers\Url;
 use kartik\select2\Select2;
 use app\assets\DpAsset;
 use app\assets\Select2Asset;
-use yii\jui\DatePicker; 
-
+ 
 DpAsset::register($this);
 Select2Asset::register($this);
 /* @var $this yii\web\View */
@@ -23,12 +22,10 @@ $this->params['breadcrumbs'][] = 'Update';
     <h3><?= Html::encode($this->title) ?></h3>
 
     <?= $this->render('_form', [
-        'model' => $model, 'agents'=>$agents, 'rooms'=>$rooms,
-        'invoice'=>$invoice, 'available_packages'=>$available_packages, 'data'=>$data,
+        'model' => $model, 'agents'=>$agents, 'rooms'=>$rooms, 'invoice'=>$invoice, 'available_packages'=>$available_packages
     ]) ?>
 
 </div>
-
 
 <div id="update_invitem_modal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -36,19 +33,12 @@ $this->params['breadcrumbs'][] = 'Update';
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Reservations
-            <div id="booking_summary">
-             <?= $data['guest_data']['title'] ?>.<?= $data['guest_data']['first_name'] ?>&nbsp;<?= $data['guest_data']['last_name'] ?>      
-             &nbsp;[<?= $data['room_data']['name'] ?>]
-               
-            </div>
-        </h4>
+        <h4 class="modal-title">Reservations<div id="booking_summary"></div></h4>
       </div>
       <div class="modal-body" id="modal_content_update">
       
         <div class="row">
-            
-            <?php if($invoice != null){ ?>
+              
             <table class="table table-hover">
                 <thead>
                   <tr>
@@ -57,7 +47,7 @@ $this->params['breadcrumbs'][] = 'Update';
                   </tr>
                 </thead>
                 <tbody>
-                
+                <?php if($invoice){ ?>
                 <?php foreach($invoice->invnInvoiceItems As $invitems): ?>
                     
                        <?php if($invitems->deleted == 0){ ?> 
@@ -84,124 +74,68 @@ $this->params['breadcrumbs'][] = 'Update';
                        <?php } ?>
                        
                     <?php endforeach; ?>
-                
+                <?php } ?>    
                 </tbody>
             </table>
-            <?php }else{ ?>
-            <form method="post" action="<?= Url::to(['booking/confirm']) ?>" id="booking-package-confirmation-form">
-            <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Day</th>
-                    <th>Package</th>
-                  </tr>
-                </thead>
-                <tbody>
-                <?php $i=0; foreach(json_decode($data['date_allocation']['date_allocation']) AS $dt): ?>
-                    
-                    <tr>
-                        <td><?= $dt ?><input type="hidden" name="day_<?= $i ?>" value="<?= $dt ?>"></td>
-                        <td>
-                            
-                         <select id="package_<?= $i ?>"  name="package_<?= $i ?>" class="package_selector form-control" required>
-                            <?php foreach(json_decode($data['available_room_packages']) AS $package): ?> 
-                            <option value="<?= $package->package_id ?>"><?= $package->meal_plan_name ?></option>
-                            <?php endforeach; ?>
-                         </select>
-                        </td>
-                    </tr>
-                    
-                
-                <?php $i++; endforeach; ?>
-                </tbody>    
-            </table>
-            <input type="hidden" name="count" value="<?= $i ?>">
-            <input type="hidden" name="booking_id" value="<?= $data['booking_data']['id'] ?>">
-            <input type="hidden" name="reservation_id" value="<?= $data['reservation_data']['id'] ?>">
-            </form>    
-                    
-            <?php } ?>        
 
         </div>
           
       </div>      
       <div class="modal-footer">
-          <?php if($invoice == null){ ?>
-            <button type="button" class="btn btn-success" id="btn_save_package_data">Save</button>
-          <?php } ?>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
 
   </div>
 </div>
-<!-- -----------------------------------end package updatem modal ------------------------------------- -->
+
+<hr/>
+start<input type="text" name="start"  id="start" value="<?= $model->reservation->attributes['start'] ?>"><br/>
+end <input type="text" name="end"  id="end" value="<?= $model->reservation->attributes['end'] ?>"><br/>
+<input type="button" value="check availability" id="btn_check_availability">
+<input type="button" value="update" id="btn_update_resv" disabled="disabled">
+
+<?php \yii\helpers\VarDumper::dump($model->reservation->attributes); ?>
 
 
-<div id="reservation_update_modal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Reservation</h4>
-      </div>
-      <div class="modal-body">
-        <div id="availability_result"></div>  
-        <div class="form-group">
-            <label for="start">Check-in Date</label>
-            <?php echo DatePicker::widget([
-                    'name'  => 'start',
-                    'value'  => $model->reservation->attributes['start'],
-                            'options' => ['class' => 'form-control', 'id'=>'start'],
-                    //'language' => 'ru',
-                    'dateFormat' => 'yyyy-M-dd',
-                    
-            ]); ?>  
-            
-        </div>
-        <div class="form-group">
-            <label for="end">Check-out Date</label>
-            <?php echo DatePicker::widget([
-                    'name'  => 'end',
-                    'value'  => $model->reservation->attributes['end'],
-                            'options' => ['class' => 'form-control', 'id'=>'end'],
-                    //'language' => 'ru',
-                    'dateFormat' => 'yyyy-M-dd',
-                    
-            ]); ?>  
-            
-        </div>
-          
-        <input type="button" class="btn btn-default" value="Check Availability" id="btn_check_availability">
-        <input type="button" class="btn btn-primary" value="Update" id="btn_update_resv" disabled="disabled">
-          
-        <?php //\yii\helpers\VarDumper::dump($model->reservation->attributes); ?>
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- -----------------------------------end reservation update modal ------------------------------------- -->
-
-
-
-
-<?= $this->render('_script', [
-        'model' => $model, 'agents'=>$agents, 'rooms'=>$rooms
+ <?= $this->render('_script', [
+        'model' => $model, 'agents'=>$agents, 'rooms'=>$rooms, 'invoice'=>$invoice
     ]) ?>
-
 
 <?php
 
 $script = <<< JS
+$('form#{$model->formName()}').on('beforeSubmit', function(e)
+{
+	var \$form = $(this);
+	$.post(
+	    \$form.attr("action"), //serialize form
+	    \$form.serialize()		
+	)
+	.done(function(result){
+            if(result.result == 'success')
+	    {
+                if(result.data.booking_data.status != 'OPEN'){ //if OPEN invoice items to be fetched from db
+
+                    $('#bkng_package_days_modal').modal('show');
+                
+                    var bookingObj = new Booking(result);
+
+                    $('#modal_content').append(bookingObj.view);
+                }
+
+                //$('#update_invitem_modal').modal('show');
+
+		//$.pjax.reload({container: '#commodity-grid'});
+	    }else{
+		//$(\$form).trigger("reset");
+		$("#message").html(result.message);
+	    }			
+	}).fail(function(){
+		console.log("server error");
+	});
+	return false;
+});
 
 $(".rsv_search").select2({
      maximumSelectionLength: 1
@@ -278,12 +212,6 @@ $this->registerJs($script);
 
 
 <script>
-
-$('#btn_save_package_data').click(function(){
-   $('#booking-package-confirmation-form').submit();
-})
-
-
 $('#btn_check_availability').click(function(){
    BookingUtilities.checkAvailability();   
 })
@@ -306,10 +234,6 @@ $(".package_selector").change(function () {
 
 $('#open_update_items_modal').click(function(){
    $('#update_invitem_modal').modal('show'); 
-});
-
-$('#open_update_dates_modal').click(function(){
-   $('#reservation_update_modal').modal('show'); 
 });
     
 function Booking(response) {
@@ -450,10 +374,8 @@ var BookingUtilities = {
         success:function(data, textStatus, jqXHR) {
            if(data.result == 'success'){
                
-               $('#availability_result').html('<span class="label label-success">'+data.message+'</span>');
                $('#btn_update_resv').prop('disabled',false);
            }else{
-               $('#availability_result').html('<span class="label label-danger">'+data.message+'</span>');
                $('#btn_update_resv').prop('disabled',true);
            }
            
@@ -479,7 +401,7 @@ var BookingUtilities = {
 
         success:function(data, textStatus, jqXHR) {
            if(data.result == 'success'){
-               location.reload();
+               
                $('#btn_update_resv').prop('disabled',false);
            }else{
                $('#btn_update_resv').prop('disabled',true);
@@ -491,7 +413,9 @@ var BookingUtilities = {
         }
      });
      
-  },
+  }
+  
+  
   
 };
 

@@ -79,11 +79,11 @@ class Reservations extends \yii\db\ActiveRecord
     
     public function datesConflict($request)
     {
-        $response = array('result'=>'success', 'message'=>'', 'data'=>[]);
+        $response = array('result'=>'success', 'message'=>'Dates available', 'data'=>[]);
         
         $result = Yii::$app->db->createCommand('SELECT * FROM reservations WHERE NOT ((end <= :start) OR (start >= :end )) AND id <> :id AND room_id = :room')
-                                    ->bindValue(':start', $request->post('checkin'))
-                                    ->bindValue(':end', $request->post('checkout'))
+                                    ->bindValue(':start', $request->post('checkin').' 12:00:00')
+                                    ->bindValue(':end', $request->post('checkout').' 12:00:00')
                                     ->bindValue(':id', $request->post('reservation_id'))
                                     ->bindValue(':room', $request->post('room_id')) 
                                     ->queryAll();

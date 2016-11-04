@@ -10,7 +10,7 @@ $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Bookings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
+<br/>
    <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
@@ -69,14 +69,16 @@ $this->params['breadcrumbs'][] = $this->title;
          <tbody>
            <?php $i=1; $total = 0; foreach ($invoice->invnInvoiceItems As $invnitm): ?>
            
+           <?php if($invnitm->deleted == 0){ ?>  
            <tr>
                <td><?= $i ?></td>
                <td>Room Package Charges <?= $invnitm->item_description ?></td>
                <td style='text-align: right'><?= number_format($invnitm->price, 2) ?></td>
            </tr>
-           
+           <?php $total += $invnitm->price; ?>
+           <?php } ?>
          </tbody>
-           <?php $i++; $total+= $invnitm->price; endforeach; ?>
+           <?php $i++;  endforeach; ?>
          
          <tr>
             <td></td>

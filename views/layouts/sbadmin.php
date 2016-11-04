@@ -55,6 +55,7 @@ AppAsset::register($this);
     
     
     <link href="<?= Yii::getAlias('@web') ?>/css/select2.css" rel="stylesheet" />
+    <link href="<?= Yii::getAlias('@web') ?>/css/main.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -313,7 +314,7 @@ AppAsset::register($this);
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="<?= Yii::getAlias('@web') ?>/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="<?= Yii::getAlias('@web') ?>/dashboard"><i class="fa fa-dashboard fa-fw"></i> Room Calendar</a>
                         </li>
                         <!--<li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
@@ -391,11 +392,9 @@ AppAsset::register($this);
                         <li>
                             <a href="#"><i class="fa fa-files-o fa-fw"></i>Front Desk<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                                
                                 <li>
-                                    <?= Html::a('Dashboard', Url::to(['/grc/booking/dashboard'])) ?>
-                                </li>
-                                <li>
-                                    <?= Html::a('Booking Management', Url::to(['/grc/booking'])) ?>
+                                    <?= Html::a('Booking Management', Url::to(['/grc/booking/dashboard'])) ?>
                                 </li>
                                 
                             </ul>

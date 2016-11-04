@@ -58,31 +58,21 @@ use yii\bootstrap\Html;
         ],
         [
             'class' => 'yii\grid\ActionColumn',
-            'template' => '{new_action1}{new_action2}',
+            'template' => '{new_view}{new_edit}',
             'buttons' => [
-              'new_action1' => function ($url, $model) {
+              'new_view' => function ($url, $model) {
                   return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', 'view?id='.$model->booking_id, [
                               'title' => Yii::t('app', 'New Action1'),
                   ]);
-              }
+              },
+              'new_edit' => function ($url, $model) {
+                  return Html::a('<span class="glyphicon glyphicon-pencil"></span>', 'update?id='.$model->booking_id, [
+                              'title' => Yii::t('app', 'New Action1'),
+                  ]);
+              }        
             ],
       ],
       //['class' => 'yii\grid\ActionColumn'],
     ],
 ]);?>
-
-
-<?php /*Pjax::begin(); ?>    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'room_name',
-            'full_name',
-           
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); */ ?>
-<?php // Pjax::end(); ?>
 

@@ -352,7 +352,6 @@ class BookingController extends \app\controllers\ApiController
         #create new invoice items
         #update reservation table
        
-        
        $invnitems_model = \app\modules\inventory\models\InvnInvoiceItems::updateAll(
                 ['deleted'=>1], 'invoice_id='.$invoice_model->attributes['id']);
        
@@ -378,13 +377,20 @@ class BookingController extends \app\controllers\ApiController
        
        #update reservation 
        $data = array(
-            'start'=>$request->post('checkin'),
-            'end'=>$request->post('checkout'),
+            'start'=>$request->post('checkin').' 12:00:00',
+            'end'=>$request->post('checkout').' 12:00:00',
             'room_id'=>$request->post('room_id'),
            );
         
-        $move = Yii::$app->db->createCommand()->update('reservations',$data,'id=:id', array(':id'=>$request->post('reservation_id')))->execute();
-                             
+       $move = Yii::$app->db->createCommand()->update('reservations',$data,'id=:id', array(':id'=>$request->post('reservation_id')))->execute();
+       
+       if($move){
+            $this->renderJson(['result'=>'success', 'message'=>'success', 'data'=>$move]);
+            Yii::$app->end();
+       }
+       
+       
+       $this->renderJson(['result'=>'error', 'message'=>'success', 'data'=>$move]);
        
         /*$transaction = $connection->beginTransaction();
         try {

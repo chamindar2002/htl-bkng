@@ -133,8 +133,8 @@ class DashboardController extends ApiController {
         
         $data = array(
             'name'=>$request->post('name'),
-            'start'=>$request->post('start'),
-            'end'=>$request->post('end'),
+            'start'=>$request->post('start'). Yii::$app->params['check_in_time'],
+            'end'=>$request->post('end').Yii::$app->params['check_in_time'],
             'room_id'=>$request->post('room'),
             'status'=>'New',
             'paid'=>0
@@ -179,14 +179,14 @@ class DashboardController extends ApiController {
     
     public function actionUpdateRsv()
     {
-               
+
         $request = Yii::$app->request;
         $response = array();
         
         $data = array(
             'name'=>$request->post('name'),
-            'start'=>$request->post('start'),
-            'end'=>$request->post('end'),
+            'start'=>$request->post('start'). Yii::$app->params['check_in_time'],
+            'end'=>$request->post('end'). Yii::$app->params['check_in_time'],
             'room_id'=>$request->post('room'),
             'status'=>$request->post('status'),
             'paid'=>$request->post('paid')

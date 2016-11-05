@@ -60,7 +60,7 @@
 </div>
 
 <!-- ------------------------------------------------------------------------------ -->
-
+<?php if($model->isNewRecord){ ?>
 
 <div id="guest_modal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -82,3 +82,6 @@
 
   </div>
 </div>
+
+
+<?php } ?>

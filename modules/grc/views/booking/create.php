@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
   
 </div>
 
-<button type="button" class="btn btn-link" id="open_crete_guest_modal">Guest</button>
+
 
  <?= $this->render('_script', [
         'model' => $model, 'agents'=>$agents, 'rooms'=>$rooms

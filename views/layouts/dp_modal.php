@@ -34,6 +34,14 @@ if (class_exists('yii\debug\Module')) {
         <?php $this->head() ?>
     </head>
     <body>
+    <?php  foreach (Yii::$app->session->getAllFlashes() as $key => $message): ?>
+
+        <div class="alert alert-<?= $key ?>" >
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <?= $message ?>
+        </div>
+
+    <?php endforeach; ?>
  
     <?php $this->beginBody() ?>
         

@@ -131,7 +131,7 @@ class GuestController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Success');
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['if-create']);
         } else {
             return $this->render('create', [
                 'model' => $model,

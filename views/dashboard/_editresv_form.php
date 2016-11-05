@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\VarDumper;
 use yii\helpers\Url;
+use yii\jui\DatePicker;
 ?>
 <form id="f" method="post" action="<?= Url::to(['/dashboard/update-rsv']) ?>" style="padding:20px;">
             <input type="hidden" name="id" class='form-control' value="<?php print $_GET['id'] ?>" />
@@ -9,12 +10,28 @@ use yii\helpers\Url;
                         
             <div class="form-group">
                 <label for="name">Checkin</label>
-                <input type="text" id="start" name="start" class='form-control input-sm' value="<?= $data['start'] ?>" />
+                <?php echo DatePicker::widget([
+                    'name'  => 'start',
+                    'value'  =>  $data['start'],
+                    'options' => ['class' => 'form-control', 'id'=>'start'],
+                    //'language' => 'ru',
+                    'dateFormat' => 'yyyy-M-dd',
+
+                ]); ?>
+<!--                <input type="text" id="start" name="start" class='form-control input-sm' value="--><?//= $data['start'] ?><!--" />-->
             </div>
                         
             <div class="form-group">
                 <label for="name">Checkout</label>
-                <input type="text" id="end" name="end" class='form-control input-sm' value="<?= $data['end'] ?>" />
+                <?php echo DatePicker::widget([
+                    'name'  => 'end',
+                    'value'  =>  $data['end'],
+                    'options' => ['class' => 'form-control', 'id'=>'end'],
+                    //'language' => 'ru',
+                    'dateFormat' => 'yyyy-M-dd',
+
+                ]); ?>
+<!--                <input type="text" id="end" name="end" class='form-control input-sm' value="--><?//= $data['end'] ?><!--" />-->
             </div>
             
             <div class="form-group">

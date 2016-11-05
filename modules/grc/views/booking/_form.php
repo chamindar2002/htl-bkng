@@ -34,15 +34,22 @@ use yii\widgets\ActiveForm;
         <div id="reservation_summary"></div>
         <?= $form->field($model, 'reservation_id')->textInput() ?>
     <?php } ?>    
-    
-    <?php if($model->isNewRecord){ ?>
-    <?= $form->field($model, 'guest_name')->dropDownList([], ['prompt'=>'', 'class'=>'js-data-example-ajax']); ?> 
-    <?php }else{ ?>
-    <?= $form->field($model, 'guest_name')->dropDownList([$model->guest->getFullName()], ['class'=>'js-data-example-ajax']); ?> 
-    <?php } ?>
-    
-    <?= $form->field($model, 'guest_id')->textInput(['readonly'=>'readonly']); ?>        
-   
+
+    <div class="row">
+        <div class="col-xs-10">
+            <?php if($model->isNewRecord){ ?>
+                <?= $form->field($model, 'guest_name')->dropDownList([], ['prompt'=>'', 'class'=>'js-data-example-ajax']); ?>
+            <?php }else{ ?>
+                <?= $form->field($model, 'guest_name')->dropDownList([$model->guest->getFullName()], ['class'=>'js-data-example-ajax']); ?>
+            <?php } ?>
+        </div>
+        <div class="col-xs-2">
+            <button type="button" class="form-control btn btn-link" id="open_crete_guest_modal">Add new guest</button>
+        </div>
+    </div>
+
+    <?= $form->field($model, 'guest_id')->textInput(['readonly'=>'readonly']); ?>
+
     <?= $form->field($model, 'agent_id')
         ->dropDownList($agents, []); ?>
 

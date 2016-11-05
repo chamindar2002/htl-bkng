@@ -96,7 +96,9 @@ class ViewBkRsvGstRmInvSearch extends \yii\db\ActiveRecord
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-        
+
+        $query->orderBy('booking_id desc');
+
         $this->load($params);
 
         if (!$this->validate()) {

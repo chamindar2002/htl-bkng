@@ -177,7 +177,7 @@ class BookingController extends \app\controllers\ApiController
                 
                 
             Yii::$app->session->setFlash('success', 'Success');    
-            return $this->redirect(['view', 'id' => $model->id]);    
+            return $this->redirect(['view', 'id' => $model->id]);
                  
         } else {
             return $this->render('update', [
@@ -249,15 +249,16 @@ class BookingController extends \app\controllers\ApiController
           $connection = Yii::$app->getDb();
           
           #reservation with no booking
-          #room_id 
+          #room_id
           #PENDING or CLOSED or deleted
           $sql = 'SELECT reservations.*, grc_booking.status
                   FROM reservations
                   LEFT JOIN grc_booking
                   ON grc_booking.reservation_id=reservations.id
                     WHERE grc_booking.reservation_id is null 
-                  AND room_id="'.$room.'"  
-                    OR grc_booking.status <> "OPEN" OR grc_booking.deleted <> 0';
+                  AND room_id="'.$room.'"  AND reservations.deleted = 0
+                    OR grc_booking.status = "PENDING"
+                    OR grc_booking.deleted <> 0';
                   
           $command = $connection->createCommand($sql);
 
@@ -377,8 +378,8 @@ class BookingController extends \app\controllers\ApiController
        
        #update reservation 
        $data = array(
-            'start'=>$request->post('checkin').' 12:00:00',
-            'end'=>$request->post('checkout').' 12:00:00',
+            'start'=>$request->post('checkin').Yii::$app->params['check_in_time'],
+            'end'=>$request->post('checkout').Yii::$app->params['check_in_time'],
             'room_id'=>$request->post('room_id'),
            );
         

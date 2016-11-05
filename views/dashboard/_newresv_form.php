@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\jui\DatePicker;
 ?>
 <form id="f" method="post" action="<?= Url::to(['/dashboard/create-new-rsv']) ?>" style="padding:20px;">
     <input type="hidden" name="_csrf" value="<?= Yii::$app->request->getCsrfToken() ?>" />    
@@ -12,12 +13,29 @@ use yii\helpers\Url;
 
     <div class="form-group">
         <label for="start">Checkin</label>
-        <input type="text" id="start" name="start" value="<?= $param['start'] ?>"  class='form-control  input-sm' />
+        <?php echo DatePicker::widget([
+            'name'  => 'start',
+            'value'  =>  $param['start'],
+            'options' => ['class' => 'form-control', 'id'=>'start'],
+            //'language' => 'ru',
+            'dateFormat' => 'yyyy-M-dd',
+
+        ]); ?>
+
+<!--        <input type="text" id="start" name="start" value="--><?//= $param['start'] ?><!--"  class='form-control  input-sm' />-->
     </div>
 
     <div class="form-group">
         <label for="end">Checkout</label>
-        <input type="text" id="end" name="end" value="<?= $param['end'] ?>"  class='form-control  input-sm' />
+        <?php echo DatePicker::widget([
+            'name'  => 'end',
+            'value'  =>  $param['end'],
+            'options' => ['class' => 'form-control', 'id'=>'end'],
+            //'language' => 'ru',
+            'dateFormat' => 'yyyy-M-dd',
+
+        ]); ?>
+<!--        <input type="text" id="end" name="end" value="--><?//= $param['end'] ?><!--"  class='form-control  input-sm' />-->
     </div>
 
     <div class="form-group">

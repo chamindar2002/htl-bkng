@@ -3,7 +3,7 @@
 namespace app\modules\grc\models;
 
 use Yii;
-use app\modules\grc\models\Reservations;
+//use app\modules\grc\models\Reservations;
 
 /**
  * This is the model class for table "reservations".
@@ -81,9 +81,9 @@ class Reservations extends \yii\db\ActiveRecord
     {
         $response = array('result'=>'success', 'message'=>'Dates available', 'data'=>[]);
         
-        $result = Yii::$app->db->createCommand('SELECT * FROM reservations WHERE NOT ((end <= :start) OR (start >= :end )) AND id <> :id AND room_id = :room')
-                                    ->bindValue(':start', $request->post('checkin').' 12:00:00')
-                                    ->bindValue(':end', $request->post('checkout').' 12:00:00')
+        $result = Yii::$app->db->createCommand('SELECT * FROM reservations WHERE NOT ((end <= :start) OR (start >= :end )) AND id <> :id AND room_id = :room AND deleted = 0')
+                                    ->bindValue(':start', $request->post('checkin').Yii::$app->params['check_in_time'])
+                                    ->bindValue(':end', $request->post('checkout').Yii::$app->params['check_in_time'])
                                     ->bindValue(':id', $request->post('reservation_id'))
                                     ->bindValue(':room', $request->post('room_id')) 
                                     ->queryAll();

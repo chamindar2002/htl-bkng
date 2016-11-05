@@ -53,7 +53,7 @@ use yii\widgets\ActiveForm;
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         <?php if(!$model->isNewRecord){ ?>
-                <button type="button" class="btn btn-link" id="open_update_items_modal">Update Package</button>
+                <button type="button" class="btn btn-link" id="open_update_items_modal">Update package</button>
                 <button type="button" class="btn btn-link" id="open_update_dates_modal">Update Checkin/Checkout dates</button>
         <?php } ?>
     </div>

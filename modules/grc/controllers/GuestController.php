@@ -123,4 +123,19 @@ class GuestController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionIfCreate()
+    {
+        $this->layout = '@app/views/layouts/dp_modal';
+        $model = new GrcGuest();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Success');
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }
 }

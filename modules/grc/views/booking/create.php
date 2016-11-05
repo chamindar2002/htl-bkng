@@ -24,9 +24,15 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
   
 </div>
+
+<button type="button" class="btn btn-link" id="open_crete_guest_modal">Guest</button>
+
  <?= $this->render('_script', [
         'model' => $model, 'agents'=>$agents, 'rooms'=>$rooms
     ]) ?>
+
+
+
 
 <?php
 $script = <<< JS
@@ -112,6 +118,10 @@ $this->registerJs($script);
 
 
 <script>
+$('#open_crete_guest_modal').click(function () {
+    BookingUtilities.openGuestModal()
+})
+
 $('#grcbooking-reservation_id').click(function(){
     BookingUtilities.openResvSearchModal();
 });
@@ -168,9 +178,17 @@ var BookingUtilities = {
      $('#grcbooking-reservation_id').val(id);
      $('#reservation_summary').html('<span class="label label-success">'+text+'</span>');
      $('#reservation_search_modal').modal('hide');
-  }        
+  },
+
+   openGuestModal: function () {
+       $('#guest_modal').modal('show');
+   }
   
   
 };
+
+function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+}
 </script>
 

@@ -10,6 +10,7 @@ use yii\bootstrap\Html;
   <button type="button" class="btn btn-primary">Todays Arrivals <span class="badge">7</span></button>
   <button type="button" class="btn btn-success">Todays Bookings <span class="badge">3</span></button>
   <button type="button" class="btn btn-danger">New Reservations <span class="badge">5</span></button>
+  <?= Html::a('Create Booking', ['create'], ['class' => 'btn btn-success']) ?>
 </div>
   
 <hr/>  

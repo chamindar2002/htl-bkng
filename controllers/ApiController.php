@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\db\Query;
 
 class ApiController extends \yii\web\Controller{
     
@@ -19,6 +20,26 @@ class ApiController extends \yii\web\Controller{
         return $response;
         
         
+    }
+
+    protected function reservationIsBooked($reservation_id){
+        $query = new Query;
+        $result = $query->select('id, status')->from('grc_booking')->where('reservation_id ='.$reservation_id)->one();
+
+        if(count($result)){
+            if($result['status'] == 'OPEN' || $result['status'] == 'CLOSED'){
+
+               $this->renderJson(array(
+                   'result'=>'Error',
+                   'message'=>'Error. A booking already exits. status : '.$result['status'],
+               ));
+                Yii::$app->end();
+
+            }
+        }
+
+        return false;
+
     }
     
     public function dd($var){

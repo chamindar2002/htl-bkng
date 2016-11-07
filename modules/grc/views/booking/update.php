@@ -68,6 +68,7 @@ $this->params['breadcrumbs'][] = 'Update';
                             <td><?= $invitems->item_description; ?></td>
                             <td>
                                 <select name="sel_packages" invitem_id="<?= $invitems->id ?>" class="package_selector form-control">
+                                    <option value="1"></option>
                                     <?php foreach($available_packages As $ap): ?>
                                        <?php if($ap->package_id == $invitems->package_id){ ?>
                                             <option value="<?= $ap->package_id ?>" title="<?= $ap->price ?>" selected><?= $ap->meal_plan_name ?></option>
@@ -104,7 +105,8 @@ $this->params['breadcrumbs'][] = 'Update';
                         <td>
                             
                          <select id="package_<?= $i ?>"  name="package_<?= $i ?>" class="package_selector form-control" required>
-                            <?php foreach(json_decode($data['available_room_packages']) AS $package): ?> 
+                            <option value="1"></option>
+                            <?php foreach(json_decode($data['available_room_packages']) AS $package): ?>
                             <option value="<?= $package->package_id ?>"><?= $package->meal_plan_name ?></option>
                             <?php endforeach; ?>
                          </select>
@@ -270,6 +272,8 @@ function formatRepo (repo) {
        return repo.title + ' ' + repo.first_name + ' ' + repo.last_name;
     }
   }
+  
+  
 
 JS;
 $this->registerJs($script);
@@ -332,6 +336,7 @@ function Booking(response) {
             _html += '<tr><td>'+day+'<input type="hidden" name="day_'+i+'" value="'+day+'">'+'</td>';
             _html += '<td>';
             _html += '<select id="package_'+i+'"  name="package_'+i+'" class="package_selector form-control" required>';
+            _html += '<option value="">select</option>';
                  $.each(avl_room_packages, function(i, package){
             _html += '<option value="'+package.package_id+'">'+package.meal_plan_name+'</option>';
                 });
@@ -369,6 +374,7 @@ var BookingUtilities = {
     $('#reservation_search_modal').modal('show');
   },
   searchReservations: function () {
+
      
      $.ajax({
         url: "<?= Url::to('search-reservations') ?>",
@@ -389,7 +395,8 @@ var BookingUtilities = {
 
   },
   appendResvData: function (results){
-        
+
+      console.log(results);
         var title = '';
         var _html = '<div class="list-group">';
         var room_name = results.room_name;
@@ -496,6 +503,6 @@ var BookingUtilities = {
 };
 
 
+
+
 </script>
-
-

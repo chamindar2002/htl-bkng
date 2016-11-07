@@ -5,6 +5,7 @@ namespace app\modules\grc\controllers;
 use Yii;
 use app\modules\grc\models\GrcBooking;
 use app\modules\grc\models\BookingSearch;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -13,6 +14,7 @@ use app\components\GrcUtilities;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\db\Query;
+use Pusher;
 
 /**
  * BookingController implements the CRUD actions for GrcBooking model.
@@ -34,7 +36,7 @@ class BookingController extends \app\controllers\ApiController
                         'actions' => ['index', 'view', 'create', 'update', 
                                       'delete','confirm', 'search-reservations',
                                       'fetch-guests', 'update-package-inv-item',
-                                      'dashboard', 'check-resv-availability', 'update-reservation-dates'],
+                                      'dashboard', 'check-resv-availability', 'update-reservation-dates', 'test-pusher'],
                         'allow' => true,
                         //'roles' => ['@'], 
                         'roles' => ['user-role'],
@@ -409,5 +411,30 @@ class BookingController extends \app\controllers\ApiController
         //\yii\helpers\VarDumper::dump($invoice_model->attributes);
         //\yii\helpers\VarDumper::dump($invoice_model->invnInvoiceItems);
         
+    }
+
+    public function actionTestPusher()
+    {
+        #https://dashboard.pusher.com/apps/267257/console/realtime_messages
+        #https://dashboard.pusher.com/apps/267257/getting_started
+        #https://pusher.com/docs/javascript_quick_start
+        #https://github.com/pusher/pusher-http-php#push-notifications-beta
+        $options = array(
+            'encrypted' => true,
+            'scheme'=>'http',
+        );
+        $pusher = new Pusher(
+            'f61b79b5a60a9cf8df35',
+            '3ad5caaab9e9b53bb5cd',
+            '267257',
+            $options
+        );
+
+        VarDumper::dump($pusher);
+
+        $data['message'] = 'new message received';
+        $x = $pusher->trigger('test_channel', 'my_event', $data);
+        var_dump($x);
+        echo 'ok';
     }
 }

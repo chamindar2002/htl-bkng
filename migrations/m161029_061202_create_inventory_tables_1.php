@@ -86,6 +86,7 @@ class m161029_061202_create_inventory_tables_1 extends Migration
             'package_id'=>$this->integer()->notNull()->defaultValue('1'),
             'item_master_id' => $this->integer()->notNull(),
             'item_description' => $this->string(64)->notNull(),
+            'date_applicable' => $this->datetime()->notNull(),
             'price'=>$this->double()->defaultValue('0'),
             'deleted' => $this->smallInteger()->defaultValue('0'),
             'created_by' => $this->smallInteger()->notNull(),

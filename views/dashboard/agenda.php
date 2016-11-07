@@ -185,6 +185,9 @@ DpAsset::register($this);
                             newResource: args.newResource
                         },
                 function(data) {
+                    if(data.result == 'Error'){
+                        loadEvents();
+                    }
                     dp.message(data.message);
                 });
             };
@@ -197,7 +200,12 @@ DpAsset::register($this);
                             newStart: args.newStart.toString(),
                             newEnd: args.newEnd.toString()
                         },
-                function() {
+                function(data) {
+                    if(data.result == 'Error'){
+                        dp.message(data.message);
+                        loadEvents();
+                        return;
+                    }
                     dp.message("Resized.");
                 });
             };
@@ -207,7 +215,13 @@ DpAsset::register($this);
                         {
                             id: args.e.id()
                         },
-                function() {
+                function(data) {
+
+                    if(data.result == 'Error'){
+                        dp.message(data.message);
+                        loadEvents();
+                        return;
+                    }
                     dp.message("Deleted.");
                 });
             };

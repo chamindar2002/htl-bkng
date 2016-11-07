@@ -138,10 +138,11 @@ class GrcBooking extends \yii\db\ActiveRecord
                $package = \app\modules\grc\models\GrcPackage::find()->andWhere(['id' => $data["package_$i"]])->one();
                $data_batch = array(
                    //'package_id' => $data["package_$i"],
-                   'item_description'=> $data["day_$i"],
+                   'item_description'=> 'Room charges for : '.$data["day_$i"],
                    'package_id'=>$package->id,
                    'invoice_id'=>$invoice->id,
                    'item_master_id'=>1,
+                   'date_applicable'=>$data["day_$i"],
                    'price' => $package->price,
               
                );

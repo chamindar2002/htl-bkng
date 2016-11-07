@@ -3,14 +3,26 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use fedemotta\datatables\DataTables;
 use yii\bootstrap\Html;
+use yii\helpers\Url;
+use app\assets\DpAsset;
+use app\assets\Select2Asset;
+use yii\jui\DatePicker;
+
+DpAsset::register($this);
+Select2Asset::register($this);
 ?>
+
+<?php
+$this->title = 'Front Desk : Dashboard';
+?>
+
 <br>
 
 <div class="container">
-  <button type="button" class="btn btn-primary">Todays Arrivals <span class="badge">7</span></button>
+  <button type="button" id="btnAx" class="btn btn-primary">Todays Arrivals <span class="badge">7</span></button>
   <button type="button" class="btn btn-success">Todays Bookings <span class="badge">3</span></button>
   <button type="button" class="btn btn-danger">New Reservations <span class="badge">5</span></button>
-  <?= Html::a('Create Booking', ['create'], ['class' => 'btn btn-success']) ?>
+  <?= Html::a('New Booking', ['create'], ['class' => 'btn btn-success']) ?>
 </div>
   
 <hr/>  
@@ -77,3 +89,47 @@ use yii\bootstrap\Html;
     ],
 ]);?>
 
+<button id="send_push">Pusher</button>
+
+<script src="https://js.pusher.com/3.2/pusher.min.js"></script>
+<script>
+    $('#send_push').click(function () {
+
+        $.ajax({
+            url: "<?= Url::to('test-pusher') ?>",
+            type: "POST",
+            data: {}, //JSON
+            dataType: "json",
+            cache: false,
+
+            success:function(data, textStatus, jqXHR) {
+
+            },
+            error:function(jqXHR, textStatus, errorThrown) {
+
+            }
+        });
+
+    });
+
+
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('f61b79b5a60a9cf8df35', {
+        encrypted: true
+    });
+
+    var channel = pusher.subscribe('test_channel');
+    channel.bind('my_event', function(data) {
+        //alert(data.message);
+        $('#btnAx').text(data.message);
+        $('#btnAx').addClass('btn-danger');
+        $('#btnAx').removeClass('btn-primary');
+    });
+
+    Pusher.log = function(message) {
+        if (window.console && window.console.log) {
+            window.console.log(message);
+        }
+    };
+</script>

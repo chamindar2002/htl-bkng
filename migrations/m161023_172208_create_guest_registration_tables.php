@@ -99,15 +99,15 @@ class m161023_172208_create_guest_registration_tables extends Migration
                     );
         
         $this->insert('grc_meal_plan',array(
-                                    'name'=>'Bread And Breakfast',
-                                    'code' =>'BB',
+                                    'name'=>'Room Only',
+                                    'code' =>'RO',
                                     'created_by'=>'1',
                                     'created_at'=>date('Y-m-d')
                                     )
                     );
         $this->insert('grc_meal_plan',array(
-                                    'name'=>'Half Board',
-                                    'code' =>'HB',
+                                    'name'=>'Bread And Breakfast',
+                                    'code' =>'BB',
                                     'created_by'=>'1',
                                     'created_at'=>date('Y-m-d')
                                     )

@@ -62,6 +62,7 @@ use yii\widgets\ActiveForm;
         <?php if(!$model->isNewRecord){ ?>
                 <button type="button" class="btn btn-link" id="open_update_items_modal">Update package</button>
                 <button type="button" class="btn btn-link" id="open_update_dates_modal">Update Checkin/Checkout dates</button>
+                <?= Html::a('View', ['view', 'id' => $model->id], ['class' => 'btn btn-link']) ?>
         <?php } ?>
     </div>
     

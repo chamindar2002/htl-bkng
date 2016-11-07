@@ -182,7 +182,9 @@ class DashboardController extends ApiController {
 
         $request = Yii::$app->request;
         $response = array();
-        
+
+        $this->renderJSON($this->reservationIsBooked($request->post('id')));
+
         $data = array(
             'name'=>$request->post('name'),
             'start'=>$request->post('start'). Yii::$app->params['check_in_time'],
@@ -209,6 +211,8 @@ class DashboardController extends ApiController {
         
         $request = Yii::$app->request;
         $response = array('result'=>'Error', 'message'=>'Nothing to modify');
+
+        $this->renderJSON($this->reservationIsBooked($request->post('id')));
         
         #SELECT * FROM reservations WHERE NOT ((end <= :start) OR (start >= :end)) AND id <> :id AND room_id = :resource
         $overlaps = Yii::$app->db->createCommand('SELECT * FROM reservations WHERE NOT ((end <= :start) OR (start >= :end )) AND id <> :id AND room_id = :resource')
@@ -247,6 +251,9 @@ class DashboardController extends ApiController {
     {
         
         $request = Yii::$app->request;
+
+        $this->renderJSON($this->reservationIsBooked($request->post('id')));
+
         $response = array();
         $data = array('deleted'=>1);
         
@@ -347,6 +354,8 @@ class DashboardController extends ApiController {
         
         $request = Yii::$app->request;
         $response = array();
+
+        $this->renderJSON($this->reservationIsBooked($request->post('id')));
         
         $data = array(
                     'start'=>$request->post('newStart'),

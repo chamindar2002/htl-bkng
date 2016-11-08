@@ -418,6 +418,18 @@ AppAsset::register($this);
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Inventory Management<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <?= Html::a('Categories', Url::to(['/inventory/invn-category'])) ?>
+                                </li>
+
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+
                         <?php if ( Yii::$app->user->can('permission_admin') ){ ?>
                          <li>
                             <a href="#"><i class="fa fa-key fa-fw"></i>Auth Manager<span class="fa arrow"></span></a>

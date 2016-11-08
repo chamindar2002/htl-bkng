@@ -50,7 +50,7 @@ class m161029_061202_create_inventory_tables_1 extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string(64)->notNull(),
             'sku' => $this->string(20),
-            'parent_id'=>$this->integer()->defaultValue('0'),
+            'category_id'=>$this->integer()->defaultValue('1'),
             'supplier_id'=>$this->integer()->notNull(),
             'active'=>  $this->smallInteger()->defaultValue('1'),
             'deleted' => $this->smallInteger()->defaultValue('0'),

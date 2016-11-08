@@ -86,7 +86,10 @@ $this->title = 'Front Desk : Dashboard';
             ],
       ],
       //['class' => 'yii\grid\ActionColumn'],
+
     ],
+
+
 ]);?>
 
 <button id="send_push">Pusher</button>

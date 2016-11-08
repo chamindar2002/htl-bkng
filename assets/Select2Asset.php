@@ -22,7 +22,7 @@ class Select2Asset extends AssetBundle{
     }
     
     public $css = [
-        //'css/select2.css',
+        'css/select2.css',
     ];
     public $js = [
         'js/select2.min.js',

@@ -283,6 +283,10 @@ $this->registerJs($script);
 
 <script>
 
+$('#open_crete_guest_modal').click(function () {
+   BookingUtilities.openGuestModal();
+})
+
 $('#btn_save_package_data').click(function(){
    $('#booking-package-confirmation-form').submit();
 })
@@ -440,7 +444,10 @@ var BookingUtilities = {
         }
      });
   },
-  
+  openGuestModal: function () {
+      $('#guest_modal').modal('show');
+  },
+
   checkAvailability: function()
   {
       $.ajax({

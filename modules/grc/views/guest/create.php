@@ -12,8 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="grc-guest-create">
 
-    <h3><?= Html::encode($this->title) ?></h3>
-
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

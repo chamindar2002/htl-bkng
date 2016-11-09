@@ -20,8 +20,6 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="grc-booking-update">
 
-    <h3><?= Html::encode($this->title) ?></h3>
-
     <?= $this->render('_form', [
         'model' => $model, 'agents'=>$agents, 'rooms'=>$rooms,
         'invoice'=>$invoice, 'available_packages'=>$available_packages, 'data'=>$data,

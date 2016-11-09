@@ -18,8 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="grc-booking-create">
 
-    <h3><?= Html::encode($this->title) ?></h3>
-    <?= $this->render('_form', [
+     <?= $this->render('_form', [
         'model' => $model, 'agents'=>$agents, 'rooms'=>$rooms
     ]) ?>
   

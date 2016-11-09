@@ -6,9 +6,10 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\modules\grc\models\GrcBooking */
 
-$this->title = $model->id;
+$this->title = 'Booking#'.$model->id .' | '.$model->guest->getFullName();
 $this->params['breadcrumbs'][] = ['label' => 'Bookings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <br/>
    <p>

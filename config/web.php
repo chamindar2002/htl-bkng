@@ -6,29 +6,22 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    //'layout' => 'sbadmin',
-    'layout' => 'main',
+    'layout' => '@app/views/yii2-app/layouts/main',
+    //'layout' => 'main',
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '2cz_jF-GrMp3cxgnXmfGg6jOTTB3x8Ya',
         ],
-        'view' => [
-            'theme' => [
-                'pathMap' => [
-                    '@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app'
-                ],
-            ],
+        'grcutilities' => [
+            'class' => 'app\components\GrcUtilities',
         ],
         'assetManager' => [
             'bundles' => [
                 'dmstr\web\AdminLteAsset' => [
-                    'skin' => 'skin-green-light',#AdminLTE doc: https://github.com/dmstr/yii2-adminlte-asset
+                    'skin' => 'skin-green-light',#adminLte doc: https://github.com/dmstr/yii2-adminlte-asset, http://www.yiiframework.com/extension/yii2-adminlte-asset/
                 ],
             ],
-        ],
-        'grcutilities' => [
-            'class' => 'app\components\GrcUtilities',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',

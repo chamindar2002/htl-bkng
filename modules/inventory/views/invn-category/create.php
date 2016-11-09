@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="invn-category-create">
 
     <?= $this->render('_form', [
-        'model' => $model, 'categories'=>$categories
+        'model' => $model, 'categories'=>$categories, 'departments'=>$departments,
     ]) ?>
 
 </div>

@@ -36,13 +36,14 @@
                         'items'=>[
                             ['label'=>'Agents', 'icon'=>'fa fa-handshake-o', 'url'=>'/grc/agent'],
                             ['label'=>'Meal Plans', 'icon'=>'fa fa-cutlery', 'url'=>'/grc/meal-plan'],
-                            ['label'=>'Packages', 'icon'=>'fa fa-bed', 'url'=>'package'],
+                            ['label'=>'Packages', 'icon'=>'fa fa-bed', 'url'=>'/grc/package'],
                             ['label'=>'Guests', 'icon'=>'fa fa-address-book-o', 'url'=>'/grc/guest'],
                         ]
                     ],
                     ['label'=>'Inventory Management', 'icon'=>'fa fa-cubes', 'url'=>'#',
                         'items'=>[
                             ['label'=>'Categories', 'icon'=>'fa fa-sitemap', 'url'=>'/inventory/invn-category'],
+                            ['label'=>'Departments', 'icon'=>'fa fa-building', 'url'=>'/inventory/invn-department'],
 
                         ]
                     ],
@@ -52,7 +53,7 @@
                             ['label'=>'Roles', 'icon'=>'fa fa-users', 'url'=>'/admin/role'],
                             ['label'=>'Role Assignment', 'icon'=>'fa fa-user-plus', 'url'=>'/admin/assignment'],
 
-                        ]
+                        ], 'visible'=>Yii::$app->user->can('permission_admin')
                     ],
 
                     ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],

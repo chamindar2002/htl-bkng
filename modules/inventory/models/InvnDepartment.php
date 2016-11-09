@@ -8,32 +8,28 @@ use yii\db\Expression;
 use yii\behaviors\BlameableBehavior;
 
 /**
- * This is the model class for table "invn_category".
+ * This is the model class for table "invn_department".
  *
  * @property integer $id
  * @property string $name
- * @property integer $parent_id
- * @property integer $stock_deductable
- * @property integer $department_id
- * @property string $send_notification
  * @property integer $active
  * @property integer $deleted
  * @property integer $created_by
  * @property string $created_at
  * @property string $updated_at
  *
- * @property InvnItemMaster[] $invnItemMasters
+ * @property InvnCategory[] $invnCategories
  */
-class InvnCategory extends \yii\db\ActiveRecord
+class InvnDepartment extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'invn_category';
+        return 'invn_department';
     }
-
+    
     public function behaviors()
     {
         return [
@@ -60,11 +56,9 @@ class InvnCategory extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['parent_id', 'stock_deductable', 'department_id', 'active', 'deleted', 'created_by'], 'integer'],
+            [['active', 'deleted', 'created_by'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 64],
-            [['send_notification'], 'string', 'max' => 10],
-            [['department_id'], 'exist', 'skipOnError' => true, 'targetClass' => InvnDepartment::className(), 'targetAttribute' => ['department_id' => 'id']],
         ];
     }
 
@@ -76,10 +70,6 @@ class InvnCategory extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'parent_id' => 'Parent ID',
-            'stock_deductable' => 'Stock Deductable',
-            'department_id' => 'Department',
-            'send_notification' => 'Send Notification',
             'active' => 'Active',
             'deleted' => 'Deleted',
             'created_by' => 'Created By',
@@ -91,17 +81,8 @@ class InvnCategory extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getInvnItemMasters()
+    public function getInvnCategories()
     {
-        return $this->hasMany(InvnItemMaster::className(), ['category_id' => 'id']);
+        return $this->hasMany(InvnCategory::className(), ['department_id' => 'id']);
     }
-    
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDepartment()
-    {
-        return $this->hasOne(InvnDepartment::className(), ['id' => 'department_id']);
-    }
-    
 }

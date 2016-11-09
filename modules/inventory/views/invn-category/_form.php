@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use app\components\GrcUtilities;
 /* @var $this yii\web\View */
 /* @var $model app\modules\inventory\models\InvnCategory */
 /* @var $form yii\widgets\ActiveForm */
@@ -15,6 +15,10 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'parent_id')->dropDownList($categories, ['class'=>'form-control']); ?>
+    
+    <?= $form->field($model, 'department_id')->dropDownList($departments, ['class'=>'form-control']); ?>
+    
+    <?= $form->field($model, 'send_notification')->dropDownList(GrcUtilities::getOrderPlacementFlag(), ['class'=>'form-control']); ?>
 
     <?= $form->field($model, 'stock_deductable')->radioList([
         '1' => 'Yes',

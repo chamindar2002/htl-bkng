@@ -25,6 +25,25 @@ class GrcUtilities extends Component
             'THIRD_PARTY_WEB' => 'THIRD PARTY WEB SITES'
         );
     }
+    
+    public static function getOrderPlacementFlag()
+    {
+        
+        return array(
+            'NONE' => 'NONE',
+            'KOT' => 'KOT',
+            'BOT' => 'BOT'
+        );
+        
+    }
+    
+    public static function getRecordStatus()
+    {
+        return array(
+            '1' => 'Active',
+            '0' => 'Inactive'
+        );
+    }
 
     public static function computeDatesAllocation($start, $end)
     {

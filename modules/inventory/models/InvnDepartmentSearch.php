@@ -5,12 +5,12 @@ namespace app\modules\inventory\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\inventory\models\InvnCategory;
+use app\modules\inventory\models\InvnDepartment;
 
 /**
- * InvnCategorySearch represents the model behind the search form about `app\modules\inventory\models\InvnCategory`.
+ * InvnDepartmentSearch represents the model behind the search form about `app\modules\inventory\models\InvnDepartment`.
  */
-class InvnCategorySearch extends InvnCategory
+class InvnDepartmentSearch extends InvnDepartment
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class InvnCategorySearch extends InvnCategory
     public function rules()
     {
         return [
-            [['id', 'parent_id', 'stock_deductable', 'department_id', 'active', 'deleted', 'created_by'], 'integer'],
-            [['name', 'send_notification', 'created_at', 'updated_at'], 'safe'],
+            [['id', 'active', 'deleted', 'created_by'], 'integer'],
+            [['name', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class InvnCategorySearch extends InvnCategory
      */
     public function search($params)
     {
-        $query = InvnCategory::find();
+        $query = InvnDepartment::find();
 
         // add conditions that should always apply here
 
@@ -60,10 +60,6 @@ class InvnCategorySearch extends InvnCategory
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'parent_id' => $this->parent_id,
-            'stock_deductable' => $this->stock_deductable,
-            'department_id' => $this->department_id,
-            'send_notification' => $this->send_notification,
             'active' => $this->active,
             'deleted' => 0,
             'created_by' => $this->created_by,

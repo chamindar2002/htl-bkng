@@ -3,18 +3,16 @@
 namespace app\modules\inventory\controllers;
 
 use Yii;
-use app\modules\inventory\models\InvnCategory;
-use app\modules\inventory\models\InvnCategorySearch;
-use yii\helpers\VarDumper;
+use app\modules\inventory\models\InvnDepartment;
+use app\modules\inventory\models\InvnDepartmentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
-use app\modules\inventory\models\InvnDepartment;
+
 /**
- * InvnCategoryController implements the CRUD actions for InvnCategory model.
+ * InvnDepartmentController implements the CRUD actions for InvnDepartment model.
  */
-class InvnCategoryController extends Controller
+class InvnDepartmentController extends Controller
 {
     /**
      * @inheritdoc
@@ -32,12 +30,12 @@ class InvnCategoryController extends Controller
     }
 
     /**
-     * Lists all InvnCategory models.
+     * Lists all InvnDepartment models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new InvnCategorySearch();
+        $searchModel = new InvnDepartmentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,7 +45,7 @@ class InvnCategoryController extends Controller
     }
 
     /**
-     * Displays a single InvnCategory model.
+     * Displays a single InvnDepartment model.
      * @param integer $id
      * @return mixed
      */
@@ -59,29 +57,27 @@ class InvnCategoryController extends Controller
     }
 
     /**
-     * Creates a new InvnCategory model.
+     * Creates a new InvnDepartment model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new InvnCategory();
-        $department = new InvnDepartment();
-        $categories =  ArrayHelper::map($model->find()->where(['active'=>1])->orWhere(['id'=>1])->all(), 'id', 'name');
-        $departments = ArrayHelper::map($department->find()->where(['active'=>1])->orWhere(['id'=>1])->all(), 'id', 'name'); 
-        $model->stock_deductable =  0;
+        $model = new InvnDepartment();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            Yii::$app->session->setFlash('success', 'Success');
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            Yii::$app->session->setFlash('error', 'Error');
             return $this->render('create', [
-                'model' => $model, 'categories'=>$categories,'departments'=>$departments,
+                'model' => $model,
             ]);
         }
     }
 
     /**
-     * Updates an existing InvnCategory model.
+     * Updates an existing InvnDepartment model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -90,23 +86,17 @@ class InvnCategoryController extends Controller
     {
         $model = $this->findModel($id);
 
-        $categories =  ArrayHelper::map($model->find()->where(['active'=>1])->orWhere(['id'=>1])->all(), 'id', 'name');
-        $departments = ArrayHelper::map($model->find()->where(['active'=>1])->orWhere(['id'=>1])->all(), 'id', 'name'); 
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->id]);
-            Yii::$app->session->setFlash('success', 'Success');
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            Yii::$app->session->setFlash('error', 'Error');
             return $this->render('update', [
-                'model' => $model, 'categories'=>$categories, 'departments'=>$departments,
+                'model' => $model,
             ]);
         }
     }
 
     /**
-     * Deletes an existing InvnCategory model.
+     * Deletes an existing InvnDepartment model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -119,15 +109,15 @@ class InvnCategoryController extends Controller
     }
 
     /**
-     * Finds the InvnCategory model based on its primary key value.
+     * Finds the InvnDepartment model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return InvnCategory the loaded model
+     * @return InvnDepartment the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = InvnCategory::findOne($id)) !== null) {
+        if (($model = InvnDepartment::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

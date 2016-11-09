@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = 'Update';
 <div class="invn-category-update">
 
     <?= $this->render('_form', [
-        'model' => $model, 'categories'=>$categories,
+        'model' => $model, 'categories'=>$categories, 'departments'=>$departments,
     ]) ?>
 
 </div>

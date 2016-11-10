@@ -147,8 +147,7 @@ class GrcBooking extends \yii\db\ActiveRecord
               
                );
                
-               $insertCount = Yii::$app->db->createCommand()
-                   ->insert('invn_invoice_items',$data_batch)->execute();
+               $insertCount = Yii::$app->db->createCommand()->insert('invn_invoice_items',$data_batch)->execute();
             }
             return true;
          }
@@ -156,6 +155,26 @@ class GrcBooking extends \yii\db\ActiveRecord
          
          return false;
     
+    }
+    
+    public static function getCurrentOccupants()
+    {
+        $connection = Yii::$app->getDb();
+        $command = $connection->createCommand("SELECT reservations.id AS reservation_id, reservations.name, reservations.start, reservations.end,
+                                               grc_booking.id AS id, grc_booking.guest_id, 
+                                               gst.id AS gst_id, CONCAT(gst.title,'. ',first_name ,' ',gst.last_name ) full_name,
+                                               rooms.id AS room_id, rooms.name AS value, rooms.name AS label
+                                               FROM reservations
+                                               JOIN grc_booking on(grc_booking.reservation_id = reservations.id)
+                                               JOIN grc_guests gst on(grc_booking.guest_id = gst.id)
+                                               JOIN rooms on(reservations.id = rooms.id)
+                                               WHERE reservations.deleted = 0
+                                               AND grc_booking.deleted = 0 AND grc_booking.status = 'OPEN'
+                                               AND curdate() BETWEEN reservations.start AND reservations.end");
+        
+        return $command->queryAll();
+        
+        
     }
     
 }

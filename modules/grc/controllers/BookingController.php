@@ -326,10 +326,13 @@ class BookingController extends \app\controllers\ApiController
         
         $searchModel = new \app\modules\grc\models\ViewBkRsvGstRmInvSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        
+        $currOccupents = GrcBooking::getCurrentOccupants();
+      
         return $this->render('dashboard', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'currOccupents' => $currOccupents,
         ]);
        
     }
@@ -394,23 +397,7 @@ class BookingController extends \app\controllers\ApiController
        
        
        $this->renderJson(['result'=>'error', 'message'=>'success', 'data'=>$move]);
-       
-        /*$transaction = $connection->beginTransaction();
-        try {
-            $connection->createCommand($sql1)->execute();
-            $connection->createCommand($sql2)->execute();
-            //.... other SQL executions
-            $transaction->commit();
-        } catch (\Exception $e) {
-            $transaction->rollBack();
-            throw $e;
-        }*/
-        
-        //\yii\helpers\VarDumper::dump($invoice_model->booking->attributes);
-        //\yii\helpers\VarDumper::dump($date_allocation['date_allocation']);
-        //\yii\helpers\VarDumper::dump($invoice_model->attributes);
-        //\yii\helpers\VarDumper::dump($invoice_model->invnInvoiceItems);
-        
+             
     }
 
     public function actionTestPusher()
@@ -432,7 +419,7 @@ class BookingController extends \app\controllers\ApiController
 
         VarDumper::dump($pusher);
 
-        $data['message'] = 'new message received';
+        $data['message'] = 'You have 1 new message';
         $x = $pusher->trigger('test_channel', 'my_event', $data);
         var_dump($x);
         echo 'ok';

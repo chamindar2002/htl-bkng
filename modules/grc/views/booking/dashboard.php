@@ -7,6 +7,8 @@ use yii\helpers\Url;
 use app\assets\DpAsset;
 use app\assets\Select2Asset;
 use yii\jui\DatePicker;
+use yii\jui\AutoComplete;
+use yii\web\JsExpression;
 
 DpAsset::register($this);
 Select2Asset::register($this);
@@ -119,6 +121,23 @@ $this->title = 'Front Desk : Dashboard';
         ],                             
                     
 ]);?>
+
+<?php
+//\yii\helpers\VarDumper::dump($currOcupents); 
+echo 'Room' .'<br>';
+echo AutoComplete::widget([    
+            'clientOptions' => [
+            'source' => $currOccupents,
+            'minLength'=>'1', 
+            'autoFill'=>true,
+            'select' => new JsExpression("function( event, ui ) {
+                    $('#temp_booking_id').val(ui.item.id);
+                    $('#temp_guest').val(ui.item.full_name);
+                 }")],
+                 ]);
+?>
+<input type="text" id="temp_booking_id" value="x">
+<input type="text" id="temp_guest" value="x">
 
 <button id="send_push">Pusher</button>
 

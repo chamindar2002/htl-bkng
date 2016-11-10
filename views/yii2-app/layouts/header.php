@@ -23,14 +23,14 @@ use yii\helpers\Html;
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-envelope-o"></i>
-                        <span class="label label-success">4</span>
+<!--                        <span class="label label-success">4</span>-->
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">You have 4 messages</li>
+                        <li class="header">You have 0 messages</li>
                         <li>
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu">
-                                <li><!-- start message -->
+                                <!-- <li>
                                     <a href="#">
                                         <div class="pull-left">
                                             <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle"
@@ -43,7 +43,7 @@ use yii\helpers\Html;
                                         <p>Why not buy a new awesome theme?</p>
                                     </a>
                                 </li>
-                                <!-- end message -->
+                                
                                 <li>
                                     <a href="#">
                                         <div class="pull-left">
@@ -95,7 +95,7 @@ use yii\helpers\Html;
                                         </h4>
                                         <p>Why not buy a new awesome theme?</p>
                                     </a>
-                                </li>
+                                </li> -->
                             </ul>
                         </li>
                         <li class="footer"><a href="#">See All Messages</a></li>
@@ -104,14 +104,14 @@ use yii\helpers\Html;
                 <li class="dropdown notifications-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-bell-o"></i>
-                        <span class="label label-warning">10</span>
+<!--                        <span class="label label-warning">10</span>-->
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">You have 10 notifications</li>
+                        <li class="header">You have no notifications</li>
                         <li>
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu">
-                                <li>
+                                <!--<li>
                                     <a href="#">
                                         <i class="fa fa-users text-aqua"></i> 5 new members joined today
                                     </a>
@@ -137,7 +137,7 @@ use yii\helpers\Html;
                                     <a href="#">
                                         <i class="fa fa-user text-red"></i> You changed your username
                                     </a>
-                                </li>
+                                </li>-->
                             </ul>
                         </li>
                         <li class="footer"><a href="#">View all</a></li>
@@ -147,14 +147,15 @@ use yii\helpers\Html;
                 <li class="dropdown tasks-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-flag-o"></i>
-                        <span class="label label-danger">9</span>
+<!--                        <span class="label label-danger">9</span>-->
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">You have 9 tasks</li>
+                        <li class="header">No Tasks</li>
                         <li>
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu">
-                                <li><!-- Task item -->
+                                <!-- Task item -->
+                                <!--<li>
                                     <a href="#">
                                         <h3>
                                             Design some buttons
@@ -169,8 +170,8 @@ use yii\helpers\Html;
                                         </div>
                                     </a>
                                 </li>
-                                <!-- end task item -->
-                                <li><!-- Task item -->
+                                
+                                <li><
                                     <a href="#">
                                         <h3>
                                             Create a nice theme
@@ -185,8 +186,8 @@ use yii\helpers\Html;
                                         </div>
                                     </a>
                                 </li>
-                                <!-- end task item -->
-                                <li><!-- Task item -->
+                                
+                                <li>
                                     <a href="#">
                                         <h3>
                                             Some task I need to do
@@ -201,8 +202,8 @@ use yii\helpers\Html;
                                         </div>
                                     </a>
                                 </li>
-                                <!-- end task item -->
-                                <li><!-- Task item -->
+                                
+                                <li>
                                     <a href="#">
                                         <h3>
                                             Make beautiful transitions
@@ -216,8 +217,8 @@ use yii\helpers\Html;
                                             </div>
                                         </div>
                                     </a>
-                                </li>
-                                <!-- end task item -->
+                                </li> -->
+                                
                             </ul>
                         </li>
                         <li class="footer">
@@ -241,20 +242,20 @@ use yii\helpers\Html;
                                  alt="User Image"/>
 
                             <p>
-                                Alexander Pierce - Web Developer
-                                <small>Member since Nov. 2012</small>
+                                <?= Yii::$app->user->identity->username ?>
+<!--                                <small>Member since Nov. 2012</small>-->
                             </p>
                         </li>
                         <!-- Menu Body -->
                         <li class="user-body">
                             <div class="col-xs-4 text-center">
-                                <a href="#">Followers</a>
+<!--                                <a href="#">Followers</a>-->
                             </div>
                             <div class="col-xs-4 text-center">
-                                <a href="#">Sales</a>
+<!--                                <a href="#">Sales</a>-->
                             </div>
                             <div class="col-xs-4 text-center">
-                                <a href="#">Friends</a>
+<!--                                <a href="#">Friends</a>-->
                             </div>
                         </li>
                         <!-- Menu Footer-->

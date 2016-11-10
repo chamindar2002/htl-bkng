@@ -19,7 +19,7 @@ $config = [
         'assetManager' => [
             'bundles' => [
                 'dmstr\web\AdminLteAsset' => [
-                    'skin' => 'skin-green-light',#adminLte doc: https://github.com/dmstr/yii2-adminlte-asset, http://www.yiiframework.com/extension/yii2-adminlte-asset/
+                    'skin' => 'skin-blue-light',#adminLte doc: https://github.com/dmstr/yii2-adminlte-asset, http://www.yiiframework.com/extension/yii2-adminlte-asset/
                 ],
             ],
         ],

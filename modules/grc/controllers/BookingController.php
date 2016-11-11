@@ -328,7 +328,7 @@ class BookingController extends \app\controllers\ApiController
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
         $currOccupents = GrcBooking::getCurrentOccupants();
-      
+       
         return $this->render('dashboard', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

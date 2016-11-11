@@ -170,7 +170,8 @@ class GrcBooking extends \yii\db\ActiveRecord
                                                JOIN rooms on(reservations.id = rooms.id)
                                                WHERE reservations.deleted = 0
                                                AND grc_booking.deleted = 0 AND grc_booking.status = 'OPEN'
-                                               AND curdate() BETWEEN reservations.start AND reservations.end");
+                                               AND DATE(curdate()) BETWEEN DATE(reservations.start) AND DATE(reservations.end)");
+                                                     
         
         return $command->queryAll();
         

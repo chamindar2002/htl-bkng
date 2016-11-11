@@ -3,16 +3,18 @@
 namespace app\modules\inventory\controllers;
 
 use Yii;
-use app\modules\inventory\models\InvnDepartment;
-use app\modules\inventory\models\InvnDepartmentSearch;
+use app\modules\inventory\models\InvnItemMaster;
+use app\modules\inventory\models\InvnItemMasterSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\modules\inventory\models\InvnSupplier;
+use yii\helpers\ArrayHelper;
+use app\modules\inventory\models\InvnCategory;
 /**
- * InvnDepartmentController implements the CRUD actions for InvnDepartment model.
+ * InvnItemMasterController implements the CRUD actions for InvnItemMaster model.
  */
-class InvnDepartmentController extends Controller
+class InvnItemMasterController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +32,12 @@ class InvnDepartmentController extends Controller
     }
 
     /**
-     * Lists all InvnDepartment models.
+     * Lists all InvnItemMaster models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new InvnDepartmentSearch();
+        $searchModel = new InvnItemMasterSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +47,7 @@ class InvnDepartmentController extends Controller
     }
 
     /**
-     * Displays a single InvnDepartment model.
+     * Displays a single InvnItemMaster model.
      * @param integer $id
      * @return mixed
      */
@@ -57,27 +59,28 @@ class InvnDepartmentController extends Controller
     }
 
     /**
-     * Creates a new InvnDepartment model.
+     * Creates a new InvnItemMaster model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new InvnDepartment();
-
+        $model = new InvnItemMaster();
+        
+        $supplier =  ArrayHelper::map(InvnSupplier::find()->where(['active'=>1])->orWhere(['id'=>1])->all(), 'id', 'name');
+        $category =  ArrayHelper::map(InvnCategory::find()->where(['active'=>1])->orWhere(['deleted'=>0])->all(), 'id', 'name');
+       
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Success');
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            
             return $this->render('create', [
-                'model' => $model,
+                'model' => $model, 'supplier'=>$supplier, 'category'=>$category
             ]);
         }
     }
 
     /**
-     * Updates an existing InvnDepartment model.
+     * Updates an existing InvnItemMaster model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -85,18 +88,20 @@ class InvnDepartmentController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $supplier =  ArrayHelper::map(InvnSupplier::find()->where(['active'=>1])->orWhere(['id'=>1])->all(), 'id', 'name');
+        $category =  ArrayHelper::map(InvnCategory::find()->where(['active'=>1])->orWhere(['deleted'=>0])->all(), 'id', 'name');
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'model' => $model, 'supplier'=>$supplier, 'category'=>$category,
             ]);
         }
     }
 
     /**
-     * Deletes an existing InvnDepartment model.
+     * Deletes an existing InvnItemMaster model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -109,15 +114,15 @@ class InvnDepartmentController extends Controller
     }
 
     /**
-     * Finds the InvnDepartment model based on its primary key value.
+     * Finds the InvnItemMaster model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return InvnDepartment the loaded model
+     * @return InvnItemMaster the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = InvnDepartment::findOne($id)) !== null) {
+        if (($model = InvnItemMaster::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

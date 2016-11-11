@@ -42,9 +42,9 @@
                     ],
                     ['label'=>'Inventory Management', 'icon'=>'fa fa-cubes', 'url'=>'#',
                         'items'=>[
-                            ['label'=>'Categories', 'icon'=>'fa fa-sitemap', 'url'=>'/inventory/invn-category'],
                             ['label'=>'Departments', 'icon'=>'fa fa-building', 'url'=>'/inventory/invn-department'],
-
+                            ['label'=>'Categories', 'icon'=>'fa fa-sitemap', 'url'=>'/inventory/invn-category'],
+                            ['label'=>'Inventory Items', 'icon'=>'fa fa-shopping-cart', 'url'=>'/inventory/invn-item-master'],
                         ]
                     ],
                     ['label'=>'Auth Management', 'icon'=>'fa fa-key', 'url'=>'#',

@@ -36,7 +36,8 @@ class BookingController extends \app\controllers\ApiController
                         'actions' => ['index', 'view', 'create', 'update', 
                                       'delete','confirm', 'search-reservations',
                                       'fetch-guests', 'update-package-inv-item',
-                                      'dashboard', 'check-resv-availability', 'update-reservation-dates', 'test-pusher'],
+                                      'dashboard', 'check-resv-availability', 'update-reservation-dates',
+                                      'place-order', 'test-pusher'],
                         'allow' => true,
                         //'roles' => ['@'], 
                         'roles' => ['user-role'],
@@ -328,11 +329,15 @@ class BookingController extends \app\controllers\ApiController
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
         $currOccupents = GrcBooking::getCurrentOccupants();
+        $items = \app\modules\inventory\models\InvnItemMaster::getItems();
+    
+
        
         return $this->render('dashboard', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'currOccupents' => $currOccupents,
+            'items'=>$items,
         ]);
        
     }
@@ -398,6 +403,22 @@ class BookingController extends \app\controllers\ApiController
        
        $this->renderJson(['result'=>'error', 'message'=>'success', 'data'=>$move]);
              
+    }
+    
+    public function actionPlaceOrder()
+    {
+        if(Yii::$app->request->isAjax)
+        {
+            $invoiceModel = new \app\modules\inventory\models\InvnInvoice();
+            if($invoiceModel->createInvoice(Yii::$app->request->post()))
+                $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>'']);
+                Yii::$app->end();
+                
+                
+          $this->renderJson(['result'=>'error', 'message'=>'Failed', 'data'=>'']);      
+            
+        }
+        
     }
 
     public function actionTestPusher()

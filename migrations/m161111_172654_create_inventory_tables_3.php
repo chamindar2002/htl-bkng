@@ -48,6 +48,10 @@ class m161111_172654_create_inventory_tables_3 extends Migration
         $this->addColumn('invn_item_master', 'unit_id', 'INTEGER AFTER supplier_id');
         $this->addColumn('invn_item_master', 'reoder_point', 'INTEGER AFTER unit_id');
         $this->addColumn('invn_item_master', 'opening_stock', 'INTEGER AFTER reoder_point');
+        $this->addColumn('invn_item_master', 'price', 'double AFTER opening_stock');
+        
+        $this->addColumn('invn_invoice_items', 'order_quantity', 'double AFTER price');
+        $this->addColumn('invn_invoice_items', 'sub_total', 'double AFTER order_quantity');
         
     }
 
@@ -59,6 +63,10 @@ class m161111_172654_create_inventory_tables_3 extends Migration
         $this->dropColumn('invn_item_master', 'unit_id');
         $this->dropColumn('invn_item_master', 'reoder_point');
         $this->dropColumn('invn_item_master', 'opening_stock');
+        $this->dropColumn('invn_item_master', 'price');
+        
+        $this->dropColumn('invn_invoice_items', 'order_quantity');
+        $this->dropColumn('invn_invoice_items', 'sub_total');
         
     }
     

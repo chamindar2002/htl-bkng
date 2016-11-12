@@ -128,4 +128,15 @@ class InvnItemMasterController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    public function actionAutoCompleteItem()
+    {
+        $d = array(
+            ['id'=>100,'full_name'=>'Just in case'],
+            ['id'=>101,'full_name'=>'Kidding me'],
+        );
+        
+        
+        echo json_encode($d);
+    }
 }

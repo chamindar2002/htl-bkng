@@ -17,128 +17,131 @@ Select2Asset::register($this);
 <?php
 $this->title = 'Front Desk : Dashboard';
 ?>
-
-<br>
-
-<div class="container">
-  <button type="button" id="btnAx" class="btn btn-primary">Todays Arrivals <span class="badge">7</span></button>
-  <button type="button" class="btn btn-success">Todays Bookings <span class="badge">3</span></button>
-  <button type="button" class="btn btn-danger">New Reservations <span class="badge">5</span></button>
-  <?= Html::a('New Booking', ['create'], ['class' => 'btn btn-success']) ?>
-</div>
   
-<hr/>  
+<hr/> 
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#home">Bookings</a></li>
+  <li><a data-toggle="tab" href="#menu1" id="order_tab">Orders</a></li>
+  <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+</ul>
+
+<div class="tab-content">
+  
+  <div id="home" class="tab-pane fade in active"><p>
+    <br /><?= Html::a('New Booking', ['create'], ['class' => 'btn btn-success']) ?>
     
-<?= DataTables::widget([
-    'dataProvider' => $dataProvider,
-    'filterModel' => $searchModel,
-    'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
- 
-        [
-         'label'=> 'Room',
-         'attribute' => 'room_name',
-         'value' => 'room_name'
+    <?= DataTables::widget([
+      'dataProvider' => $dataProvider,
+      'filterModel' => $searchModel,
+      'columns' => [
+          ['class' => 'yii\grid\SerialColumn'],
+
+          [
+           'label'=> 'Room',
+           'attribute' => 'room_name',
+           'value' => 'room_name'
+          ],
+          'full_name',
+          [
+           'label'=> 'In',
+           'attribute' => 'checkin_date',
+           'value' => 'checkin_date'
+          ],
+          [
+           'label'=> 'Out',
+           'attribute' => 'checkout_date',
+           'value' => 'checkout_date'
+          ],
+          [
+           'label'=> 'agent_name',
+           'attribute' => 'agent_name',
+           'value' => 'agent_name'
+          ],
+          [
+           'label'=> 'Adults',
+           'attribute' => 'no_of_adults',
+           'value' => 'no_of_adults'
+          ],
+          [
+           'label'=> 'Children',
+           'attribute' => 'no_of_children',
+           'value' => 'no_of_children'
+          ],
+          [
+           'label'=> 'Status',
+           'attribute' => 'booking_status',
+           'value' => 'booking_status'
+          ],
+          [
+              'class' => 'yii\grid\ActionColumn',
+              'template' => '{new_view}{new_edit}',
+              'buttons' => [
+                'new_view' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', 'view?id='.$model->booking_id, [
+                                'title' => Yii::t('app', 'New Action1'),
+                    ]);
+                },
+                'new_edit' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', 'update?id='.$model->booking_id, [
+                                'title' => Yii::t('app', 'New Action1'),
+                    ]);
+                }        
+              ],
+
+
         ],
-        'full_name',
-        [
-         'label'=> 'In',
-         'attribute' => 'checkin_date',
-         'value' => 'checkin_date'
-        ],
-        [
-         'label'=> 'Out',
-         'attribute' => 'checkout_date',
-         'value' => 'checkout_date'
-        ],
-        [
-         'label'=> 'agent_name',
-         'attribute' => 'agent_name',
-         'value' => 'agent_name'
-        ],
-        [
-         'label'=> 'Adults',
-         'attribute' => 'no_of_adults',
-         'value' => 'no_of_adults'
-        ],
-        [
-         'label'=> 'Children',
-         'attribute' => 'no_of_children',
-         'value' => 'no_of_children'
-        ],
-        [
-         'label'=> 'Status',
-         'attribute' => 'booking_status',
-         'value' => 'booking_status'
-        ],
-        [
-            'class' => 'yii\grid\ActionColumn',
-            'template' => '{new_view}{new_edit}',
-            'buttons' => [
-              'new_view' => function ($url, $model) {
-                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', 'view?id='.$model->booking_id, [
-                              'title' => Yii::t('app', 'New Action1'),
-                  ]);
-              },
-              'new_edit' => function ($url, $model) {
-                  return Html::a('<span class="glyphicon glyphicon-pencil"></span>', 'update?id='.$model->booking_id, [
-                              'title' => Yii::t('app', 'New Action1'),
-                  ]);
-              }        
-            ],
-                        
-                    
+
+        //['class' => 'yii\grid\ActionColumn'],
+
       ],
-      
-      //['class' => 'yii\grid\ActionColumn'],
+       'clientOptions' => [
+              "lengthMenu"=> [[20,-1], [20,Yii::t('app',"All")]],
+              "info"=>false,
+              "responsive"=>true, 
+              "dom"=> 'lfTrtip',
+              "tableTools"=>[
+                  "aButtons"=> [  
+                      [
+                      "sExtends"=> "copy",
+                      "sButtonText"=> Yii::t('app',"Copy to clipboard")
+                      ],[
+                      "sExtends"=> "csv",
+                      "sButtonText"=> Yii::t('app',"Save to CSV")
+                      ],[
+                      "sExtends"=> "xls",
+                      "oSelectorOpts"=> ["page"=> 'current']
+                      ],[
+                      "sExtends"=> "pdf",
+                      "sButtonText"=> Yii::t('app',"Save to PDF")
+                      ],[
+                      "sExtends"=> "print",
+                      "sButtonText"=> Yii::t('app',"Print")
+                      ],
+                  ]
+              ]
+          ],                             
 
-    ],
-     'clientOptions' => [
-            "lengthMenu"=> [[20,-1], [20,Yii::t('app',"All")]],
-            "info"=>false,
-            "responsive"=>true, 
-            "dom"=> 'lfTrtip',
-            "tableTools"=>[
-                "aButtons"=> [  
-                    [
-                    "sExtends"=> "copy",
-                    "sButtonText"=> Yii::t('app',"Copy to clipboard")
-                    ],[
-                    "sExtends"=> "csv",
-                    "sButtonText"=> Yii::t('app',"Save to CSV")
-                    ],[
-                    "sExtends"=> "xls",
-                    "oSelectorOpts"=> ["page"=> 'current']
-                    ],[
-                    "sExtends"=> "pdf",
-                    "sButtonText"=> Yii::t('app',"Save to PDF")
-                    ],[
-                    "sExtends"=> "print",
-                    "sButtonText"=> Yii::t('app',"Print")
-                    ],
-                ]
-            ]
-        ],                             
-                    
-]);?>
+  ]);?>
+  </p></div>
+  <div id="menu1" class="tab-pane fade">
+      <p>
+        <?= $this->render(
+                '@app/views/common/_autocompleter',
+                        ['currOccupents'=>$currOccupents, 'items'=>$items]
+                );
+        ?>
+      </p>
+  </div>
+  <div id="menu2" class="tab-pane fade">
+    <h3>Menu 2</h3>
+    <p>Some content in menu 2.</p>
+  </div>
+</div>
+    
 
-<?php
-//\yii\helpers\VarDumper::dump($currOcupents); 
-echo 'Room' .'<br>';
-echo AutoComplete::widget([    
-            'clientOptions' => [
-            'source' => $currOccupents,
-            'minLength'=>'1', 
-            'autoFill'=>true,
-            'select' => new JsExpression("function( event, ui ) {
-                    $('#temp_booking_id').val(ui.item.id);
-                    $('#temp_guest').val(ui.item.full_name);
-                 }")],
-                 ]);
-?>
-<input type="text" id="temp_booking_id" value="x">
-<input type="text" id="temp_guest" value="x">
 
+
+<hr/>
 <button id="send_push">Pusher</button>
 
 <script src="https://js.pusher.com/3.2/pusher.min.js"></script>

@@ -18,7 +18,7 @@ class m161101_165859_create_view_booking extends Migration
                 JOIN rooms rms ON rsv.room_id = rms.id
                 JOIN grc_guests gst ON gbk.guest_id = gst.id
                 JOIN grc_agents agt ON gbk.agent_id = agt.id
-                LEFT JOIN invn_invoice invn ON gbk.id = invn.booking_id 
+                LEFT JOIN invn_invoice invn ON gbk.id = invn.booking_id GROUP BY gbk.id
                 ";
         $this->execute($sql);
     }

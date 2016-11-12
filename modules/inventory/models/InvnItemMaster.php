@@ -17,7 +17,8 @@ use yii\behaviors\BlameableBehavior;
  * @property integer $supplier_id
  * @property integer $unit_id 
  * @property integer $reoder_point 
- * @property integer $opening_stock 
+ * @property integer $opening_stock
+ * @property double $price 
  * @property integer $active
  * @property integer $deleted
  * @property integer $created_by
@@ -62,10 +63,11 @@ class InvnItemMaster extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'category_id', 'supplier_id'], 'required'],
+            [['name', 'category_id', 'supplier_id', 'price'], 'required'],
             [['category_id', 'supplier_id', 'unit_id', 'reoder_point', 'opening_stock', 'active', 'deleted', 'created_by'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 64],
+            [['price'], 'number'], 
             [['sku'], 'string', 'max' => 20],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => InvnCategory::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['supplier_id'], 'exist', 'skipOnError' => true, 'targetClass' => InvnSupplier::className(), 'targetAttribute' => ['supplier_id' => 'id']],
@@ -86,6 +88,7 @@ class InvnItemMaster extends \yii\db\ActiveRecord
             'unit_id' => 'Unit', 
             'reoder_point' => 'Reoder Point', 
             'opening_stock' => 'Opening Stock', 
+            'price' => 'Price',
             'active' => 'Active',
             'deleted' => 'Deleted',
             'created_by' => 'Created By',
@@ -108,5 +111,15 @@ class InvnItemMaster extends \yii\db\ActiveRecord
     public function getSupplier()
     {
         return $this->hasOne(InvnSupplier::className(), ['id' => 'supplier_id']);
+    }
+    
+    public static function getItems()
+    {
+        return self::find()
+        ->select(['name as value', 'name as  label','id as id', 'price as item_price'])
+        ->where('deleted=0')
+        ->where('active=1')        
+        ->asArray()
+        ->all();  
     }
 }

@@ -112,4 +112,43 @@ class InvnInvoice extends \yii\db\ActiveRecord
     {
         return $this->hasMany(InvnInvoiceItems::className(), ['invoice_id' => 'id']);
     }
+    
+    public function createInvoice($data)
+    {
+        $booking = GrcBooking::find()->where(['id'=>$data['booking_id']])->one();
+        
+        $model = new InvnInvoice;
+        $model->invoice_date = date('Y-m-d');
+        $model->reservation_id = $booking->reservation_id;
+        $model->booking_id = $data['booking_id'];
+        $rows = json_decode($data['item_rows']);
+        
+        if($model->save())
+        {
+           foreach ($rows As $key=>$row)
+           {
+              $item = InvnItemMaster::find()->where(['id'=>$row->id])->one();
+              $data_batch = array(
+                   //'package_id' => $data["package_$i"],
+                   'item_description'=> $item->name,
+                   'package_id'=>1,
+                   'invoice_id'=>$model->id,
+                   'item_master_id'=>$item->id,
+                   'date_applicable'=>date('Y-m-d'),
+                   'price' => $item->price,
+                   'order_quantity' => $row->quantity,
+                   'sub_total' => $item->price * $row->quantity
+              
+               );
+               
+              $insertCount = Yii::$app->db->createCommand()->insert('invn_invoice_items',$data_batch)->execute();
+              
+           }
+           
+           return true;
+        }
+         
+        return false;
+       
+    }
 }

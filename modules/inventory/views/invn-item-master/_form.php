@@ -12,22 +12,47 @@ use app\components\GrcUtilities;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'sku')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'category_id')->dropDownList($category, ['prompt'=>'', 'class'=>'form-control']); ?>
-
-    <?= $form->field($model, 'supplier_id')->dropDownList($supplier, ['class'=>'form-control']); ?>
+    <div class="row">
+        <div class="col-xs-6">
+             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-xs-6">
+            <?= $form->field($model, 'sku')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
     
-    <?= $form->field($model, 'unit_id')->dropDownList(['1'=>'NONE','2'=>'GRAMS (g)'], ['class'=>'form-control']); ?>
+     <div class="row">
+         <div class="col-xs-4">
+             <?= $form->field($model, 'category_id')->dropDownList($category, ['prompt'=>'', 'class'=>'form-control']); ?>
+         </div>
+         <div class="col-xs-4">
+             <?= $form->field($model, 'supplier_id')->dropDownList($supplier, ['class'=>'form-control']); ?>  
+         </div>
+         <div class="col-xs-4">
+             <?= $form->field($model, 'unit_id')->dropDownList(['1'=>'NONE','2'=>'GRAMS (g)'], ['class'=>'form-control']); ?>
+         </div>
+     </div>   
+   
+     <div class="row">
+         <div class="col-xs-6">
+             <?= $form->field($model, 'reoder_point')->textInput(['maxlength' => true]) ?>
+         </div>
+         <div class="col-xs-6">
+             <?= $form->field($model, 'opening_stock')->textInput(['maxlength' => true]) ?>
+         </div>
+     </div>
     
-    <?= $form->field($model, 'reoder_point')->textInput(['maxlength' => true]) ?>
+    <div class="row">
+        <div class="col-xs-6">
+            <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-xs-6">
+            <?= $form->field($model, 'active')->dropDownList(GrcUtilities::getRecordStatus(), ['class'=>'form-control']); ?>
+        </div>
+    </div>
     
-    <?= $form->field($model, 'opening_stock')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'active')->dropDownList(GrcUtilities::getRecordStatus(), ['class'=>'form-control']); ?>
-
+   
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

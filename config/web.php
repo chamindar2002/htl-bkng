@@ -76,6 +76,9 @@ $config = [
             'inventory' => [
                 'class' => 'app\modules\inventory\InventoryModule',
             ],
+            'gridview' =>  [
+                'class' => '\kartik\grid\Module'
+            ]
          ],
     'as access'=>[
 	'class'=>'mdm\admin\components\AccessControl',

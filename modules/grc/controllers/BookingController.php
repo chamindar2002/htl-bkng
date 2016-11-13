@@ -14,6 +14,7 @@ use app\components\GrcUtilities;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\db\Query;
+use app\modules\inventory\models\InvnInvoiceItems;
 use Pusher;
 
 /**
@@ -37,7 +38,7 @@ class BookingController extends \app\controllers\ApiController
                                       'delete','confirm', 'search-reservations',
                                       'fetch-guests', 'update-package-inv-item',
                                       'dashboard', 'check-resv-availability', 'update-reservation-dates',
-                                      'place-order', 'test-pusher'],
+                                      'place-order', 'test-pusher', 'fetch-order', 'cancel-order-item'],
                         'allow' => true,
                         //'roles' => ['@'], 
                         'roles' => ['user-role'],
@@ -328,6 +329,9 @@ class BookingController extends \app\controllers\ApiController
         $searchModel = new \app\modules\grc\models\ViewBkRsvGstRmInvSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
+        $orderSearchModel = new \app\modules\inventory\models\ViewCustomerOrdersSearch;
+        $orderDataProvider = $orderSearchModel->search(Yii::$app->request->queryParams);
+        
         $currOccupents = GrcBooking::getCurrentOccupants();
         $items = \app\modules\inventory\models\InvnItemMaster::getItems();
     
@@ -338,6 +342,8 @@ class BookingController extends \app\controllers\ApiController
             'dataProvider' => $dataProvider,
             'currOccupents' => $currOccupents,
             'items'=>$items,
+            'orderDataProvider'=> $orderDataProvider,
+            'orderSearchModel'=>$orderSearchModel,
         ]);
        
     }
@@ -419,6 +425,32 @@ class BookingController extends \app\controllers\ApiController
             
         }
         
+    }
+    
+    public function actionFetchOrder()
+    {
+        if(Yii::$app->request->isAjax)
+        {
+          
+            $data = InvnInvoiceItems::find()->where(['id'=>Yii::$app->request->post('ivoice_item_id')])->one();
+            
+            $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>$data->attributes]);
+        }
+    }
+    
+    public function actionCancelOrderItem()
+    {
+        if(Yii::$app->request->isAjax)
+        {
+          
+            $data = InvnInvoiceItems::deleteItem(Yii::$app->request->post('ivoice_item_id'));
+            if($data)           
+                $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>$data]);
+                Yii::$app->end();
+                
+          $this->renderJson(['result'=>'error', 'message'=>'Failed', 'data'=>$data]);      
+            
+        }
     }
 
     public function actionTestPusher()

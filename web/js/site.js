@@ -41,6 +41,15 @@ $('#btn_place_order').click(function(e){
    DynamicItemsTable.placeOrder(); 
 });
 
+$('.order-item-view').click(function(e){
+    e.preventDefault();
+    var order_item_id = $(this).attr('attribute-id');
+    DynamicItemsTable.fetchOrderItem(order_item_id);
+   
+    
+    
+})
+
 var table, id, name, price, _counter=1, _rows, _booking;
 var DynamicItemsTable = {
   
@@ -121,33 +130,101 @@ var DynamicItemsTable = {
       if(itemsArray.length == 0)
       {
           alert('array empty');
-          
+      
       }else{
-        var booking_id = $('#temp_booking_id').val();  
-        var rows = JSON.stringify(itemsArray);
+          
+        var r = confirm("Confirm!");
+        
+        if (r == true) {
+            var booking_id = $('#temp_booking_id').val();  
+            var rows = JSON.stringify(itemsArray);
+            $.ajax({
+                url: "place-order",
+                type: "POST",
+                data: {booking_id:booking_id, item_rows:rows}, //JSON
+                dataType: "json",
+                cache: false,
+
+                success:function(response, textStatus, jqXHR) {
+                     if(response.result == 'success'){
+                        DynamicItemsTable.resetAll($('#w2'));
+                        $('#tbody_item_list_table').empty();
+                        $('#w1').val('');
+                        $('#temp_guest').val('');
+
+                     }   
+                },
+                error:function(jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+          }
+     }
+
+        
+  },
+  fetchOrderItem: function(id){
+       //$('#order-items-view-placeholder').html('xxxx : '+id);
+       
         $.ajax({
-            url: "place-order",
-            type: "POST",
-            data: {booking_id:booking_id, item_rows:rows}, //JSON
-            dataType: "json",
-            cache: false,
+                url: "fetch-order",
+                type: "POST",
+                data: {ivoice_item_id:id}, //JSON
+                dataType: "json",
+                cache: false,
 
-            success:function(response, textStatus, jqXHR) {
-                 if(response.result == 'success'){
-                    DynamicItemsTable.resetAll($('#w2'));
-                    $('#tbody_item_list_table').empty();
-                    $('#w1').val('');
-                    $('#temp_guest').val('');
-                    
-                 }   
-            },
-            error:function(jqXHR, textStatus, errorThrown) {
+                success:function(response, textStatus, jqXHR) {
+                     if(response.result == 'success'){
+                        var _htm = '<tr>'
+                                   +'<td>'+response.data.item_description+'</td>' 
+                                   +'<td>'+response.data.price+'</td>' 
+                                   +'<td>'+response.data.order_quantity+'</td>' 
+                                   +'<td>'+response.data.sub_total+'</td>' 
+                                   +'<td><input type="button" value="Cancel" class="btn btn-danger" onClick="DynamicItemsTable.cancelOrderItem('+response.data.id+')"></td>' 
+                                   +'</tr>' 
+                        $('#order-items-view-table-tbody').empty();   
+                        $('#order-items-view-table').append(_htm);
+                        
+                        $('#modal-item-view').modal('show');
+                     }   
+                },
+                error:function(jqXHR, textStatus, errorThrown) {
 
-            }
-        });
-      }
-  }        
+                }
+            });
+  },
+  cancelOrderItem: function(id){
+      var r = confirm("Confirm!");
+        
+        if (r == true) {
+             $.ajax({
+                url: "cancel-order-item",
+                type: "POST",
+                data: {ivoice_item_id:id}, //JSON
+                dataType: "json",
+                cache: false,
+
+                success:function(response, textStatus, jqXHR) {
+                     if(response.result == 'success'){
+                         $.pjax.reload({container:'#grid-demo-invn-items'});
+                     }   
+                },
+                error:function(jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+        }
+  }
+  
+  
   
   
 };
 
+$('#reloadme').click(function(){
+  $.pjax.reload({container:'#grid-demo'});
+});
+
+$('#force-reload').click(function(){
+    $.pjax.reload({container:'#grid-demo'});
+});

@@ -48,7 +48,7 @@ class ViewBkRsvGstRmInvSearch extends \yii\db\ActiveRecord
     {
         return [
             [['booking_id', 'no_of_children', 'reservation_id', 'guest_id', 'agent_id', 'invoice_id'], 'integer'],
-            [['no_of_adults', 'checkin_date', 'checkout_date', 'room_name', 'room_status', 'title', 'first_name', 'last_name', 'agent_name'], 'required'],
+            [['title', 'first_name', 'last_name'], 'required'],
             [['no_of_adults'], 'number'],
             [['checkin_date', 'checkout_date', 'invoice_date'], 'safe'],
             [['booking_status', 'invoice_status'], 'string', 'max' => 10],

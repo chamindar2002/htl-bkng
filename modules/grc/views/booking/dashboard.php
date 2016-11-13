@@ -1,14 +1,16 @@
 <?php
-use yii\grid\GridView;
+//use yii\grid\GridView;
 use yii\widgets\Pjax;
 use fedemotta\datatables\DataTables;
-use yii\bootstrap\Html;
+//use yii\bootstrap\Html;
 use yii\helpers\Url;
 use app\assets\DpAsset;
 use app\assets\Select2Asset;
 use yii\jui\DatePicker;
 use yii\jui\AutoComplete;
 use yii\web\JsExpression;
+use kartik\grid\GridView;
+use yii\helpers\Html;
 
 DpAsset::register($this);
 Select2Asset::register($this);
@@ -122,12 +124,110 @@ $this->title = 'Front Desk : Dashboard';
           ],                             
 
   ]);?>
-  </p></div>
+  </p>
+
+    <?= GridView::widget([
+      'dataProvider'=> $dataProvider,
+      'filterModel' => $searchModel,
+      'columns' => [
+            'room_name',
+            'full_name',
+            'checkin_date',
+            'checkout_date',
+            [
+             'label'=> 'agent_name',
+             'attribute' => 'agent_name',
+             'value' => 'agent_name'
+            ],
+            [
+             'label'=> 'Adults',
+             'attribute' => 'no_of_adults',
+             'value' => 'no_of_adults'
+            ],
+            [
+             'label'=> 'Children',
+             'attribute' => 'no_of_children',
+             'value' => 'no_of_children'
+            ],
+            [
+             'label'=> 'Status',
+             'attribute' => 'booking_status',
+             'value' => 'booking_status'
+            ],  
+              [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{new_view}{new_edit}',
+                'buttons' => [
+                  'new_view' => function ($url, $model) {
+                      return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', 'view?id='.$model->booking_id, [
+                                  'title' => Yii::t('app', 'New Action1'),
+                      ]);
+                  },
+                  'new_edit' => function ($url, $model) {
+                      return Html::a('<span class="glyphicon glyphicon-pencil"></span>', 'update?id='.$model->booking_id, [
+                                  'title' => Yii::t('app', 'New Action1'),
+                      ]);
+                  }        
+                ],
+
+
+          ],
+      ],
+      'toolbar' => [
+          [
+              'content'=>
+                  /*Html::button('<i class="glyphicon glyphicon-repeat"></i>', [
+                      'type'=>'button', 
+                      'title'=>'Add Book', 
+                      'class'=>'btn btn-default',
+                      'id'=>'reloadme',
+                  ]) . ' '.
+                  Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], [
+                      'class' => 'btn btn-default', 
+                      'title' => 'Reset Grid'
+                  ]),*/
+              Html::button('<i class="glyphicon glyphicon-repeat"></i>', [
+                      'type'=>'button', 
+                      'title'=>'Add Book', 
+                      'class'=>'btn btn-default',
+                      'id'=>'reloadme',
+                  ]),
+          ],
+          '{export}',
+          '{toggleData}'
+      ],
+      'panel' => [
+              'type' => GridView::TYPE_PRIMARY,
+              'heading' => 'Bookings',
+          ], 
+      'export' => [
+              'fontAwesome' => true
+          ],
+        'responsive' => true,
+          'hover' => true,
+      'pjax'=>true,
+      'pjaxSettings'=>[
+          'options'=>[
+              'id'=>'grid-demo',
+          ],
+          'neverTimeout'=>true,
+          'beforeGrid'=>'My fancy content before.',
+          'afterGrid'=>'My fancy content after.',
+      ]
+  ]);
+
+  ?>
+  
+    
+  </div>
+    
+    
   <div id="menu1" class="tab-pane fade">
       <p>
         <?= $this->render(
                 '@app/views/common/_autocompleter',
-                        ['currOccupents'=>$currOccupents, 'items'=>$items]
+                        ['currOccupents'=>$currOccupents, 'items'=>$items,
+                            'orderDataProvider'=> $orderDataProvider, 'orderSearchModel'=>$orderSearchModel]
                 );
         ?>
       </p>
@@ -138,7 +238,7 @@ $this->title = 'Front Desk : Dashboard';
   </div>
 </div>
     
-
+<button id="force-reload">Force Reload</button>
 
 
 <hr/>

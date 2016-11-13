@@ -70,5 +70,15 @@ class InvnInvoiceItems extends \yii\db\ActiveRecord
         return $this->hasOne(InvnInvoice::className(), ['id' => 'invoice_id']);
     }
     
+    public static function deleteItem($id)
+    {
+       $item = self::find()->where(['id'=>$id])->one();   
+       if($item->invoice->booking->status == 'OPEN'){
+            $item->deleted = 1;
+            return $item->update();
+       }
+
+    }
+    
     
 }

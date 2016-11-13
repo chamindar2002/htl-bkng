@@ -25,7 +25,8 @@ use kartik\grid\GridView;
                  }")],
             'options' => [
                     'class' => 'form-control', //single class
-                    'placeholder'=>'Type in room number' 
+                    'placeholder'=>'Type in room number',
+                    'id' => 'select2-room-search',
             ],
            ]);
         ?>
@@ -49,7 +50,8 @@ use kartik\grid\GridView;
                  }")],
                  'options' => [
                     'class' => 'form-control', //single class
-                    'placeholder'=>'Type in item name' 
+                    'placeholder'=>'Type in item name', 
+                    'id'=>'select2-item-search', 
                 ],
           ]);
     ?>
@@ -95,7 +97,8 @@ use kartik\grid\GridView;
                 'new_view' => function ($url, $orderSearchModel) {
                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', '#', [
                                 'title' => Yii::t('app', 'View'),
-                                'class'=>'order-item-view', 'attribute-id'=>$orderSearchModel->invoice_item_id
+                                'class'=>'order-item-view', 'attribute-id'=>$orderSearchModel->invoice_item_id,
+                                'onclick'=>'DynamicItemsTable.fetchOrderItem('.$orderSearchModel->invoice_item_id.');'
                     ]);
                 },
                 /*'new_edit' => function ($url, $orderSearchModel) {
@@ -135,8 +138,8 @@ use kartik\grid\GridView;
            'id'=>'grid-demo-invn-items',
        ],
        'neverTimeout'=>true,
-       'beforeGrid'=>'My fancy content before.',
-       'afterGrid'=>'My fancy content after.',
+       //'beforeGrid'=>'My fancy content before.',
+       //'afterGrid'=>'My fancy content after.',
       ]
   ]);
 

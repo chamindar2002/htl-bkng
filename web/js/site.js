@@ -10,7 +10,7 @@ $(window).on('load', function () {
 });
 
 
-$('#w2').keyup(function(e){
+$('#select2-item-search').keyup(function(e){
    
     if(e.keyCode == 13)
     {
@@ -29,11 +29,11 @@ $('#w2').keyup(function(e){
     }
 });
 
-$('#w1').keyup(function(e){
+$('#select2-room-search').keyup(function(e){
    
     if(e.keyCode == 13)
     {
-       $('#w2').focus();
+       $('#select2-item-search').focus();
     }
 });
 
@@ -110,7 +110,7 @@ var DynamicItemsTable = {
       }
       if(_id.val() === ''){
           $('.grc-item-master-id').addClass('has-error');
-           $('#w2').focus();
+           $('#select2-item-search').focus();
       }else{
           if($('.grc-item-master-id').hasClass('has-error')){
               $('.grc-item-master-id').removeClass('has-error');
@@ -147,10 +147,11 @@ var DynamicItemsTable = {
 
                 success:function(response, textStatus, jqXHR) {
                      if(response.result == 'success'){
-                        DynamicItemsTable.resetAll($('#w2'));
+                        DynamicItemsTable.resetAll($('#select2-item-search'));
                         $('#tbody_item_list_table').empty();
                         $('#w1').val('');
                         $('#temp_guest').val('');
+                        $.pjax.reload({container:'#grid-demo-invn-items'});
 
                      }   
                 },

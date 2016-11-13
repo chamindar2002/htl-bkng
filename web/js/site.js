@@ -207,6 +207,7 @@ var DynamicItemsTable = {
                 success:function(response, textStatus, jqXHR) {
                      if(response.result == 'success'){
                          $.pjax.reload({container:'#grid-demo-invn-items'});
+                         $('#modal-item-view').modal('hide');
                      }   
                 },
                 error:function(jqXHR, textStatus, errorThrown) {

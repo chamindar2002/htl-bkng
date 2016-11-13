@@ -5,7 +5,7 @@ namespace app\modules\inventory\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\inventory\models\ViewCustomerOrder;
+use app\modules\inventory\models\ViewCustomerOrders;
 
 
 /**
@@ -30,7 +30,7 @@ use app\modules\inventory\models\ViewCustomerOrder;
  */
 
 
-class ViewCustomerOrdersSearch extends \yii\db\ActiveRecord{
+class ViewCustomerOrdersSearch extends  ViewCustomerOrders{
   
     public static function tableName()
     {
@@ -43,7 +43,7 @@ class ViewCustomerOrdersSearch extends \yii\db\ActiveRecord{
     public function rules()
     {
         return [
-            [['id', 'invoice_item_id', 'date_applicable', 'item_description', 'item_master_id', 'category_name', 'checkin_date', 'checkout_date', 'room_name'], 'required'],
+            [['id', 'invoice_item_id', 'date_applicable', 'item_description', 'item_master_id', 'category_name', 'checkin_date', 'checkout_date'], 'required'],
             [['id', 'invoice_item_id', 'item_master_id'], 'integer'],
             [['date_applicable', 'checkin_date', 'checkout_date'], 'safe'],
             [['price', 'order_quantity', 'total'], 'number'],
@@ -95,7 +95,7 @@ class ViewCustomerOrdersSearch extends \yii\db\ActiveRecord{
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
-            return $dataProvider;
+            //return $dataProvider;
         }
 
         // grid filtering conditions
@@ -104,24 +104,26 @@ class ViewCustomerOrdersSearch extends \yii\db\ActiveRecord{
             'id' => $this->id,
             'invoice_item_id' => $this->invoice_item_id,
             'date_applicable' => $this->date_applicable,
-            'item_description' => $this->item_description,
+            //'item_description' => $this->item_description,
             'item_master_id' => $this->item_master_id,
             'price' => $this->price,
             'order_quantity' => $this->order_quantity,
             'total' => $this->total,
             'invoice_status' => $this->invoice_status,
             'booking_status' => $this->booking_status,
-            'full_name' => $this->full_name,
+            //'full_name' => $this->full_name,
             'category_name' => $this->category_name,
             'checkin_date' => $this->checkin_date,
             'checkout_date' => $this->checkout_date,
-            'room_name' => $this->room_name,
+            //'room_name' => $this->room_name,
             
         ]);
 
         $query->andFilterWhere(['like', 'item_description', $this->item_description])
               ->andFilterWhere(['like', 'full_name', $this->full_name]) 
               ->andFilterWhere(['like', 'room_name', $this->room_name]);  
+        
+        //var_dump($query->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);exit;
         
         return $dataProvider;
     }

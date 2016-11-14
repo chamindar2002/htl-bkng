@@ -149,7 +149,7 @@ var DynamicItemsTable = {
                      if(response.result == 'success'){
                         DynamicItemsTable.resetAll($('#select2-item-search'));
                         $('#tbody_item_list_table').empty();
-                        $('#w1').val('');
+                        $('#select2-room-search').val('');
                         $('#temp_guest').val('');
                         $.pjax.reload({container:'#grid-demo-invn-items'});
 
@@ -181,8 +181,14 @@ var DynamicItemsTable = {
                                    +'<td>'+response.data.price+'</td>' 
                                    +'<td>'+response.data.order_quantity+'</td>' 
                                    +'<td>'+response.data.sub_total+'</td>' 
-                                   +'<td><input type="button" value="Cancel" class="btn btn-danger" onClick="DynamicItemsTable.cancelOrderItem('+response.data.id+')"></td>' 
-                                   +'</tr>' 
+                                   +'<td>'
+                                   if(response.data.status == 'OPEN'){
+                                        _htm += '<input type="button" value="Cancel" class="btn btn-danger" onClick="DynamicItemsTable.cancelOrderItem('+response.data.id+')"></td>'; 
+                                   }else{
+                                        _htm += response.data.status;
+                                   }
+                                   _htm += '</td>';
+                                   _htm += '</tr>'; 
                         $('#order-items-view-table-tbody').empty();   
                         $('#order-items-view-table').append(_htm);
                         
@@ -225,8 +231,4 @@ var DynamicItemsTable = {
 
 $('#reloadme').click(function(){
   $.pjax.reload({container:'#grid-demo'});
-});
-
-$('#force-reload').click(function(){
-    $.pjax.reload({container:'#grid-demo'});
 });

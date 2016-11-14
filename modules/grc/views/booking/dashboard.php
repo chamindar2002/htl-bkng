@@ -211,8 +211,8 @@ $this->title = 'Front Desk : Dashboard';
               'id'=>'grid-demo',
           ],
           'neverTimeout'=>true,
-          'beforeGrid'=>'My fancy content before.',
-          'afterGrid'=>'My fancy content after.',
+          //'beforeGrid'=>'My fancy content before.',
+          //'afterGrid'=>'My fancy content after.',
       ]
   ]);
 
@@ -237,12 +237,11 @@ $this->title = 'Front Desk : Dashboard';
     <p>Some content in menu 2.</p>
   </div>
 </div>
-    
-<button id="force-reload">Force Reload</button>
-
+ 
 
 <hr/>
 <button id="send_push">Pusher</button>
+<div id="btnAx">No notifications</button>
 
 <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
 <script>
@@ -272,12 +271,12 @@ $this->title = 'Front Desk : Dashboard';
         encrypted: true
     });
 
-    var channel = pusher.subscribe('test_channel');
+    var channel = pusher.subscribe('kot_channel');
     channel.bind('my_event', function(data) {
         //alert(data.message);
-        $('#btnAx').text(data.message);
-        $('#btnAx').addClass('btn-danger');
-        $('#btnAx').removeClass('btn-primary');
+        $('#btnAx').html(data.message.message);
+        //$('#btnAx').addClass('btn-danger');
+        //$('#btnAx').removeClass('btn-primary');
     });
 
     Pusher.log = function(message) {
@@ -285,4 +284,6 @@ $this->title = 'Front Desk : Dashboard';
             window.console.log(message);
         }
     };
+    
+    
 </script>

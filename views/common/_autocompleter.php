@@ -77,7 +77,7 @@ use kartik\grid\GridView;
 <div class="form-group">
     <button type="button" class="btn btn-primary" id="btn_place_order">Place Order</button>
 </div>  
-          
+<br /><br />          
 <div class="form-group">
     
     
@@ -85,11 +85,19 @@ use kartik\grid\GridView;
       'dataProvider'=> $orderDataProvider,
       'filterModel' => $orderSearchModel,
       'columns' => [
+            [
+               'attribute' => 'date_applicable',
+               'format' => ['date', 'php:Y-m-d']
+            ],       
             'room_name',
             'full_name',
             'item_description',
             'order_quantity',
-            'total',
+             [
+               'attribute'=>'total',
+               'format'=>['decimal',2],
+             ],
+             'order_status',   
              [
               'class' => 'yii\grid\ActionColumn',
               'template' => '{new_view}{new_edit}',
@@ -124,8 +132,8 @@ use kartik\grid\GridView;
           '{toggleData}'
       ],
       'panel' => [
-              'type' => GridView::TYPE_PRIMARY,
-              'heading' => 'Bookings',
+              'type' => GridView::TYPE_DEFAULT,
+              'heading' => 'Orders',
           ], 
       'export' => [
               'fontAwesome' => true

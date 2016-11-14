@@ -32,6 +32,7 @@
                 'items' => [
                     ['label' => 'Room Calendar', 'icon'=>'fa fa-calendar', 'url'=>'/dashboard'],
                     ['label' => 'Dashboard', 'icon'=>'fa fa-tachometer', 'url'=>'/grc/booking/dashboard'],
+                    ['label' => 'Orders', 'icon'=>'fa fa-beer', 'url'=>'/inventory/orders'],
                     ['label'=>'Guest Management', 'icon'=>'fa fa-address-card', 'url'=>'#',
                         'items'=>[
                             ['label'=>'Agents', 'icon'=>'fa fa-handshake-o', 'url'=>'/grc/agent'],

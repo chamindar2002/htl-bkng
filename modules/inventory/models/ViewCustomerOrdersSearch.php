@@ -27,6 +27,7 @@ use app\modules\inventory\models\ViewCustomerOrders;
  * @property string $checkin_date
  * @property string $checkout_date
  * @property string $room_name
+ * @property string $order_status
  */
 
 
@@ -43,12 +44,12 @@ class ViewCustomerOrdersSearch extends  ViewCustomerOrders{
     public function rules()
     {
         return [
-            [['id', 'invoice_item_id', 'date_applicable', 'item_description', 'item_master_id', 'category_name', 'checkin_date', 'checkout_date'], 'required'],
+            [['id', 'invoice_item_id', 'item_master_id', 'category_name', 'checkin_date', 'checkout_date'], 'required'],
             [['id', 'invoice_item_id', 'item_master_id'], 'integer'],
             [['date_applicable', 'checkin_date', 'checkout_date'], 'safe'],
             [['price', 'order_quantity', 'total'], 'number'],
             [['item_description', 'category_name', 'room_name'], 'string', 'max' => 64],
-            [['invoice_status', 'booking_status', 'send_notification'], 'string', 'max' => 10],
+            [['invoice_status', 'booking_status', 'order_status', 'send_notification'], 'string', 'max' => 10],
             [['full_name'], 'string', 'max' => 151],
         ];
     }
@@ -75,6 +76,7 @@ class ViewCustomerOrdersSearch extends  ViewCustomerOrders{
             'checkin_date' => 'Checkin Date',
             'checkout_date' => 'Checkout Date',
             'room_name' => 'Room Name',
+            'order_status' => 'Status',
         ];
     }
     
@@ -88,7 +90,7 @@ class ViewCustomerOrdersSearch extends  ViewCustomerOrders{
             'query' => $query,
         ]);
 
-        $query->orderBy('id');
+        //$query->orderBy('id');
 
         $this->load($params);
 
@@ -115,6 +117,7 @@ class ViewCustomerOrdersSearch extends  ViewCustomerOrders{
             'category_name' => $this->category_name,
             'checkin_date' => $this->checkin_date,
             'checkout_date' => $this->checkout_date,
+            'order_status' => $this->order_status,
             //'room_name' => $this->room_name,
             
         ]);
@@ -127,6 +130,8 @@ class ViewCustomerOrdersSearch extends  ViewCustomerOrders{
         
         return $dataProvider;
     }
+    
+    
 }
 
 ?>

@@ -16,6 +16,7 @@ use yii\helpers\Url;
 use yii\db\Query;
 use app\modules\inventory\models\InvnInvoiceItems;
 use Pusher;
+use app\components\PusherHelper;
 
 /**
  * BookingController implements the CRUD actions for GrcBooking model.
@@ -416,9 +417,31 @@ class BookingController extends \app\controllers\ApiController
         if(Yii::$app->request->isAjax)
         {
             $invoiceModel = new \app\modules\inventory\models\InvnInvoice();
-            if($invoiceModel->createInvoice(Yii::$app->request->post()))
+            $invoice_id = $invoiceModel->createInvoice(Yii::$app->request->post());
+            if($invoice_id){
+                $orders = \app\modules\inventory\models\ViewCustomerOrders::getOrdersByInvoiceId($invoice_id);
+                
+                foreach($orders AS $order)
+                {
+                    ob_start();
+                    echo $this->renderPartial('@app/views/common/_order_item', ['order'=>$order]);
+                    $htmlmarkup = ob_get_contents();
+                    ob_end_clean();
+
+                    $message = ['status' => 'OPEN', 'message' => $htmlmarkup]; 
+
+                    $p = new PusherHelper();
+                    
+                    if($order->send_notification == 'KOT'){
+                        $p->sendKotNotification($message, 'my_event');
+                    }else{
+                        $p->sendBotNotification($message, 'my_event');
+                    }
+                }
+                
                 $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>'']);
                 Yii::$app->end();
+            }
                 
                 
           $this->renderJson(['result'=>'error', 'message'=>'Failed', 'data'=>'']);      
@@ -443,10 +466,16 @@ class BookingController extends \app\controllers\ApiController
         if(Yii::$app->request->isAjax)
         {
           
-            $data = InvnInvoiceItems::deleteItem(Yii::$app->request->post('ivoice_item_id'));
-            if($data)           
+            $data = InvnInvoiceItems::cancelItem(Yii::$app->request->post('ivoice_item_id'));
+            if($data){
+                
+                $message = ['status' => 'CANCEL', 'message' => json_encode($data->attributes)]; 
+                $p = new PusherHelper();
+                $p->sendKotNotification($message, 'my_event');
+                
                 $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>$data]);
                 Yii::$app->end();
+            }
                 
           $this->renderJson(['result'=>'error', 'message'=>'Failed', 'data'=>$data]);      
             
@@ -459,7 +488,7 @@ class BookingController extends \app\controllers\ApiController
         #https://dashboard.pusher.com/apps/267257/getting_started
         #https://pusher.com/docs/javascript_quick_start
         #https://github.com/pusher/pusher-http-php#push-notifications-beta
-        $options = array(
+        /*$options = array(
             'encrypted' => true,
             'scheme'=>'http',
         );
@@ -473,8 +502,24 @@ class BookingController extends \app\controllers\ApiController
         VarDumper::dump($pusher);
 
         $data['message'] = 'You have 1 new message';
-        $x = $pusher->trigger('test_channel', 'my_event', $data);
+        $x = $pusher->trigger('kot_channel', 'my_event', $data);
         var_dump($x);
-        echo 'ok';
+        echo 'ok';*/
+        
+        
+//        $message = ['status' => 'OPEN', 'message' => '<div class="line-item-box"><button type="button" class="btn btn-success lb-full" title="test order">test order
+//                    <span class="badge">X 1</span></button></div>'];
+        
+        $order = \app\modules\inventory\models\ViewCustomerOrders::getOrderById(11);
+        
+        ob_start();
+        echo $this->renderPartial('@app/views/common/_order_item', ['order'=>$order]);
+        $htmlmarkup = ob_get_contents();
+        ob_end_clean();
+                
+        $message = ['status' => 'OPEN', 'message' => $htmlmarkup]; 
+        
+        $p = new PusherHelper();
+        $p->sendKotNotification($message, 'my_event');
     }
 }

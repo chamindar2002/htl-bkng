@@ -74,4 +74,20 @@ class ViewCustomerOrders extends \yii\db\ActiveRecord
             'room_name' => 'Room Name',
         ];
     }
+    
+    public static function getOrders($date=null)
+    {
+        return self::find()->where(['date_applicable' => date('Y-m-d')])->all();
+        
+    }
+    
+    public static function getOrderById($id)
+    {
+        return self::find()->where(['invoice_item_id'=>$id])->one();
+    }
+    
+    public static function getOrdersByInvoiceId($invoice_id)
+    {
+        return self::find()->where(['id'=>$invoice_id])->all();
+    }
 }

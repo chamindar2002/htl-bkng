@@ -90,7 +90,7 @@ class ViewCustomerOrdersSearch extends  ViewCustomerOrders{
             'query' => $query,
         ]);
 
-        //$query->orderBy('id');
+        $query->orderBy('invoice_item_id DESC');
 
         $this->load($params);
 

@@ -10,7 +10,6 @@ use yii\helpers\Url;
 use kartik\grid\GridView;
 ?>
 
- 
 <div class="form-group grc-booking-room-id">
     <h3>New Order</h3>
     <div class="row">
@@ -37,13 +36,14 @@ use kartik\grid\GridView;
         </div>
         <div class="col-xs-3">
             <label>Table</label>
-            <input type="text" class="form-control">
+            <select name="dinningtable_id" id="dinningtable_id" class="form-control">
+                <?php foreach ($dinningTables AS $dinningTable): ?><option value="<?= $dinningTable['id'] ?>"><?= $dinningTable['title'] ?></option> <?php endforeach; ?></select>
         </div>
 
         <div class="col-xs-3">
             <label>Steward</label>
             <select name="employee_id" id="employee_id" class="form-control">
-                <?php foreach ($stewards AS $steward): ?><option id="<?= $steward['id'] ?>"><?= $steward['full_name'] ?></option> <?php endforeach; ?></select>
+                <?php foreach ($stewards AS $steward): ?><option value="<?= $steward['id'] ?>"><?= $steward['full_name'] ?></option> <?php endforeach; ?></select>
         </div>
     </div>
 
@@ -184,19 +184,8 @@ use kartik\grid\GridView;
       </div>
       <div class="modal-body">
        <div id="order-items-view-placeholder">
-            <table class="table" id="order-items-view-table">
-                <thead>
-                    <tr>
-                        <th>Item Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="order-items-view-table-tbody"></tbody>
-            </table>
-        </div>
+            <div id="order_item_view_placeholder"></div>
+       </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

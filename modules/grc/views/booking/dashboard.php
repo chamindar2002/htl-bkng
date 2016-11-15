@@ -11,9 +11,11 @@ use yii\jui\AutoComplete;
 use yii\web\JsExpression;
 use kartik\grid\GridView;
 use yii\helpers\Html;
+use app\assets\PusherAsset;
 
 DpAsset::register($this);
 Select2Asset::register($this);
+PusherAsset::register($this);
 ?>
 
 <?php
@@ -134,7 +136,8 @@ $this->title = 'Front Desk : Dashboard';
         <?= $this->render(
                 '@app/views/common/_autocompleter',
                         ['currOccupents'=>$currOccupents, 'items'=>$items,
-                            'orderDataProvider'=> $orderDataProvider, 'orderSearchModel'=>$orderSearchModel, 'stewards'=>$stewards]
+                            'orderDataProvider'=> $orderDataProvider,
+                            'orderSearchModel'=>$orderSearchModel, 'stewards'=>$stewards, 'dinningTables'=>$dinningTables]
                 );
         ?>
       </p>
@@ -150,7 +153,7 @@ $this->title = 'Front Desk : Dashboard';
 <button id="send_push">Pusher</button>
 <div id="btnAx">No notifications</div>
 
-<script src="https://js.pusher.com/3.2/pusher.min.js"></script>
+<!--<script src="https://js.pusher.com/3.2/pusher.min.js"></script>-->
 <script>
     $('#send_push').click(function () {
 

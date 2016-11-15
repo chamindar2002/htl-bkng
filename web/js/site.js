@@ -136,12 +136,15 @@ var DynamicItemsTable = {
         var r = confirm("Confirm!");
         
         if (r == true) {
-            var booking_id = $('#temp_booking_id').val();  
+            var booking_id = $('#temp_booking_id').val();
+            var table_id = $('#dinningtable_id').val();
+            var steward_id = $('#employee_id').val();
+
             var rows = JSON.stringify(itemsArray);
             $.ajax({
                 url: "place-order",
                 type: "POST",
-                data: {booking_id:booking_id, item_rows:rows}, //JSON
+                data: {booking_id:booking_id, item_rows:rows, table_id: table_id, steward_id:steward_id}, //JSON
                 dataType: "json",
                 cache: false,
 
@@ -175,22 +178,14 @@ var DynamicItemsTable = {
                 cache: false,
 
                 success:function(response, textStatus, jqXHR) {
+                    console.log(response);
                      if(response.result == 'success'){
-                        var _htm = '<tr>'
-                                   +'<td>'+response.data.item_description+'</td>' 
-                                   +'<td>'+response.data.price+'</td>' 
-                                   +'<td>'+response.data.order_quantity+'</td>' 
-                                   +'<td>'+response.data.sub_total+'</td>' 
-                                   +'<td>'
-                                   if(response.data.status == 'OPEN'){
-                                        _htm += '<input type="button" value="Cancel" class="btn btn-danger" onClick="DynamicItemsTable.cancelOrderItem('+response.data.id+')"></td>'; 
-                                   }else{
-                                        _htm += response.data.status;
-                                   }
-                                   _htm += '</td>';
-                                   _htm += '</tr>'; 
-                        $('#order-items-view-table-tbody').empty();   
-                        $('#order-items-view-table').append(_htm);
+
+                        $('#order_item_view_placeholder').empty();
+
+                        $('#order_item_view_placeholder').html(response.data);
+
+
                         
                         $('#modal-item-view').modal('show');
                      }   

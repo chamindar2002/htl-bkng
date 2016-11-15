@@ -100,8 +100,8 @@ class m161111_172654_create_inventory_tables_3 extends Migration
             'title'=>'',
             'capacity'=>'0',
             'location'=>'',
-            'active' => '1',
-            'deleted' => '1',
+            'active' => '0',
+            'deleted' => '0',
             'created_by'=>'1',
             'created_at'=>date('Y-m-d')
         ));
@@ -110,7 +110,7 @@ class m161111_172654_create_inventory_tables_3 extends Migration
             'capacity'=>'4',
             'location'=>'RESTAURANT',
             'active' => '1',
-            'deleted' => '1',
+            'deleted' => '0',
             'created_by'=>'1',
             'created_at'=>date('Y-m-d')
         ));
@@ -119,7 +119,7 @@ class m161111_172654_create_inventory_tables_3 extends Migration
             'capacity'=>'4',
             'location'=>'RESTAURANT',
             'active' => '1',
-            'deleted' => '1',
+            'deleted' => '0',
             'created_by'=>'1',
             'created_at'=>date('Y-m-d')
         ));

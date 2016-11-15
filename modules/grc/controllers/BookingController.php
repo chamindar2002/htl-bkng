@@ -3,6 +3,7 @@
 namespace app\modules\grc\controllers;
 
 use app\modules\inventory\models\InvnInvoice;
+use app\modules\inventory\models\ViewCustomerOrdersSearch;
 use Yii;
 use app\modules\grc\models\GrcBooking;
 use app\modules\grc\models\BookingSearch;
@@ -338,6 +339,7 @@ class BookingController extends \app\controllers\ApiController
         $items = \app\modules\inventory\models\InvnItemMaster::getItems();
     
         $stewards = InvnInvoice::getStewards();
+        $dinningTables = InvnInvoice::getDinningtables();
 
        
         return $this->render('dashboard', [
@@ -346,7 +348,8 @@ class BookingController extends \app\controllers\ApiController
             'currOccupents' => $currOccupents,
             'items'=>$items,
             'orderDataProvider'=> $orderDataProvider,
-            'orderSearchModel'=>$orderSearchModel,'stewards'=>$stewards
+            'orderSearchModel'=>$orderSearchModel,'stewards'=>$stewards,
+            'dinningTables' => $dinningTables,
         ]);
        
     }
@@ -457,9 +460,17 @@ class BookingController extends \app\controllers\ApiController
         if(Yii::$app->request->isAjax)
         {
           
-            $data = InvnInvoiceItems::find()->where(['id'=>Yii::$app->request->post('ivoice_item_id')])->one();
-            
-            $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>$data->attributes]);
+            //$data = InvnInvoiceItems::find()->where(['id'=>Yii::$app->request->post('ivoice_item_id')])->one();
+            $data = ViewCustomerOrdersSearch::find()->where(['invoice_item_id'=>Yii::$app->request->post('ivoice_item_id')])->one();
+            $stewards = InvnInvoice::getStewards();
+            $dinningTables = InvnInvoice::getDinningtables();
+
+            ob_start();
+            echo $this->renderPartial('_order_item', ['order'=>$data,'stewards'=>$stewards, 'dinningTables'=>$dinningTables]);
+            $htmlmarkup = ob_get_contents();
+            ob_end_clean();
+
+            $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>$htmlmarkup]);
         }
     }
     

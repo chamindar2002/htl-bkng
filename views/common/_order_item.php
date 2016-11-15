@@ -5,9 +5,11 @@
    </button>
    <span id="order-item-status_<?= $order->invoice_item_id ?>"><?= $order->order_status ?></span>
    <br />
-   <span id="order-item-guest"><?= $order->full_name ?></span>
-   <br><?= $order->invoice_item_id ?>
-   <hr/>
+   <span id="order-item-guest"><?= substr($order->full_name,0,24) ?></span>
+   <br />Order #: <?= $order->invoice_item_id ?>
+   <br /><span id="order-steward"><?= $order->employee_name != '' ? substr($order->employee_name,0,14) : '' ?></span>
+   <br /><span id="order-table"><?= $order->title != '' ? substr($order->title,0,10) : '' ?></span>
+   <br />
    <button class="btn btn-default"><i class="glyphicon glyphicon-print"></i></button>
    
 </div>

@@ -167,7 +167,7 @@ class GrcBooking extends \yii\db\ActiveRecord
                                                FROM reservations
                                                JOIN grc_booking on(grc_booking.reservation_id = reservations.id)
                                                JOIN grc_guests gst on(grc_booking.guest_id = gst.id)
-                                               JOIN rooms on(reservations.id = rooms.id)
+                                               JOIN rooms on(reservations.room_id = rooms.id)
                                                WHERE reservations.deleted = 0
                                                AND grc_booking.deleted = 0 AND grc_booking.status = 'OPEN'
                                                AND DATE(curdate()) BETWEEN DATE(reservations.start) AND DATE(reservations.end)");

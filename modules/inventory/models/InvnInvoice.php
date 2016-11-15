@@ -127,6 +127,8 @@ class InvnInvoice extends \yii\db\ActiveRecord
         $model->invoice_date = date('Y-m-d');
         $model->reservation_id = $booking->reservation_id;
         $model->booking_id = $data['booking_id'];
+        $model->table_id = $data['table_id'];
+        $model->employee_id = $data['steward_id'];
         $rows = json_decode($data['item_rows']);
         
         if($model->save())
@@ -163,6 +165,17 @@ class InvnInvoice extends \yii\db\ActiveRecord
         $connection = Yii::$app->getDb();
         $command = $connection->createCommand("SELECT id, CONCAT(first_name, ' ', last_name ) AS full_name
                         FROM emp_employees WHERE (active=1) AND (deleted=0) OR id=1");
+
+        return $command->queryAll();
+
+        return $rows;
+    }
+
+    public static function getDinningtables()
+    {
+        $connection = Yii::$app->getDb();
+        $command = $connection->createCommand("SELECT id, title
+                        FROM dinning_tables WHERE (active=1) AND (deleted=0) OR id=1");
 
         return $command->queryAll();
 

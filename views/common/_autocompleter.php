@@ -13,25 +13,41 @@ use kartik\grid\GridView;
  
 <div class="form-group grc-booking-room-id">
     <h3>New Order</h3>
-    <label>Room</label>
-        <?= AutoComplete::widget([    
-            'clientOptions' => [
-            'source' => $currOccupents,
-            'minLength'=>'1', 
-            'autoFill'=>true,
-            'select' => new JsExpression("function( event, ui ) {
+    <div class="row">
+        <div class="col-xs-6">
+            <label>Room</label>
+            <?= AutoComplete::widget([
+                'clientOptions' => [
+                    'source' => $currOccupents,
+                    'minLength'=>'1',
+                    'autoFill'=>true,
+                    'select' => new JsExpression("function( event, ui ) {
                     $('#temp_booking_id').val(ui.item.id);
                     $('#temp_guest').val(ui.item.full_name);
                  }")],
-            'options' => [
+                'options' => [
                     'class' => 'form-control', //single class
                     'placeholder'=>'Type in room number',
                     'id' => 'select2-room-search',
-            ],
-           ]);
-        ?>
-    <input type="hidden" id="temp_booking_id" value="">
-    <input type="text" class="form-control" id="temp_guest" value="" readonly>
+                ],
+            ]);
+            ?>
+            <input type="hidden" id="temp_booking_id" value="">
+            <input type="text" class="form-control" id="temp_guest" value="" readonly>
+        </div>
+        <div class="col-xs-3">
+            <label>Table</label>
+            <input type="text" class="form-control">
+        </div>
+
+        <div class="col-xs-3">
+            <label>Steward</label>
+            <select name="employee_id" id="employee_id" class="form-control">
+                <?php foreach ($stewards AS $steward): ?><option id="<?= $steward['id'] ?>"><?= $steward['full_name'] ?></option> <?php endforeach; ?></select>
+        </div>
+    </div>
+
+
 </div>
 
 

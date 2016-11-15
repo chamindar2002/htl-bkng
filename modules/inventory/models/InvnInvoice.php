@@ -8,6 +8,8 @@ use yii\db\Expression;
 use yii\behaviors\BlameableBehavior;
 use app\modules\grc\models\GrcBooking;
 use app\modules\grc\models\Reservations;
+use yii\db\Query;
+
 /**
  * This is the model class for table "invn_invoice".
  *
@@ -15,6 +17,8 @@ use app\modules\grc\models\Reservations;
  * @property string $invoice_date
  * @property integer $reservation_id
  * @property integer $booking_id
+ * @property integer $employee_id
+ * @property integer $table_id
  * @property string $status
  * @property integer $active
  * @property integer $deleted
@@ -63,7 +67,7 @@ class InvnInvoice extends \yii\db\ActiveRecord
         return [
             [['invoice_date'], 'safe'],
             [['reservation_id'], 'required'],
-            [['reservation_id', 'booking_id', 'active', 'deleted', 'created_by'], 'integer'],
+            [['reservation_id', 'booking_id', 'employee_id', 'table_id', 'active', 'deleted', 'created_by'], 'integer'],
             [['status'], 'string', 'max' => 10],
             [['booking_id'], 'exist', 'skipOnError' => true, 'targetClass' => GrcBooking::className(), 'targetAttribute' => ['booking_id' => 'id']],
             [['reservation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Reservations::className(), 'targetAttribute' => ['reservation_id' => 'id']],
@@ -80,6 +84,8 @@ class InvnInvoice extends \yii\db\ActiveRecord
             'invoice_date' => 'Invoice Date',
             'reservation_id' => 'Reservation ID',
             'booking_id' => 'Booking ID',
+            'employee_id' => 'Employee',
+            'table_id' => 'Table',
             'status' => 'Status',
             'active' => 'Active',
             'deleted' => 'Deleted',
@@ -150,5 +156,16 @@ class InvnInvoice extends \yii\db\ActiveRecord
          
         return false;
        
+    }
+
+    public static function getStewards()
+    {
+        $connection = Yii::$app->getDb();
+        $command = $connection->createCommand("SELECT id, CONCAT(first_name, ' ', last_name ) AS full_name
+                        FROM emp_employees WHERE (active=1) AND (deleted=0) OR id=1");
+
+        return $command->queryAll();
+
+        return $rows;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace app\modules\grc\controllers;
 
+use app\modules\inventory\models\InvnInvoice;
 use Yii;
 use app\modules\grc\models\GrcBooking;
 use app\modules\grc\models\BookingSearch;
@@ -336,6 +337,7 @@ class BookingController extends \app\controllers\ApiController
         $currOccupents = GrcBooking::getCurrentOccupants();
         $items = \app\modules\inventory\models\InvnItemMaster::getItems();
     
+        $stewards = InvnInvoice::getStewards();
 
        
         return $this->render('dashboard', [
@@ -344,7 +346,7 @@ class BookingController extends \app\controllers\ApiController
             'currOccupents' => $currOccupents,
             'items'=>$items,
             'orderDataProvider'=> $orderDataProvider,
-            'orderSearchModel'=>$orderSearchModel,
+            'orderSearchModel'=>$orderSearchModel,'stewards'=>$stewards
         ]);
        
     }

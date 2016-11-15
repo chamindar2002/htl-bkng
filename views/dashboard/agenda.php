@@ -3,6 +3,8 @@ use yii\helpers\Url;
 use app\assets\DpAsset;
  
 DpAsset::register($this);
+
+$this->title = 'Room Calendar';
 ?>
 <body>
     <br>

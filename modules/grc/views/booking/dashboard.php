@@ -30,101 +30,8 @@ $this->title = 'Front Desk : Dashboard';
 <div class="tab-content">
   
   <div id="home" class="tab-pane fade in active"><p>
-    <br /><?= Html::a('New Booking', ['create'], ['class' => 'btn btn-success']) ?>
+    <br /><?= Html::a('Check In Guest', ['create'], ['class' => 'btn btn-success']) ?>
     
-    <?= DataTables::widget([
-      'dataProvider' => $dataProvider,
-      'filterModel' => $searchModel,
-      'columns' => [
-          ['class' => 'yii\grid\SerialColumn'],
-
-          [
-           'label'=> 'Room',
-           'attribute' => 'room_name',
-           'value' => 'room_name'
-          ],
-          'full_name',
-          [
-           'label'=> 'In',
-           'attribute' => 'checkin_date',
-           'value' => 'checkin_date'
-          ],
-          [
-           'label'=> 'Out',
-           'attribute' => 'checkout_date',
-           'value' => 'checkout_date'
-          ],
-          [
-           'label'=> 'agent_name',
-           'attribute' => 'agent_name',
-           'value' => 'agent_name'
-          ],
-          [
-           'label'=> 'Adults',
-           'attribute' => 'no_of_adults',
-           'value' => 'no_of_adults'
-          ],
-          [
-           'label'=> 'Children',
-           'attribute' => 'no_of_children',
-           'value' => 'no_of_children'
-          ],
-          [
-           'label'=> 'Status',
-           'attribute' => 'booking_status',
-           'value' => 'booking_status'
-          ],
-          [
-              'class' => 'yii\grid\ActionColumn',
-              'template' => '{new_view}{new_edit}',
-              'buttons' => [
-                'new_view' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', 'view?id='.$model->booking_id, [
-                                'title' => Yii::t('app', 'New Action1'),
-                    ]);
-                },
-                'new_edit' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', 'update?id='.$model->booking_id, [
-                                'title' => Yii::t('app', 'New Action1'),
-                    ]);
-                }        
-              ],
-
-
-        ],
-
-        //['class' => 'yii\grid\ActionColumn'],
-
-      ],
-       'clientOptions' => [
-              "lengthMenu"=> [[20,-1], [20,Yii::t('app',"All")]],
-              "info"=>false,
-              "responsive"=>true, 
-              "dom"=> 'lfTrtip',
-              "tableTools"=>[
-                  "aButtons"=> [  
-                      [
-                      "sExtends"=> "copy",
-                      "sButtonText"=> Yii::t('app',"Copy to clipboard")
-                      ],[
-                      "sExtends"=> "csv",
-                      "sButtonText"=> Yii::t('app',"Save to CSV")
-                      ],[
-                      "sExtends"=> "xls",
-                      "oSelectorOpts"=> ["page"=> 'current']
-                      ],[
-                      "sExtends"=> "pdf",
-                      "sButtonText"=> Yii::t('app',"Save to PDF")
-                      ],[
-                      "sExtends"=> "print",
-                      "sButtonText"=> Yii::t('app',"Print")
-                      ],
-                  ]
-              ]
-          ],                             
-
-  ]);?>
-  </p>
 
     <?= GridView::widget([
       'dataProvider'=> $dataProvider,
@@ -197,7 +104,7 @@ $this->title = 'Front Desk : Dashboard';
           '{toggleData}'
       ],
       'panel' => [
-              'type' => GridView::TYPE_PRIMARY,
+              'type' => GridView::TYPE_DEFAULT,
               'heading' => 'Bookings',
           ], 
       'export' => [
@@ -227,7 +134,7 @@ $this->title = 'Front Desk : Dashboard';
         <?= $this->render(
                 '@app/views/common/_autocompleter',
                         ['currOccupents'=>$currOccupents, 'items'=>$items,
-                            'orderDataProvider'=> $orderDataProvider, 'orderSearchModel'=>$orderSearchModel]
+                            'orderDataProvider'=> $orderDataProvider, 'orderSearchModel'=>$orderSearchModel, 'stewards'=>$stewards]
                 );
         ?>
       </p>
@@ -241,7 +148,7 @@ $this->title = 'Front Desk : Dashboard';
 
 <hr/>
 <button id="send_push">Pusher</button>
-<div id="btnAx">No notifications</button>
+<div id="btnAx">No notifications</div>
 
 <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
 <script>

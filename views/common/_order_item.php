@@ -6,4 +6,8 @@
    <span id="order-item-status_<?= $order->invoice_item_id ?>"><?= $order->order_status ?></span>
    <br />
    <span id="order-item-guest"><?= $order->full_name ?></span>
+   <br><?= $order->invoice_item_id ?>
+   <hr/>
+   <button class="btn btn-default"><i class="glyphicon glyphicon-print"></i></button>
+   
 </div>

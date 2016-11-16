@@ -82,6 +82,28 @@ class InvnInvoiceItems extends \yii\db\ActiveRecord
        return false;
 
     }
+
+    public static function updateItem($id, $data)
+    {
+        $item = self::find()->where(['id'=>$id])->one();
+        if($item->invoice->booking->status == 'OPEN'){
+            $item->status = 'UPDATED';
+            $item->order_quantity = $data['qty'];
+            if($item->save()){
+                $invoice = InvnInvoice::find()->where(['id'=>$item->invoice_id])->one();
+                $invoice->table_id = $data['table'];
+                $invoice->employee_id = $data['steward'];
+
+                if($invoice->save()){
+                    return ViewCustomerOrdersSearch::find()->where(['invoice_item_id'=>$item->id])->one();
+                }
+
+            }
+
+        }
+
+        return false;
+    }
     
     
 }

@@ -74,6 +74,12 @@ Pusher.logToConsole = true;
             $('#order_item_header_' + d.id).addClass('btn-danger');
             //$('#order-item-status_' + d.id).html(d.status);
             //$('#kot-area').append('<hr />'+data.message.message.id);
+        }else if(data.message.status == 'UPDATED'){
+            var d = $.parseJSON(data.message.message);
+            console.log('---->'+d.invoice_item_id)
+            $('#order_item_header_' + d.invoice_item_id).removeClass('btn-primary');
+            $('#order_item_header_' + d.invoice_item_id).addClass('btn-warning');
+            //$('#order-item-status_' + d.invoice_item_id).html('')
         }
         //$('#btnAx').addClass('btn-danger');
         //$('#btnAx').removeClass('btn-primary');

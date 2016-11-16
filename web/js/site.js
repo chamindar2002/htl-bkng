@@ -217,8 +217,29 @@ var DynamicItemsTable = {
                 }
             });
         }
+  },
+  updateOrderItem: function (id) {
+      $.ajax({
+          url: "update-order-item",
+          type: "POST",
+          data: {ivoice_item_id:id,qty:$('#_oi_order_qty').val(), table:$('#_oi_dinning_table').val(), steward: $('#_oi_steward').val()}, //JSON
+          dataType: "json",
+          cache: false,
+
+          success:function(response, textStatus, jqXHR) {
+              if(response.result == 'success'){
+                  $.pjax.reload({container:'#grid-demo-invn-items'});
+                  $('#modal-item-view').modal('hide');
+              }
+          },
+          error:function(jqXHR, textStatus, errorThrown) {
+
+          }
+      });
   }
-  
+
+
+
   
   
   

@@ -41,7 +41,7 @@ class BookingController extends \app\controllers\ApiController
                                       'delete','confirm', 'search-reservations',
                                       'fetch-guests', 'update-package-inv-item',
                                       'dashboard', 'check-resv-availability', 'update-reservation-dates',
-                                      'place-order', 'test-pusher', 'fetch-order', 'cancel-order-item'],
+                                      'place-order', 'test-pusher', 'fetch-order', 'cancel-order-item', 'update-order-item'],
                         'allow' => true,
                         //'roles' => ['@'], 
                         'roles' => ['user-role'],
@@ -492,6 +492,28 @@ class BookingController extends \app\controllers\ApiController
                 
           $this->renderJson(['result'=>'error', 'message'=>'Failed', 'data'=>$data]);      
             
+        }
+    }
+
+    public function actionUpdateOrderItem()
+    {
+        if(Yii::$app->request->isAjax)
+        {
+
+            $data = Yii::$app->request->post();
+            $result = InvnInvoiceItems::updateItem(Yii::$app->request->post('ivoice_item_id'), $data);
+            if($data){
+
+                $message = ['status' => 'UPDATED', 'message' => json_encode($result->attributes)];
+                $p = new PusherHelper();
+                $p->sendKotNotification($message, 'my_event');
+
+                $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>$result]);
+                Yii::$app->end();
+            }
+
+            $this->renderJson(['result'=>'error', 'message'=>'Failed', 'data'=>$result]);
+
         }
     }
 

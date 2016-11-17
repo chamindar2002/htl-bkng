@@ -26,12 +26,12 @@
         <?php } ?>
     </select>
 </div>
-
+<?php if($order->attributes['order_status'] != 'CANCELED'){ ?>
 <div class="form-group">
-    <?php if($order->order_status){ ?>
-        <input type="button" value="Cancel" class="btn btn-danger" onClick="DynamicItemsTable.cancelOrderItem('<?= $order->invoice_item_id ?>')">
+
+        <input type="button" value="Cancel Order" class="btn btn-default" onClick="DynamicItemsTable.cancelOrderItem('<?= $order->invoice_item_id ?>')">
 
         <input type="button" value="Save" class="btn btn-primary" onClick="DynamicItemsTable.updateOrderItem('<?= $order->invoice_item_id ?>')">
-    <?php } ?>
-</div>
 
+</div>
+<?php } ?>

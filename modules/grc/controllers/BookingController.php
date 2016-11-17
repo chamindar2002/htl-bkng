@@ -482,7 +482,7 @@ class BookingController extends \app\controllers\ApiController
             $data = InvnInvoiceItems::cancelItem(Yii::$app->request->post('ivoice_item_id'));
             if($data){
                 
-                $message = ['status' => 'CANCEL', 'message' => json_encode($data->attributes)]; 
+                $message = ['status' => 'CANCELED', 'message' => json_encode($data->attributes)];
                 $p = new PusherHelper();
                 $p->sendKotNotification($message, 'my_event');
                 

@@ -149,9 +149,9 @@ $this->title = 'Front Desk : Dashboard';
 </div>
  
 
-<hr/>
-<button id="send_push">Pusher</button>
-<div id="btnAx">No notifications</div>
+<!--<hr/>-->
+<!--<button id="send_push">Pusher</button>-->
+<!--<div id="btnAx">No notifications</div>-->
 
 <!--<script src="https://js.pusher.com/3.2/pusher.min.js"></script>-->
 <script>

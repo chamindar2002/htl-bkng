@@ -74,7 +74,7 @@ class InvnInvoiceItems extends \yii\db\ActiveRecord
     {
        $item = self::find()->where(['id'=>$id])->one();   
        if($item->invoice->booking->status == 'OPEN'){
-            $item->status = 'CANCELLED';
+            $item->status = 'CANCELED';
             if($item->save())
                 return $item;
        }

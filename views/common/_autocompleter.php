@@ -101,6 +101,7 @@ use kartik\grid\GridView;
       'dataProvider'=> $orderDataProvider,
       'filterModel' => $orderSearchModel,
       'columns' => [
+            'invoice_item_id',
             [
                'attribute' => 'date_applicable',
                'format' => ['date', 'php:Y-m-d']

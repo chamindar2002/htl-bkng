@@ -44,7 +44,7 @@ class ViewCustomerOrdersSearch extends  ViewCustomerOrders{
     public function rules()
     {
         return [
-            [['id', 'invoice_item_id', 'item_master_id', 'category_name', 'checkin_date', 'checkout_date'], 'required'],
+            [['id', 'item_master_id', 'category_name', 'checkin_date', 'checkout_date'], 'required'],
             [['id', 'invoice_item_id', 'item_master_id'], 'integer'],
             [['date_applicable', 'checkin_date', 'checkout_date'], 'safe'],
             [['price', 'order_quantity', 'total'], 'number'],

@@ -41,6 +41,12 @@
                             ['label'=>'Guests', 'icon'=>'fa fa-address-book-o', 'url'=>'/grc/guest'],
                         ]
                     ],
+                    ['label'=>'Payment Management', 'icon'=>'fa fa-address-card', 'url'=>'#',
+                        'items'=>[
+                            ['label'=>'Receipts', 'icon'=>'fa fa-handshake-o', 'url'=>'/inventory/receipt'],
+
+                        ]
+                    ],
                     ['label'=>'Inventory Management', 'icon'=>'fa fa-cubes', 'url'=>'#',
                         'items'=>[
                             ['label'=>'Departments', 'icon'=>'fa fa-building', 'url'=>'/inventory/invn-department'],

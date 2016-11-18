@@ -64,7 +64,6 @@ class m161107_145013_create_inventory_tables_2 extends Migration
             'created_at'=>date('Y-m-d')
         ));
         
-        
 
         $this->addForeignKey('FK_item_category', 'invn_item_master', 'category_id', 'invn_category', 'id');
         $this->addForeignKey('FK_category_department', 'invn_category', 'department_id', 'invn_department', 'id');

@@ -83,4 +83,6 @@ class ViewBookingResvGuestRoomInvoice extends \yii\db\ActiveRecord
             'invoice_status' => 'Invoice Status',
         ];
     }
+
+
 }

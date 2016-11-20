@@ -41,7 +41,8 @@ class BookingController extends \app\controllers\ApiController
                                       'delete','confirm', 'search-reservations',
                                       'fetch-guests', 'update-package-inv-item',
                                       'dashboard', 'check-resv-availability', 'update-reservation-dates',
-                                      'place-order', 'test-pusher', 'fetch-order', 'cancel-order-item', 'update-order-item'],
+                                      'place-order', 'test-pusher', 'fetch-order', 'cancel-order-item',
+                                      'update-order-item', 'checkout-guest'],
                         'allow' => true,
                         //'roles' => ['@'], 
                         'roles' => ['user-role'],
@@ -386,7 +387,7 @@ class BookingController extends \app\controllers\ApiController
        foreach (json_decode($date_allocation['date_allocation']) AS $key=>$value){
            $data_batch = array(
                    //'package_id' => $data["package_$i"],
-                   'item_description'=> $value,
+                   'item_description'=> 'Room charges for : '.$value,
                    'package_id'=>1,
                    'invoice_id'=>$invoice_model->attributes['id'],
                    'item_master_id'=>1,
@@ -556,5 +557,10 @@ class BookingController extends \app\controllers\ApiController
         
         $p = new PusherHelper();
         $p->sendKotNotification($message, 'my_event');
+    }
+
+    public function actionCheckoutGuest()
+    {
+        echo 'ok';
     }
 }

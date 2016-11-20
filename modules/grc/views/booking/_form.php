@@ -12,21 +12,21 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(['id'=>$model->formName()]); ?>
      <?php if(!$model->isNewRecord){ ?>
-        <ul class="list-group">
-           <li class="list-group-item">
-                <span class="badge"> <span class="badge"><?= $data['reservation_data']['start'] ?></span></span>
-                Check in date
-           </li>
-           <li class="list-group-item">
-                <span class="badge"> <span class="badge"><?= $data['reservation_data']['end'] ?></span></span>
-                Check out date
-           </li>
-           <li class="list-group-item">
-                <span class="badge"> <span class="badge"><?= $data['room_data']['name'] ?></span></span>
-                Room
-           </li>
-           
-         </ul>
+
+         <div class="panel panel-default">
+             <div class="panel-heading">Reservation</div>
+             <div class="panel-body">
+                 <table class="table table-condensed">
+                     <tr><th>Check-in Date</th><th>Check-out Date</th><th>Room</th></tr>
+                     <tr>
+                         <td><?= $data['reservation_data']['start'] ?></td>
+                         <td><?= $data['reservation_data']['end'] ?></td>
+                         <td><?= $data['room_data']['name'] ?></td>
+                     </tr>
+                 </table>
+             </div>
+         </div>
+
          
      <?php } ?>
 

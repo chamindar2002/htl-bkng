@@ -45,6 +45,11 @@ class GrcUtilities extends Component
         );
     }
 
+    public static function getPayOptions()
+    {
+        return ['CASH' => 'Cash', 'CREDIT_CARD'=>'Credit/Debit Card', 'CHEQUE'=>'Cheque', 'BANK_TRANSFER'=>'Bank Transfer'];
+    }
+
     public static function computeDatesAllocation($start, $end)
     {
         $datediff = strtotime($end) - strtotime($start);

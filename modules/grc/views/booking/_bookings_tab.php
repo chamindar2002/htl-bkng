@@ -20,21 +20,25 @@ use yii\helpers\Url;
         [
             'label'=> 'Adults',
             'attribute' => 'no_of_adults',
-            'value' => 'no_of_adults'
+            'value' => 'no_of_adults',
+            'headerOptions' => ['style' => 'width:20px'],
         ],
         [
             'label'=> 'Children',
             'attribute' => 'no_of_children',
-            'value' => 'no_of_children'
+            'value' => 'no_of_children',
+            'headerOptions' => ['style' => 'width:20px'],
         ],
         [
             'label'=> 'Status',
             'attribute' => 'booking_status',
-            'value' => 'booking_status'
+            'value' => 'booking_status',
+            'headerOptions' => ['style' => 'width:20px'],
         ],
         [
             'class' => 'yii\grid\ActionColumn',
-            'template' => '{new_view}{new_edit}',
+            'headerOptions' => ['style' => 'width:200px'],
+            'template' => '{new_view}{new_edit}{new_checkout}',
             'buttons' => [
                 /*'new_view' => function ($url, $model) {
                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', 'view?id='.$model->booking_id, [
@@ -43,16 +47,25 @@ use yii\helpers\Url;
                 },*/
                 'new_view' => function ($url, $model) {
                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', '#', [
-                        'title' => Yii::t('app', 'View'),
-                        'class'=>'booking-payment-summary', 'attribute-id'=>$model->booking_id,
+                        'title' => Yii::t('app', 'Summary'),
+                        'class'=>'booking-payment-summary btn btn-default btn-sm', 'attribute-id'=>$model->booking_id,
                         'onclick'=>'Bookings.fetchBookingData('.$model->booking_id.');'
                     ]);
                 },
                 'new_edit' => function ($url, $model) {
                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', 'update?id='.$model->booking_id, [
                         'title' => Yii::t('app', 'Edit Booking'),
+                        'class'=>'btn btn-default btn-sm',
+                    ]);
+                },
+                'new_checkout' => function ($url, $model) {
+                    return Html::a('Checkout', '#', [
+                        'title' => Yii::t('app', 'Checkout Guest'),
+                        'class'=>'btn btn-warning btn-sm',
+                        'onclick'=>'Bookings.checkoutGuest('.$model->booking_id.');'
                     ]);
                 }
+
             ],
 
 
@@ -102,35 +115,105 @@ use yii\helpers\Url;
 ]);
 
 ?>
+<div id="summary_placeholder">
+
+</div>
 
 <script>
     var Bookings = {
-        fetchBookingData: function (booking_id) {
-
-            alert(booking_id);
-
+        
+        checkoutGuest: function (booking_id) {
+            event.preventDefault();
             $.ajax({
                 url: "<?= Url::to('/inventory/receipt/payment-summary') ?>",
                 type: "POST",
-                data: {booking_id:booking_id, _csrf: yii.getCsrfToken()}, //JSON
+                data: {booking_id:booking_id, _csrf: yii.getCsrfToken(), page:'_guest_checkout'}, //JSON
                 dataType: "json",
                 cache: false,
 
                 success:function(response, textStatus, jqXHR) {
-                    console.log(response);
+                    //console.log(response);
                     if(response.result == 'success'){
+                        console.log(response.data.htmlmarkup);
 
-                        $('#order_item_view_placeholder').empty();
+                        $('#summary_placeholder').empty();
 
-                        $('#order_item_view_placeholder').html(response.data);
+                        $('#summary_placeholder').html(response.data.htmlmarkup);
 
-                        $('#modal-item-view').modal('show');
+                        $('#guest-checkout-modal').modal('show');
+
                     }
                 },
                 error:function(jqXHR, textStatus, errorThrown) {
 
                 }
             });
+        },
+
+        confirmCheckout: function (booking_id) {
+            $.ajax({
+                url: "<?= Url::to('/grc/booking/checkout-guest') ?>",
+                type: "POST",
+                data: {booking_id:booking_id, _csrf: yii.getCsrfToken()}, //JSON
+                dataType: "json",
+                cache: false,
+
+                success:function(response, textStatus, jqXHR) {
+                    //console.log(response);
+                    if(response.result == 'success'){
+                        //console.log(response.data.htmlmarkup);
+
+                        $('#summary_placeholder').empty();
+
+                        $('#summary_placeholder').html(response.data.htmlmarkup);
+
+                        $('#payment-summary-modal').modal('show');
+
+                    }
+                },
+                error:function(jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+        },
+
+        fetchBookingData: function (booking_id) {
+
+
+            event.preventDefault();
+
+            $.ajax({
+                url: "<?= Url::to('/inventory/receipt/payment-summary') ?>",
+                type: "POST",
+                data: {booking_id:booking_id, _csrf: yii.getCsrfToken(), page:'_payment_history'}, //JSON
+                dataType: "json",
+                cache: false,
+
+                success:function(response, textStatus, jqXHR) {
+                    //console.log(response);
+                    if(response.result == 'success'){
+                        //console.log(response.data.htmlmarkup);
+
+                        $('#summary_placeholder').empty();
+
+                        $('#summary_placeholder').html(response.data.htmlmarkup);
+
+                        $('#payment-summary-modal').modal('show');
+
+                    }
+                },
+                error:function(jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+        },
+        printSummary: function () {
+            var prntstyle = '<link rel="stylesheet" href="<?= Yii::getAlias('@web') ?>/sbadmin/bootstrap/css/bootstrap.min.css" />';
+
+            w=window.open(null, 'Print_Page', 'scrollbars=yes');
+            w.document.write(prntstyle + jQuery('#printable-area').html());
+            w.document.close();
+            w.print();
         }
     }
 </script>

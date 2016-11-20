@@ -95,7 +95,7 @@ class PackageController extends Controller
         $meal_plans = ArrayHelper::map(\app\modules\grc\models\GrcMealPlan::find()->where(['deleted'=>0])->all(), 'id', 'name');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['create']);
         } else {
             //var_dump($model->getErrors());exit;
             return $this->render('update', [

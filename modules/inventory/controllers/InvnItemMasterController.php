@@ -71,7 +71,8 @@ class InvnItemMasterController extends Controller
         $category =  ArrayHelper::map(InvnCategory::find()->where(['active'=>1])->orWhere(['deleted'=>0])->all(), 'id', 'name');
        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            //return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model, 'supplier'=>$supplier, 'category'=>$category
@@ -92,7 +93,7 @@ class InvnItemMasterController extends Controller
         $category =  ArrayHelper::map(InvnCategory::find()->where(['active'=>1])->orWhere(['deleted'=>0])->all(), 'id', 'name');
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model, 'supplier'=>$supplier, 'category'=>$category,

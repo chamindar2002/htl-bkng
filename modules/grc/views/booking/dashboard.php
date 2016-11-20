@@ -31,7 +31,8 @@ $this->title = 'Front Desk : Dashboard';
 <div class="tab-content">
   
   <div id="home" class="tab-pane fade in active"><p>
-    <br /><?= Html::a('Check In Guest', ['create'], ['class' => 'btn btn-success']) ?>
+    <br />
+          <?= Html::a('Check In Guest', ['create'], ['class' => 'btn btn-success']) ?>
 
           <?= $this->render(
               '_bookings_tab',

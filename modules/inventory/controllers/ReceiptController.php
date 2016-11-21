@@ -180,6 +180,9 @@ class ReceiptController extends \app\controllers\ApiController
             $page = Yii::$app->request->post('page');
 
             $data = [];
+            $data['acomadation'] = [];
+            $data['ordered_items'] = [];
+
             $acomadation_charges = 0; $order_item_charges = 0;
             foreach ($invoices AS $invoice){
 

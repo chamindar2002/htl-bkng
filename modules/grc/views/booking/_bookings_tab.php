@@ -163,11 +163,8 @@ use yii\helpers\Url;
                     if(response.result == 'success'){
                         //console.log(response.data.htmlmarkup);
 
-                        $('#summary_placeholder').empty();
-
-                        $('#summary_placeholder').html(response.data.htmlmarkup);
-
-                        $('#payment-summary-modal').modal('show');
+                        $.pjax.reload({container:'#grid-demo'});
+                        $('#guest-checkout-modal').modal('hide');
 
                     }
                 },

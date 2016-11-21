@@ -18,6 +18,11 @@
 
                     [Check-in : <?= $data['booking_data']['checkin'] ?> &nbsp; Check-out : <?= $data['booking_data']['checkout'] ?>]
 
+                    <br />
+
+                    <?php if(strtotime(date('Y-m-d', strtotime($data['booking_data']['checkout'])))- strtotime(date('Y-m-d')) > 0): ?>
+                        <span class="label label-danger">Checkout date is on <?= $data['booking_data']['checkout'] ?></span>
+                    <?php endif; ?>
                 </div>
                 <div class="form-group">
                     <table class="table table-hover" width="100%">
@@ -36,7 +41,9 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" onclick="Bookings.confirmCheckout(<?= $data['booking_data']['booking_id'] ?>)">Confirm Guest Checkout</button>
+                <?php $disabled = ($data['order_item_charges'] + $data['acomadation_charges']) - $data['receipt_total'] > 0 ? 'disabled' : '' ?>
+
+                <button type="button" class="btn btn-success" onclick="Bookings.confirmCheckout(<?= $data['booking_data']['booking_id'] ?>)" <?= $disabled ?>>Confirm Guest Checkout</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
 

@@ -561,6 +561,34 @@ class BookingController extends \app\controllers\ApiController
 
     public function actionCheckoutGuest()
     {
-        echo 'ok';
+        if(Yii::$app->request->isAjax)
+        {
+            $booking_id = Yii::$app->request->post('booking_id');
+            $invoices = \app\modules\inventory\models\InvnInvoice::find()->where(['booking_id'=>$booking_id, 'status'=> 'OPEN', 'deleted'=>0])->all();
+            $booking = GrcBooking::find()->where(['id'=>$booking_id])->one();
+
+            $connection = Yii::$app->getDb();
+            $transaction = $connection->beginTransaction();
+
+            $inv_array = array();
+            foreach($invoices As $invoice){
+                $inv_array[] = $invoice->id;
+            }
+
+            $sql1 = 'UPDATE `yii2-hotel`.`invn_invoice` SET `status`="CLOSED" WHERE `booking_id` = '.$booking_id;
+            $sql2 = 'UPDATE `yii2-hotel`.`grc_booking` SET `status`="CLOSED" WHERE `id` = '.$booking_id;
+
+            try {
+                $connection->createCommand($sql1)->execute();
+                $connection->createCommand($sql2)->execute();
+
+                $transaction->commit();
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            }
+
+            $this->renderJson(['result'=>'success', 'message'=>'Success', 'data'=>'']);
+        }
     }
 }

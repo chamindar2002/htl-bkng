@@ -32,12 +32,12 @@
                                         <?php foreach($data['acomadation'] AS $ac){ ?>
                                             <tr>
                                                 <td width="80%"><?= $ac['item_description'] ?></td>
-                                                <td class="text-right"><?= $ac['price'] ?></td>
+                                                <td class="text-right"><?= number_format($ac['price'], 2) ?></td>
                                             </tr>
                                         <?php } ?>
                                         <tr>
                                             <td><strong>Total</strong></td>
-                                            <td class="text-right"><strong><?= $data['acomadation_charges'] ?></strong></td>
+                                            <td class="text-right"><strong><?= number_format($data['acomadation_charges'], 2) ?></strong></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -51,14 +51,14 @@
                                             <?php foreach($data['ordered_items'] AS $ac){ ?>
                                                 <tr>
                                                     <td width="80%"><?= $ac['item_description'] ?></td>
-                                                    <td  class="text-right"><?= $ac['price'] ?></td>
+                                                    <td  class="text-right"><?= number_format($ac['price'], 2) ?></td>
                                                 </tr>
                                             <?php } ?>
                                         <?php endif; ?>
 
                                         <tr>
                                             <td><strong>Total</strong></td>
-                                            <td  class="text-right" class="text-right"><strong><?= $data['order_item_charges'] ?></strong></td>
+                                            <td  class="text-right" class="text-right"><strong><?= number_format($data['order_item_charges'], 2) ?></strong></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -70,24 +70,24 @@
                                         <tr><th>#</th><th>Date</th><th>Paid</th></tr>
                                         <?php if(!empty($data['receipts'])): ?>
                                             <?php foreach ($data['receipts'] AS $rc){ ?>
-                                                <tr><td><?= $rc['id'] ?></td><td width="80%"><?= $rc['receipt_date'] ?></td><td  class="text-right"><?= $rc['amount_paid'] ?></td></tr>
+                                                <tr><td><?= $rc['id'] ?></td><td width="80%"><?= $rc['receipt_date'] ?></td><td  class="text-right"><?= number_format($rc['amount_paid'], 2) ?></td></tr>
 
                                             <?php } ?>
                                         <?php endif; ?>
-                                        <tr><td colspan="2" ><strong>Total</strong></td><td  class="text-right"><strong><?= $data['receipt_total'] ?></strong></td></tr>
+                                        <tr><td colspan="2" ><strong>Total</strong></td><td  class="text-right"><strong><?= number_format($data['receipt_total'], 2) ?></strong></td></tr>
                                     </table>
                                 </div>
                                 <div class="form-group">
                                     <table class="table table-hover" width="100%">
                                         <tr>
-                                            <td>Total Dues</td><td class="text-right"><?= $data['order_item_charges'] + $data['acomadation_charges']  ?></td>
+                                            <td>Total Dues</td><td class="text-right"><?= number_format($data['order_item_charges'] + $data['acomadation_charges'], 2)  ?></td>
                                         </tr>
                                         <tr>
-                                            <td>Total Paid</td><td class="text-right"><?= $data['receipt_total'] ?></td>
+                                            <td>Total Paid</td><td class="text-right"><?= number_format($data['receipt_total'], 2) ?></td>
                                         </tr>
                                         <tr>
                                             <td><strong>Grand Toal</strong></td>
-                                            <td class="text-right"><strong><?= ($data['order_item_charges'] + $data['acomadation_charges']) - $data['receipt_total'] ?></strong></td>
+                                            <td class="text-right"><strong><?= number_format(($data['order_item_charges'] + $data['acomadation_charges']) - $data['receipt_total'], 2) ?></strong></td>
                                         </tr>
                                     </table>
                                 </div>
